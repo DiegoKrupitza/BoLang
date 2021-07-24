@@ -1,0 +1,5 @@
+if(toInt(date("dd")) == 7) {
+    return "Its lucky 7 day!";
+}else {
+    return "Its not lucky 7 day!";
+}
