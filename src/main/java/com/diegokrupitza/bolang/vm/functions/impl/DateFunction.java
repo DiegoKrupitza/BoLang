@@ -2,6 +2,7 @@ package com.diegokrupitza.bolang.vm.functions.impl;
 
 import com.diegokrupitza.bolang.vm.functions.BoFunction;
 import com.diegokrupitza.bolang.vm.functions.Function;
+import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionCallException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionParameterException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
@@ -49,8 +50,13 @@ public class DateFunction implements Function {
 
         // getting the date in a format
         if (this.dateFormat != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(this.dateFormat);
-            strDate = now.format(formatter);
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(this.dateFormat);
+                strDate = now.format(formatter);
+            } catch (IllegalArgumentException e) {
+                // in case someone tries to use a pattern that is not allowed
+                throw new BoFunctionCallException(e.getMessage());
+            }
         }
 
         return new StringElement(strDate);

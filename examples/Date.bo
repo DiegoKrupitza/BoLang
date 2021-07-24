@@ -1,0 +1,1 @@
+return "Today is the " ++ date("dd-MM-YYYY");
