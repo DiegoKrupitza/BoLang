@@ -188,8 +188,16 @@ public class Infixes {
 
             if (leftElemInfo.getType() == Type.INTEGER_NUMBER) {
                 // result will be an integer
-                Integer newValue = (Integer.parseInt(leftElemInfo.toString()) / Integer.parseInt(rightElemInfo.toString()));
-                return new IntegerElement(newValue);
+                if (Infixes.mod(leftElemInfo, rightElemInfo).getValue() == 0) {
+                    // division works without converting to number
+                    Integer newValue = (Integer.parseInt(leftElemInfo.toString()) / Integer.parseInt(rightElemInfo.toString()));
+                    return new IntegerElement(newValue);
+                }
+
+                // division will return into a floating point number
+                Double newValue = (Double.parseDouble(leftElemInfo.toString()) / Double.parseDouble(rightElemInfo.toString()));
+                return new NumberElement(newValue);
+
             } else {
                 // result will be a number since the left part is a number
                 Double newValue = Double.parseDouble(leftElemInfo.toString()) / Double.parseDouble(rightElemInfo.toString());
@@ -202,6 +210,18 @@ public class Infixes {
             return new NumberElement(newValue);
         }
         throw new VirtualMachineException("Should not happen!");
+    }
+
+    public static IntegerElement mod(AbstractElementType<?> leftElemInfo, AbstractElementType<?> rightElemInfo) throws VirtualMachineException {
+        if (
+                Types.atLeastOneNotOfTypes(Collections.singletonList(Type.INTEGER_NUMBER), leftElemInfo, rightElemInfo)
+        ) {
+            throw new VirtualMachineException(String.format("You cannot perform a modul operation on %s and %s!", leftElemInfo.getType(), rightElemInfo.getType()));
+        }
+        IntegerElement leftCasted = (IntegerElement) leftElemInfo;
+        IntegerElement rightCasted = (IntegerElement) rightElemInfo;
+
+        return new IntegerElement(leftCasted.getValue() % rightCasted.getValue());
     }
 
     public static AbstractElementType<?> performMultiplication(AbstractElementType<?> leftElemInfo, AbstractElementType<?> rightElemInfo) throws VirtualMachineException {

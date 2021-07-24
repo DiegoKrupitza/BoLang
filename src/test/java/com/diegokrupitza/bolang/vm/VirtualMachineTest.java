@@ -1,13 +1,11 @@
 package com.diegokrupitza.bolang.vm;
 
-import com.diegokrupitza.bolang.vm.VirtualMachine;
-import com.diegokrupitza.bolang.vm.VirtualMachineException;
-import com.diegokrupitza.bolang.vm.types.*;
-import com.diegokrupitza.pdfgenerator.BoLexer;
-import com.diegokrupitza.pdfgenerator.BoParser;
 import com.diegokrupitza.bolang.syntaxtree.BuildAstVisitor;
 import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
+import com.diegokrupitza.bolang.vm.types.*;
 import com.diegokrupitza.bolang.vm.utils.Booleans;
+import com.diegokrupitza.pdfgenerator.BoLexer;
+import com.diegokrupitza.pdfgenerator.BoParser;
 import lombok.SneakyThrows;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -862,6 +860,57 @@ public class VirtualMachineTest {
         assertThat(returnVal).isInstanceOf(IntegerElement.class);
         assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(1);
     }
+
+    @SneakyThrows
+    @Test
+    public void divisionResultTypNumberTest() {
+        var program = "return 1/2;";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+
+        assertThat(returnVal.getType()).isEqualTo(Type.NUMBER);
+        assertThat(returnVal).isInstanceOf(NumberElement.class);
+        assertThat(((NumberElement) returnVal).getValue()).isEqualTo(0.5);
+    }
+
+    @SneakyThrows
+    @Test
+    public void divisionResultTypIntegerTest() {
+        var program = "return 4/2;";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+
+        assertThat(returnVal.getType()).isEqualTo(Type.INTEGER_NUMBER);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(2);
+    }
+
 
     @SneakyThrows
     @Test
@@ -1765,8 +1814,6 @@ public class VirtualMachineTest {
             assertThat(virtualMachine.run(null)).isNotNull();
         }
     }
-
-
 
 
 }
