@@ -28,7 +28,7 @@ return 5.5; // this will be return a number with the value 5.5
 
 ### Integers
 
-As the name already suggests the Integer datatype represents integer values. Hardcoded integers in the program are automatically stored as an `integer`
+As the name already suggests the Integer datatype represents integer values. Hardcoded integers in the program are automatically stored as an `integer`. The range of an integer is from -2147483648 to 2147483647.
 
 ```BoLang
 return 5; // this will be return an integer with the value 5
@@ -129,5 +129,109 @@ You can also negate arrays in BoLang. The semantics here mean that you perform t
 
 ```BoLang
 return ![1,2,"B","Z",false]; // returns an array with the values [-1,-2,"=","%",true]
+```
+
+### Addition
+
+This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an addition. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+
+```BoLang
+return 1 + 1; // returns 2 type of Integer
+return 1.0 + 1; // returns 2.0 type of Number
+return 1.0 + 1.0; // returns 2.0 type of Number
+```
+
+For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an addition on each element of the array with the other operant that is not an array.
+
+```BoLang
+return [1,2,3] + 1; // returns an array [2,3,4]
+```
+
+If both operants are an array: element 1 of array *a* is added to the element 1 of array *b* and so on. If one array is bigger than the odder the remaining elements get appended to the returned array.
+
+```BoLang
+return [1,2,3] + [2,2,2]; // returns an array [3,4,5]
+return [1,2,3] + [1,2]; // return an array [2,4,3]
+```
+
+### Subtraction
+
+This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an subtraction. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+
+```BoLang
+return 3 - 1; // returns 2 type of Integer
+return 3.0 - 1; // returns 2.0 type of Number
+return 3.0 - 1.0; // returns 2.0 type of Number
+```
+
+For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an subtraction on each element of the array with the other operant that is not an array.
+
+```BoLang
+return [1,2,3] - 1; // returns an array [0,1,2]
+```
+
+If both operants are an array: element 1 of array *a* is subtracted by the element 1 of array *b* and so on. If the left array is bigger than the left the remaining elements are just appended. If the right array is bigger than the left the remaining elements are substracted with 0. 
+
+```BoLang
+return [1,2,3] - [1,2]; // returns an array [0,0,3]
+return [1,2] + [1,2,3]; // return an array [0,0,-3]
+```
+
+### Division
+
+This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an division. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again. If both operants are of type `integer` and the division can be performed without a remaining the result is of type `integer` otherwise its `number`.
+
+```BoLang
+return 3 / 1; // returns 3 type of Integer
+return 1 / 2; // returns 0.5 type of Number
+return 3.0 / 1; // returns 1.0 type of Number
+return 3.0 / 1.0; // returns 1.0 type of Number
+```
+
+For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an division on each element of the array with the other operant that is not an array.
+
+```BoLang
+return [1,2,3] / 1; // returns an array [1,2,3]
+```
+
+If both operants are an array: element 1 of array *a* is divided by the element 1 of array *b* and so on. If the left array is bigger than the left the remaining elements are just appended. If the right array is bigger than the left the remaining elements are divided by 0. 
+
+```BoLang
+return [1,2,3] / [1,2]; // returns an array [1,1,3]
+return [1,2] / [1,2,3]; // return an array [1,1,0]
+```
+
+### Multiplication 
+
+This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an multiplication. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+
+```BoLang
+return 3 * 2; // returns 6 type of Integer
+return 3.0 * 2; // returns 6.0 type of Number
+return 3.0 * 2.0; // returns 6.0 type of Number
+```
+
+For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an multiplication on each element of the array with the other operant that is not an array.
+
+```BoLang
+return [2,4,6] * 2; // returns an array [4,8,12]
+```
+
+If both operants are an array: element 1 of array *a* is multiplied by the element 1 of array *b* and so on. If one array is bigger the remaining elements are appended to the result array
+
+```BoLang
+return [1,2,3] * [1,2]; // returns an array [1,4,3]
+return [1,2] / [1,2,3]; // return an array [1,4,3]
+return [] / [1,2,3]; // return an array [1,2,3]
+```
+
+### Concatenation
+
+This works on any datatype. It simple concatenates the value of the left operant to the value of the right operant. The result type is always a string.
+
+```BoLang
+return "Hey" ++ 1; // returns the string "Hey1"
+return "1" ++ 1; // returns the string "11"
+return true ++ 1; // returns the string "true1"
 ```
 
