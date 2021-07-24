@@ -17,19 +17,30 @@
     </developers>
 
     <properties>
+        <!-- maven properties -->
         <java.version>11</java.version>
-        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
-        <assertj.version>3.11.1</assertj.version>
-        <lombok.version>1.18.20</lombok.version>
-        <apache.commons-lang3.version>3.10</apache.commons-lang3.version>
-        <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
-        <antlr.version>4.9.1</antlr.version>
-        <reflections.version>0.9.12</reflections.version>
-        <mojo.version>3.0.0</mojo.version>
-        <antlr.visitor>true</antlr.visitor>
-        <antlr.listener>true</antlr.listener>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+        <lombok.version>1.18.20</lombok.version>
+        <mojo.version>3.0.0</mojo.version>
+
+        <!-- testing -->
+        <junit.version>5.7.0</junit.version>
+        <assertj.version>3.11.1</assertj.version>
+
+        <!-- apache commons -->
+        <apache.commons-lang3.version>3.10</apache.commons-lang3.version>
+        <apache.commons-collections4.version>4.4</apache.commons-collections4.version>
+
+        <!-- reflection access -->
+        <reflections.version>0.9.12</reflections.version>
+
+        <!-- antlr -->
+        <antlr.version>4.9.1</antlr.version>
+        <antlr.visitor>true</antlr.visitor>
+        <antlr.listener>true</antlr.listener>
+
     </properties>
 
     <dependencies>
@@ -80,20 +91,19 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.0</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.0</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.7.0</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
 
