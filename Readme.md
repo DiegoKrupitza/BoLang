@@ -1,5 +1,28 @@
 ![compact BoLang logo](./resources/compactlogo.png)
 
+# Table of Contents
+
+- [Introduction](#introduction)
+- [Documentation](#documentation)
+  * [Datatype](#datatype)
+    + [Numbers](#numbers)
+    + [Integers](#integers)
+    + [Booleans](#booleans)
+    + [Strings](#strings)
+    + [Arrays](#arrays)
+    + [Identifier](#identifier)
+  * [External Parameters](#external-parameters)
+  * [Operators](#operators)
+    + [Negation](#negation)
+      - [Integers, Numbers, Booleans](#integers--numbers--booleans)
+      - [Strings](#strings-1)
+      - [Arrays](#arrays-1)
+    + [Addition](#addition)
+    + [Subtraction](#subtraction)
+    + [Division](#division)
+    + [Multiplication](#multiplication)
+    + [Concatenation](#concatenation)
+
 # Introduction
 
 BoLang is a currently non turing complete programming language that is written in Java. The goal of this language is to have predefined functions that can be called by the user and do further operation on results etc.
