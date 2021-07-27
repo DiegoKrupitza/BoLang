@@ -1,0 +1,6 @@
+var randNum := randInt(0,100);
+if( randNum >= 37) {
+    return "Yeah! Bigger than or equal 37!!! The number is: " ++ randNum;
+}else {
+    return "BOOOO! Less than 37!!! The number is: " ++ randNum;
+}
