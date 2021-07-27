@@ -258,3 +258,31 @@ return "1" ++ 1; // returns the string "11"
 return true ++ 1; // returns the string "true1"
 ```
 
+### Equals
+
+The equality operator works on the type and the value. For equality there is not difference between the type of `numbers` and `integers`. For all the other ones the types are important for the equality check.
+
+```BoLang
+return 5.5 == 5; // not equals
+return 5.0 == 5; // equals
+return "5" == 5; // not equals
+return "BoLang!" == "BoLang!"; // equals
+return true == true; // equals
+```
+
+The result type of this operator is always a `boolean`.
+
+### Not Equals
+
+It is basically the inverted value of the equals operator.
+
+```BoLang
+return 5.5 != 5; // true
+return 5.0 != 5; // false
+return "5" != 5; // true
+return "BoLang!" != "BoLang!"; // false
+return true != true; // false
+```
+
+The result type of this operator is always a `boolean`.
+
