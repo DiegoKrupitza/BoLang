@@ -2,6 +2,7 @@
 
 # Table of Contents
 
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Documentation](#documentation)
   * [Datatype](#datatype)
@@ -24,6 +25,13 @@
     + [Concatenation](#concatenation)
     + [Equals](#equals)
     + [Not Equals](#not-equals)
+    + [Greater Equals](#greater-equals)
+    + [Greater](#greater)
+    + [Less Equal](#less-equal)
+    + [Less](#less)
+    + [Logic And](#logic-and)
+    + [Logic Or](#logic-or)
+  * [Functions](#functions)
 
 # Introduction
 
@@ -287,4 +295,93 @@ return true != true; // false
 ```
 
 The result type of this operator is always a `boolean`.
+
+### Greater Equals
+
+The greater equals operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+
+```BoLang
+return 6 >= 5; // true
+return 5 >= 5; // true
+return 5.0 >= 5; // true
+return 4 >= 5; // false
+```
+
+The result type of this operator is always a `boolean`.
+
+### Greater
+
+The greater operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+
+```BoLang
+return 6 > 5; // true
+return 5 > 5; // false
+return 5.0 > 5; // false
+return 4 > 5; // false
+```
+
+The result type of this operator is always a `boolean`.
+
+### Less Equal
+
+The less equal operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+
+```BoLang
+return 6 <= 5; // false
+return 5 <= 5; // true
+return 5.0 <= 5; // true
+return 4 <= 5; // true
+```
+
+The result type of this operator is always a `boolean`.
+
+### Less 
+
+The less operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+
+```BoLang
+return 6 < 5; // true
+return 5 < 5; // false
+return 5.0 < 5; // false
+return 4 < 5; // true
+```
+
+The result type of this operator is always a `boolean`.
+
+### Logic And
+
+The `logic and` operation symboled by the characters `&&` only works on `booleans`. The operation only works on `booleans`.
+
+```BoLang
+return false && false; // false
+return true && false; // false
+return false && true; // false
+return true && true; // true
+```
+
+The result type of this operator is always a `boolean`.
+
+### Logic Or
+
+The `logic or` operation symboled by the characters `||` only works on `booleans`. The operation only works on `booleans`.
+
+```BoLang
+return false || false; // false
+return true || false; // true
+return false || true; // true
+return true || true; // true
+```
+
+The result type of this operator is always a `boolean`.
+
+## Functions
+
+| Name     | Parameters   | Description | Result type | Example |
+| -------- | ------------ | ----------- | ------- | -------- |
+| `rand()` | No parameter | Generates a random number between (inclusive) 0 and (exclusive) 1 | `number` | `rand()` |
+| `rand(upperBound)` | `upperBound` has to be a `number` or a `integer` | Generates a random number (inclusive) 0 and (exclusive) the provided `upperBound` | `number` | `rand(100)` |
+| `rand(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `number` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random number (inclusive) `lowerBound` and (exclusive) `upperBound` | `number` | `rand(5,10)` |
+| `randInt()` | No parameter | Generates a random integer between (inclusive) 0 and (exclusive) 1 | `integer` | `randInt()` |
+| `randInt(upperBound)` | `upperBound` has to be a `number` or a `integer` | Generates a random integer (inclusive) 0 and (exclusive) the provided `upperBound` | `integer` | `randInt(100)` |
+| `randInt(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `number` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random integer (inclusive) `lowerBound` and (exclusive) `upperBound` | `integer` | `randInt(5,10)` |
 
