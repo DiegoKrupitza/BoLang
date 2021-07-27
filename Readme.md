@@ -22,6 +22,8 @@
     + [Division](#division)
     + [Multiplication](#multiplication)
     + [Concatenation](#concatenation)
+    + [Equals](#equals)
+    + [Not Equals](#not-equals)
 
 # Introduction
 
