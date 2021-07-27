@@ -1,0 +1,1 @@
+return rand() + rand(10,20) + rand(1000);
