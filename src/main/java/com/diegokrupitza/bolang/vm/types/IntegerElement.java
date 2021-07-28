@@ -7,7 +7,7 @@ import lombok.NonNull;
  * @version 1.0
  * @date 11.07.21
  */
-public class IntegerElement extends AbstractElementType<Integer> implements Comparable<Integer> {
+public class IntegerElement extends NumberElement<Integer> {
 
     public IntegerElement(@NonNull Integer value) {
         super(value, Type.INTEGER_NUMBER);

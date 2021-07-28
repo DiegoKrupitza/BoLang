@@ -45,8 +45,8 @@ public class ASTTests {
 
         assertThat(head.getStats().size()).isEqualTo(1);
         assertThat(head.getStats().get(0)).isInstanceOf(ReturnNode.class);
-        assertThat(((ReturnNode) head.getStats().get(0)).getRet()).isInstanceOf(NumNode.class);
-        assertThat(((NumNode) ((ReturnNode) head.getStats().get(0)).getRet()).getValue()).isEqualTo(5.1);
+        assertThat(((ReturnNode) head.getStats().get(0)).getRet()).isInstanceOf(DoubleNode.class);
+        assertThat(((DoubleNode) ((ReturnNode) head.getStats().get(0)).getRet()).getValue()).isEqualTo(5.1);
     }
 
     @Test
@@ -174,11 +174,11 @@ public class ASTTests {
         // casting to operation node
         AdditionNode operationNode = (AdditionNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -209,11 +209,11 @@ public class ASTTests {
         // casting to operation node
         SubtractionNode operationNode = (SubtractionNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -244,11 +244,11 @@ public class ASTTests {
         // casting to operation node
         MultiplicationNode operationNode = (MultiplicationNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -279,11 +279,11 @@ public class ASTTests {
         // casting to operation node
         DivisionNode operationNode = (DivisionNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -314,11 +314,11 @@ public class ASTTests {
         // casting to operation node
         LessNode operationNode = (LessNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -349,11 +349,11 @@ public class ASTTests {
         // casting to operation node
         LessEqualNode operationNode = (LessEqualNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -384,11 +384,11 @@ public class ASTTests {
         // casting to operation node
         GreaterNode operationNode = (GreaterNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -419,11 +419,11 @@ public class ASTTests {
         // casting to operation node
         GreaterEqualNode operationNode = (GreaterEqualNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -454,11 +454,11 @@ public class ASTTests {
         // casting to operation node
         EqualsNode operationNode = (EqualsNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -489,11 +489,11 @@ public class ASTTests {
         // casting to operation node
         NotEqualsNode operationNode = (NotEqualsNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -524,11 +524,11 @@ public class ASTTests {
         // casting to operation node
         LogicAndNode operationNode = (LogicAndNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -559,11 +559,11 @@ public class ASTTests {
         // casting to operation node
         LogicOrNode operationNode = (LogicOrNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -594,11 +594,11 @@ public class ASTTests {
         // casting to operation node
         StringConcatenationNode operationNode = (StringConcatenationNode) ((ReturnNode) head.getStats().get(0)).getRet();
 
-        assertThat(operationNode.getLeft()).isInstanceOf(NumNode.class);
-        assertThat(operationNode.getRight()).isInstanceOf(NumNode.class);
+        assertThat(operationNode.getLeft()).isInstanceOf(DoubleNode.class);
+        assertThat(operationNode.getRight()).isInstanceOf(DoubleNode.class);
 
-        assertThat(((NumNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
-        assertThat(((NumNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
+        assertThat(((DoubleNode) operationNode.getLeft()).getValue()).isEqualTo(leftVal);
+        assertThat(((DoubleNode) operationNode.getRight()).getValue()).isEqualTo(rightVal);
     }
 
     @Test
@@ -922,7 +922,7 @@ public class ASTTests {
         assertThat(additionNode.getLeft()).isInstanceOf(NegateNode.class);
         assertThat(additionNode.getRight()).isInstanceOf(IntegerNode.class);
 
-        assertThat(((NumNode) ((NegateNode) additionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
+        assertThat(((DoubleNode) ((NegateNode) additionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
         assertThat(((IntegerNode) (additionNode).getRight()).getValue()).isEqualTo(1);
     }
 
@@ -952,7 +952,7 @@ public class ASTTests {
         assertThat(subtractionNode.getLeft()).isInstanceOf(NegateNode.class);
         assertThat(subtractionNode.getRight()).isInstanceOf(IntegerNode.class);
 
-        assertThat(((NumNode) ((NegateNode) subtractionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
+        assertThat(((DoubleNode) ((NegateNode) subtractionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
         assertThat(((IntegerNode) (subtractionNode).getRight()).getValue()).isEqualTo(1);
     }
 
@@ -982,7 +982,7 @@ public class ASTTests {
         assertThat(subtractionNode.getLeft()).isInstanceOf(NegateNode.class);
         assertThat(subtractionNode.getRight()).isInstanceOf(NegateNode.class);
 
-        assertThat(((NumNode) ((NegateNode) subtractionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
+        assertThat(((DoubleNode) ((NegateNode) subtractionNode.getLeft()).getInner()).getValue()).isEqualTo(1.1);
         assertThat(((IntegerNode) ((NegateNode) subtractionNode.getRight()).getInner()).getValue()).isEqualTo(1);
     }
 

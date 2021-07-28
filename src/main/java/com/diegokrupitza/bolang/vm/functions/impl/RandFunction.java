@@ -6,7 +6,7 @@ import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionParameterException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
 import com.diegokrupitza.bolang.vm.types.IntegerElement;
-import com.diegokrupitza.bolang.vm.types.NumberElement;
+import com.diegokrupitza.bolang.vm.types.DoubleElement;
 import com.diegokrupitza.bolang.vm.types.Type;
 import com.diegokrupitza.bolang.vm.utils.Types;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class RandFunction implements Function {
             return;
         }
 
-        if (Types.atLeastOneNotOfTypes(List.of(Type.INTEGER_NUMBER, Type.NUMBER), params.toArray(new AbstractElementType<?>[0]))) {
+        if (Types.atLeastOneNotOfTypes(List.of(Type.INTEGER_NUMBER, Type.DOUBLE), params.toArray(new AbstractElementType<?>[0]))) {
             String wrongParamsTypes = params.stream()
                     .map(i -> i.getType().getName())
                     .collect(Collectors.joining(","));
@@ -45,17 +45,17 @@ public class RandFunction implements Function {
 
         if (params.size() == 1) {
             // only upper bound
-            upperBound = (params.get(0).getType() == Type.NUMBER) ?
-                    (((NumberElement) params.get(0)).getValue()) :
+            upperBound = (params.get(0).getType() == Type.DOUBLE) ?
+                    (((DoubleElement) params.get(0)).getValue()) :
                     (((IntegerElement) params.get(0)).getValue().doubleValue());
         } else if (params.size() == 2) {
             // lower and upper bound
-            lowerBound = (params.get(0).getType() == Type.NUMBER) ?
-                    (((NumberElement) params.get(0)).getValue()) :
+            lowerBound = (params.get(0).getType() == Type.DOUBLE) ?
+                    (((DoubleElement) params.get(0)).getValue()) :
                     (((IntegerElement) params.get(0)).getValue().doubleValue());
 
-            upperBound = (params.get(1).getType() == Type.NUMBER) ?
-                    (((NumberElement) params.get(1)).getValue()) :
+            upperBound = (params.get(1).getType() == Type.DOUBLE) ?
+                    (((DoubleElement) params.get(1)).getValue()) :
                     (((IntegerElement) params.get(1)).getValue().doubleValue());
         } else {
             // this should not happen...
@@ -70,6 +70,6 @@ public class RandFunction implements Function {
     @Override
     public AbstractElementType<?> execute(List<AbstractElementType<?>> params) throws BoFunctionException {
         double randValue = ThreadLocalRandom.current().nextDouble(lowerBound, upperBound);
-        return new NumberElement(randValue);
+        return new DoubleElement(randValue);
     }
 }

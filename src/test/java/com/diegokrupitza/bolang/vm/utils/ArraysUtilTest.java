@@ -1,8 +1,7 @@
 package com.diegokrupitza.bolang.vm.utils;
 
 import com.diegokrupitza.bolang.vm.types.ArrayElement;
-import com.diegokrupitza.bolang.vm.types.NumberElement;
-import com.diegokrupitza.bolang.vm.utils.Arrays;
+import com.diegokrupitza.bolang.vm.types.DoubleElement;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -27,7 +26,7 @@ public class ArraysUtilTest {
         ArrayElement emptyArray = Arrays.emptyArray();
         assertThat(Arrays.isEmpty(emptyArray)).isTrue();
 
-        ArrayElement notEmptyArray = new ArrayElement(Collections.singletonList(new NumberElement(1.9)));
+        ArrayElement notEmptyArray = new ArrayElement(Collections.singletonList(new DoubleElement(1.9)));
         assertThat(Arrays.isEmpty(notEmptyArray)).isFalse();
     }
 

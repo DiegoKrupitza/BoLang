@@ -33,9 +33,9 @@ public class ToIntFunctionTest {
 
     @Test
     public void checkParamsValidTest() {
-        NumberElement numberElement = new NumberElement(12.12);
+        DoubleElement doubleElement = new DoubleElement(12.12);
 
-        toInt.paramCheck(Collections.singletonList(numberElement));
+        toInt.paramCheck(Collections.singletonList(doubleElement));
     }
 
     @Test
@@ -47,10 +47,10 @@ public class ToIntFunctionTest {
 
     @Test
     public void checkParamsInvalidTooManyTest() {
-        NumberElement numberElement1 = new NumberElement(12.12);
-        NumberElement numberElement2 = new NumberElement(99.12);
+        DoubleElement doubleElement1 = new DoubleElement(12.12);
+        DoubleElement doubleElement2 = new DoubleElement(99.12);
 
-        assertThatThrownBy(() -> toInt.paramCheck(Arrays.asList(numberElement1, numberElement2)))
+        assertThatThrownBy(() -> toInt.paramCheck(Arrays.asList(doubleElement1, doubleElement2)))
                 .isInstanceOf(BoFunctionParameterException.class)
                 .hasMessage("The function `toInt`requires exactly one parameter. The parameter can be of any type");
     }
@@ -58,8 +58,8 @@ public class ToIntFunctionTest {
 
     @Test
     public void toIntNumberTest() {
-        NumberElement numberElement = new NumberElement(12.12);
-        AbstractElementType<?> call = toInt.call(Collections.singletonList(numberElement));
+        DoubleElement doubleElement = new DoubleElement(12.12);
+        AbstractElementType<?> call = toInt.call(Collections.singletonList(doubleElement));
 
         assertThat(call).isInstanceOf(IntegerElement.class);
         assertThat(call.getType()).isEqualTo(Type.INTEGER_NUMBER);
@@ -90,9 +90,9 @@ public class ToIntFunctionTest {
     public void toIntArrayTest() {
         StringElement stringElement = new StringElement("100");
         IntegerElement integerElement = new IntegerElement(100);
-        NumberElement numberElement = new NumberElement(12.12);
+        DoubleElement doubleElement = new DoubleElement(12.12);
 
-        ArrayElement arrayElement = new ArrayElement(Arrays.asList(stringElement, integerElement, numberElement));
+        ArrayElement arrayElement = new ArrayElement(Arrays.asList(stringElement, integerElement, doubleElement));
 
         AbstractElementType<?> call = toInt.call(Collections.singletonList(arrayElement));
 

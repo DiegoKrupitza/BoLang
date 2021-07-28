@@ -31,8 +31,8 @@ public class Unarys {
     public static AbstractElementType<?> performNegation(AbstractElementType<?> toNegate) throws VirtualMachineException {
         assert toNegate != null;
 
-        if (toNegate.getType() == Type.NUMBER) {
-            NumberElement evaluatedInType = (NumberElement) toNegate;
+        if (toNegate.getType() == Type.DOUBLE) {
+            DoubleElement evaluatedInType = (DoubleElement) toNegate;
 
             // just multiply itself with -1 to flip the sign
             evaluatedInType.setValue(-1 * evaluatedInType.getValue());

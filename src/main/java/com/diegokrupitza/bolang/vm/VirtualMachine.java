@@ -225,7 +225,7 @@ public class VirtualMachine {
             ExpressionNode rightExpr = greaterEqualNode.getRight();
             AbstractElementType<?> rightElemInfo = evalExpression(rightExpr);
 
-            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.NUMBER), leftElemInfo, rightElemInfo)) {
+            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.DOUBLE), leftElemInfo, rightElemInfo)) {
                 throw new VirtualMachineException(String.format("The `>=` operation only works with numbers or integers. You tried to use it on %s and %s", leftElemInfo.getType(), rightElemInfo.getType()));
             }
 
@@ -235,16 +235,16 @@ public class VirtualMachine {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 0) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 0) ? Booleans.TRUE : Booleans.FALSE;
                 }
             } else {
-                NumberElement leftCasted = (NumberElement) leftElemInfo;
+                DoubleElement leftCasted = (DoubleElement) leftElemInfo;
                 if (rightElemInfo.getType() == Type.INTEGER_NUMBER) {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 0) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 0) ? Booleans.TRUE : Booleans.FALSE;
                 }
             }
@@ -260,7 +260,7 @@ public class VirtualMachine {
             ExpressionNode rightExpr = greaterNode.getRight();
             AbstractElementType<?> rightElemInfo = evalExpression(rightExpr);
 
-            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.NUMBER), leftElemInfo, rightElemInfo)) {
+            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.DOUBLE), leftElemInfo, rightElemInfo)) {
                 throw new VirtualMachineException(String.format("The `>` operation only works with numbers or integers. You tried to use it on %s and %s", leftElemInfo.getType(), rightElemInfo.getType()));
             }
 
@@ -270,16 +270,16 @@ public class VirtualMachine {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 1) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 1) ? Booleans.TRUE : Booleans.FALSE;
                 }
             } else {
-                NumberElement leftCasted = (NumberElement) leftElemInfo;
+                DoubleElement leftCasted = (DoubleElement) leftElemInfo;
                 if (rightElemInfo.getType() == Type.INTEGER_NUMBER) {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 1) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) >= 1) ? Booleans.TRUE : Booleans.FALSE;
                 }
             }
@@ -295,7 +295,7 @@ public class VirtualMachine {
             ExpressionNode rightExpr = lessEqualNode.getRight();
             AbstractElementType<?> rightElemInfo = evalExpression(rightExpr);
 
-            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.NUMBER), leftElemInfo, rightElemInfo)) {
+            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.DOUBLE), leftElemInfo, rightElemInfo)) {
                 throw new VirtualMachineException(String.format("The `<=` operation only works with numbers or integers. You tried to use it on %s and %s", leftElemInfo.getType(), rightElemInfo.getType()));
             }
 
@@ -305,16 +305,16 @@ public class VirtualMachine {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= 0) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= 0) ? Booleans.TRUE : Booleans.FALSE;
                 }
             } else {
-                NumberElement leftCasted = (NumberElement) leftElemInfo;
+                DoubleElement leftCasted = (DoubleElement) leftElemInfo;
                 if (rightElemInfo.getType() == Type.INTEGER_NUMBER) {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= 0) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= 0) ? Booleans.TRUE : Booleans.FALSE;
                 }
             }
@@ -330,7 +330,7 @@ public class VirtualMachine {
             ExpressionNode rightExpr = lessNode.getRight();
             AbstractElementType<?> rightElemInfo = evalExpression(rightExpr);
 
-            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.NUMBER), leftElemInfo, rightElemInfo)) {
+            if (Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.INTEGER_NUMBER, Type.DOUBLE), leftElemInfo, rightElemInfo)) {
                 throw new VirtualMachineException(String.format("The `<` operation only works with numbers or integers. You tried to use it on %s and %s", leftElemInfo.getType(), rightElemInfo.getType()));
             }
 
@@ -340,16 +340,16 @@ public class VirtualMachine {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= -1) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= -1) ? Booleans.TRUE : Booleans.FALSE;
                 }
             } else {
-                NumberElement leftCasted = (NumberElement) leftElemInfo;
+                DoubleElement leftCasted = (DoubleElement) leftElemInfo;
                 if (rightElemInfo.getType() == Type.INTEGER_NUMBER) {
                     IntegerElement rightCasted = (IntegerElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= -1) ? Booleans.TRUE : Booleans.FALSE;
                 } else {
-                    NumberElement rightCasted = (NumberElement) rightElemInfo;
+                    DoubleElement rightCasted = (DoubleElement) rightElemInfo;
                     return (leftCasted.compareTo(rightCasted.getValue()) <= -1) ? Booleans.TRUE : Booleans.FALSE;
                 }
             }
@@ -529,9 +529,9 @@ public class VirtualMachine {
             }
 
             return this.variables.get(idNode.getName());
-        } else if (expr instanceof NumNode) {
-            NumNode numNode = (NumNode) expr;
-            return new NumberElement(numNode.getValue());
+        } else if (expr instanceof DoubleNode) {
+            DoubleNode doubleNode = (DoubleNode) expr;
+            return new DoubleElement(doubleNode.getValue());
         } else if (expr instanceof IntegerNode) {
             IntegerNode integerNode = (IntegerNode) expr;
             return new IntegerElement(integerNode.getValue());

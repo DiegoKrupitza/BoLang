@@ -45,7 +45,7 @@ public class ToIntFunction implements Function {
         if (beforeType == Type.INTEGER_NUMBER) {
             // its already an int so we do not need to do anything...
             return paramToCast;
-        } else if (beforeType == Type.NUMBER) {
+        } else if (beforeType == Type.DOUBLE) {
             // we simply cut of the decimal part
 
             int newVal = ((Double) paramToCast.getValue()).intValue();

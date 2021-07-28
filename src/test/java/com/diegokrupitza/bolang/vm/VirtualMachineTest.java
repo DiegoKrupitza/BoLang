@@ -39,254 +39,254 @@ public class VirtualMachineTest {
     private static Stream<Arguments> mathInfixOperationTestsSource() {
         return Stream.of(
                 Arguments.of("+", new IntegerElement(10), new IntegerElement(10), new IntegerElement(20), Type.INTEGER_NUMBER),
-                Arguments.of("+", new NumberElement(10.1), new NumberElement(10.1), new NumberElement(20.2), Type.NUMBER),
-                Arguments.of("+", new IntegerElement(10), new NumberElement(10.1), new NumberElement(20.1), Type.NUMBER),
-                Arguments.of("+", new NumberElement(10.1), new IntegerElement(10), new NumberElement(20.1), Type.NUMBER),
+                Arguments.of("+", new DoubleElement(10.1), new DoubleElement(10.1), new DoubleElement(20.2), Type.DOUBLE),
+                Arguments.of("+", new IntegerElement(10), new DoubleElement(10.1), new DoubleElement(20.1), Type.DOUBLE),
+                Arguments.of("+", new DoubleElement(10.1), new IntegerElement(10), new DoubleElement(20.1), Type.DOUBLE),
 
                 Arguments.of("-", new IntegerElement(10), new IntegerElement(10), new IntegerElement(0), Type.INTEGER_NUMBER),
-                Arguments.of("-", new NumberElement(10.1), new NumberElement(10.1), new NumberElement(0.0), Type.NUMBER),
-                Arguments.of("-", new IntegerElement(10), new NumberElement(10.5), new NumberElement(-0.5), Type.NUMBER),
-                Arguments.of("-", new NumberElement(10.5), new IntegerElement(10), new NumberElement(0.5), Type.NUMBER),
+                Arguments.of("-", new DoubleElement(10.1), new DoubleElement(10.1), new DoubleElement(0.0), Type.DOUBLE),
+                Arguments.of("-", new IntegerElement(10), new DoubleElement(10.5), new DoubleElement(-0.5), Type.DOUBLE),
+                Arguments.of("-", new DoubleElement(10.5), new IntegerElement(10), new DoubleElement(0.5), Type.DOUBLE),
 
                 Arguments.of("*", new IntegerElement(10), new IntegerElement(10), new IntegerElement(100), Type.INTEGER_NUMBER),
-                Arguments.of("*", new NumberElement(10.1), new NumberElement(10.1), new NumberElement(102.01), Type.NUMBER),
-                Arguments.of("*", new IntegerElement(10), new NumberElement(10.1), new NumberElement(101.0), Type.NUMBER),
-                Arguments.of("*", new NumberElement(10.1), new IntegerElement(10), new NumberElement(101.0), Type.NUMBER),
+                Arguments.of("*", new DoubleElement(10.1), new DoubleElement(10.1), new DoubleElement(102.01), Type.DOUBLE),
+                Arguments.of("*", new IntegerElement(10), new DoubleElement(10.1), new DoubleElement(101.0), Type.DOUBLE),
+                Arguments.of("*", new DoubleElement(10.1), new IntegerElement(10), new DoubleElement(101.0), Type.DOUBLE),
 
                 Arguments.of("/", new IntegerElement(10), new IntegerElement(10), new IntegerElement(1), Type.INTEGER_NUMBER),
-                Arguments.of("/", new NumberElement(10.1), new NumberElement(10.1), new NumberElement(1.0), Type.NUMBER),
-                Arguments.of("/", new IntegerElement(10), new NumberElement(10.1), new NumberElement(0.99009901), Type.NUMBER),
-                Arguments.of("/", new NumberElement(10.1), new IntegerElement(10), new NumberElement(1.01), Type.NUMBER)
+                Arguments.of("/", new DoubleElement(10.1), new DoubleElement(10.1), new DoubleElement(1.0), Type.DOUBLE),
+                Arguments.of("/", new IntegerElement(10), new DoubleElement(10.1), new DoubleElement(0.99009901), Type.DOUBLE),
+                Arguments.of("/", new DoubleElement(10.1), new IntegerElement(10), new DoubleElement(1.01), Type.DOUBLE)
         );
     }
 
     private static Stream<Arguments> mathInfixOperationTestsInvalidSource() {
         return Stream.of(
                 Arguments.of("+", new IntegerElement(10), new StringElement("AAAH")),
-                Arguments.of("+", new NumberElement(10.1), new StringElement("AAAH")),
-                Arguments.of("+", new StringElement("AAAH"), new NumberElement(10.1)),
+                Arguments.of("+", new DoubleElement(10.1), new StringElement("AAAH")),
+                Arguments.of("+", new StringElement("AAAH"), new DoubleElement(10.1)),
 
                 Arguments.of("-", new IntegerElement(10), new StringElement("AAAH")),
-                Arguments.of("-", new NumberElement(10.1), new StringElement("AAAH")),
-                Arguments.of("-", new StringElement("AAAH"), new NumberElement(10.1)),
+                Arguments.of("-", new DoubleElement(10.1), new StringElement("AAAH")),
+                Arguments.of("-", new StringElement("AAAH"), new DoubleElement(10.1)),
 
                 Arguments.of("*", new IntegerElement(10), new StringElement("AAAH")),
-                Arguments.of("*", new NumberElement(10.1), new StringElement("AAAH")),
-                Arguments.of("*", new StringElement("AAAH"), new NumberElement(10.1)),
+                Arguments.of("*", new DoubleElement(10.1), new StringElement("AAAH")),
+                Arguments.of("*", new StringElement("AAAH"), new DoubleElement(10.1)),
 
                 Arguments.of("/", new IntegerElement(10), new StringElement("AAAH")),
-                Arguments.of("/", new NumberElement(10.1), new StringElement("AAAH")),
-                Arguments.of("/", new StringElement("AAAH"), new NumberElement(10.1))
+                Arguments.of("/", new DoubleElement(10.1), new StringElement("AAAH")),
+                Arguments.of("/", new StringElement("AAAH"), new DoubleElement(10.1))
         );
     }
 
     private static Stream<Arguments> mathInfixOperationArrayTestsSource() {
         return Stream.of(
                 Arguments.of("+", new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                         , new IntegerElement(1)
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(3), new IntegerElement(4), new NumberElement(5.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(3), new IntegerElement(4), new DoubleElement(5.4)))
                 ),
 
                 Arguments.of("+", new IntegerElement(1),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(3), new IntegerElement(4), new NumberElement(5.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(3), new IntegerElement(4), new DoubleElement(5.4)))
                 ),
 
                 Arguments.of("+",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(6), new NumberElement(8.8)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(6), new DoubleElement(8.8)))
                 ),
 
                 Arguments.of("+",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(3), new NumberElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("+",
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(2), new IntegerElement(4), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("+",
                         new ArrayElement(),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("+",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(),
-                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 // sub
 
                 Arguments.of("-", new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                         , new IntegerElement(1)
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(1), new IntegerElement(2), new NumberElement(3.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(1), new IntegerElement(2), new DoubleElement(3.4)))
                 ),
 
                 Arguments.of("-", new IntegerElement(1),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(-1), new IntegerElement(-2), new NumberElement(-3.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(-1), new IntegerElement(-2), new DoubleElement(-3.4)))
                 ),
 
                 Arguments.of("-",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(0), new NumberElement(0.0)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(0), new DoubleElement(0.0)))
                 ),
 
                 Arguments.of("-",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(3), new NumberElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("-",
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(-3), new NumberElement(-4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(0), new IntegerElement(0), new IntegerElement(-3), new DoubleElement(-4.4)))
                 ),
 
                 Arguments.of("-",
                         new ArrayElement(),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(-1), new IntegerElement(-2), new IntegerElement(-3), new NumberElement(-4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(-1), new IntegerElement(-2), new IntegerElement(-3), new DoubleElement(-4.4)))
                 ),
 
                 Arguments.of("-",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(),
-                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 // division
                 Arguments.of("/", new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                         , new IntegerElement(1)
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("/", new IntegerElement(1),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new NumberElement(0.5), new NumberElement(0.33333), new NumberElement(0.22727273)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new DoubleElement(0.5), new DoubleElement(0.33333), new DoubleElement(0.22727273)))
                 ),
 
                 Arguments.of("/",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(1), new NumberElement(1.0)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(1), new DoubleElement(1.0)))
                 ),
 
                 Arguments.of("/",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(3), new NumberElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("/",
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(0), new NumberElement(0.0)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(1), new IntegerElement(0), new DoubleElement(0.0)))
                 ),
 
                 Arguments.of("/",
                         new ArrayElement(),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new NumberElement(0.0), new NumberElement(0.0), new NumberElement(0.0), new NumberElement(0.0)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new DoubleElement(0.0), new DoubleElement(0.0), new DoubleElement(0.0), new DoubleElement(0.0)))
                 ),
 
                 Arguments.of("/",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 // multiplication
                 Arguments.of("*", new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                         , new IntegerElement(1)
                         , new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("*", new IntegerElement(1),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                         , new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("*",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(9), new NumberElement(19.36)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(9), new DoubleElement(19.36)))
                 ),
 
                 Arguments.of("*",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(3), new NumberElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("*",
                         new ArrayElement(
                                 java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2))),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(4), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("*",
                         new ArrayElement(),
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
-                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
+                        , new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 ),
 
                 Arguments.of("*",
                         new ArrayElement(
-                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4))),
+                                java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4))),
                         new ArrayElement(),
-                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new NumberElement(4.4)))
+                        new ArrayElement(java.util.Arrays.asList(new IntegerElement(1), new IntegerElement(2), new IntegerElement(3), new DoubleElement(4.4)))
                 )
 
         );
@@ -294,14 +294,14 @@ public class VirtualMachineTest {
 
     private static Stream<Arguments> negateUnarySource() {
         return Stream.of(
-                Arguments.of(new NumberElement(Math.PI), new NumberElement(-Math.PI)),
+                Arguments.of(new DoubleElement(Math.PI), new DoubleElement(-Math.PI)),
                 Arguments.of(new IntegerElement(99), new IntegerElement(-99)),
                 Arguments.of(Booleans.TRUE, Booleans.FALSE),
                 Arguments.of(Booleans.FALSE, Booleans.TRUE),
                 Arguments.of(new StringElement("&:>7_=>=&EV"), new StringElement("YEAH BABY:)")),
                 Arguments.of(new ArrayElement(
                                 Arrays.asList(
-                                        new NumberElement(Math.PI),
+                                        new DoubleElement(Math.PI),
                                         new IntegerElement(99),
                                         Booleans.TRUE,
                                         Booleans.FALSE,
@@ -310,7 +310,7 @@ public class VirtualMachineTest {
                         ),
                         new ArrayElement(
                                 Arrays.asList(
-                                        new NumberElement(-Math.PI),
+                                        new DoubleElement(-Math.PI),
                                         new IntegerElement(-99),
                                         Booleans.FALSE,
                                         Booleans.TRUE,
@@ -323,42 +323,42 @@ public class VirtualMachineTest {
     private static Stream<Arguments> stringConcatenationSource() {
         return Stream.of(
                 Arguments.of(new IntegerElement(10), new IntegerElement(20), new StringElement("1020")),
-                Arguments.of(new IntegerElement(10), new NumberElement(2.2), new StringElement("102.2")),
+                Arguments.of(new IntegerElement(10), new DoubleElement(2.2), new StringElement("102.2")),
                 Arguments.of(new IntegerElement(10), Booleans.TRUE, new StringElement("10true")),
                 Arguments.of(new IntegerElement(10), Booleans.FALSE, new StringElement("10false")),
                 Arguments.of(new IntegerElement(10), new StringElement("Hello Wolrd"), new StringElement("10Hello Wolrd")),
                 Arguments.of(new IntegerElement(10), new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("10[1]")),
 
-                Arguments.of(new NumberElement(10.0), new IntegerElement(20), new StringElement("10.020")),
-                Arguments.of(new NumberElement(10.0), new NumberElement(2.2), new StringElement("10.02.2")),
-                Arguments.of(new NumberElement(10.0), Booleans.TRUE, new StringElement("10.0true")),
-                Arguments.of(new NumberElement(10.0), Booleans.FALSE, new StringElement("10.0false")),
-                Arguments.of(new NumberElement(10.0), new StringElement("Hello Wolrd"), new StringElement("10.0Hello Wolrd")),
-                Arguments.of(new NumberElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("10.0[1]")),
+                Arguments.of(new DoubleElement(10.0), new IntegerElement(20), new StringElement("10.020")),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(2.2), new StringElement("10.02.2")),
+                Arguments.of(new DoubleElement(10.0), Booleans.TRUE, new StringElement("10.0true")),
+                Arguments.of(new DoubleElement(10.0), Booleans.FALSE, new StringElement("10.0false")),
+                Arguments.of(new DoubleElement(10.0), new StringElement("Hello Wolrd"), new StringElement("10.0Hello Wolrd")),
+                Arguments.of(new DoubleElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("10.0[1]")),
 
                 Arguments.of(Booleans.FALSE, new IntegerElement(20), new StringElement("false20")),
-                Arguments.of(Booleans.FALSE, new NumberElement(2.2), new StringElement("false2.2")),
+                Arguments.of(Booleans.FALSE, new DoubleElement(2.2), new StringElement("false2.2")),
                 Arguments.of(Booleans.FALSE, Booleans.TRUE, new StringElement("falsetrue")),
                 Arguments.of(Booleans.FALSE, Booleans.FALSE, new StringElement("falsefalse")),
                 Arguments.of(Booleans.FALSE, new StringElement("Hello Wolrd"), new StringElement("falseHello Wolrd")),
                 Arguments.of(Booleans.FALSE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("false[1]")),
 
                 Arguments.of(Booleans.TRUE, new IntegerElement(20), new StringElement("true20")),
-                Arguments.of(Booleans.TRUE, new NumberElement(2.2), new StringElement("true2.2")),
+                Arguments.of(Booleans.TRUE, new DoubleElement(2.2), new StringElement("true2.2")),
                 Arguments.of(Booleans.TRUE, Booleans.TRUE, new StringElement("truetrue")),
                 Arguments.of(Booleans.TRUE, Booleans.FALSE, new StringElement("truefalse")),
                 Arguments.of(Booleans.TRUE, new StringElement("Hello Wolrd"), new StringElement("trueHello Wolrd")),
                 Arguments.of(Booleans.TRUE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("true[1]")),
 
                 Arguments.of(new StringElement("Hey"), new IntegerElement(20), new StringElement("Hey20")),
-                Arguments.of(new StringElement("Hey"), new NumberElement(2.2), new StringElement("Hey2.2")),
+                Arguments.of(new StringElement("Hey"), new DoubleElement(2.2), new StringElement("Hey2.2")),
                 Arguments.of(new StringElement("Hey"), Booleans.TRUE, new StringElement("Heytrue")),
                 Arguments.of(new StringElement("Hey"), Booleans.FALSE, new StringElement("Heyfalse")),
                 Arguments.of(new StringElement("Hey"), new StringElement("Hello Wolrd"), new StringElement("HeyHello Wolrd")),
                 Arguments.of(new StringElement("Hey"), new ArrayElement(Collections.singletonList(new IntegerElement(1))), new StringElement("Hey[1]")),
 
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new IntegerElement(20), new StringElement("[\"Hey\"]20")),
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new NumberElement(2.2), new StringElement("[\"Hey\"]2.2")),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new DoubleElement(2.2), new StringElement("[\"Hey\"]2.2")),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.TRUE, new StringElement("[\"Hey\"]true")),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.FALSE, new StringElement("[\"Hey\"]false")),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new StringElement("Hello Wolrd"), new StringElement("[\"Hey\"]Hello Wolrd")),
@@ -379,13 +379,13 @@ public class VirtualMachineTest {
 
     public static Stream<Arguments> invalidIndexAccessStringOrArraySource() {
         return Stream.of(
-                Arguments.of(new StringElement("Hey"), new NumberElement(100.0)),
+                Arguments.of(new StringElement("Hey"), new DoubleElement(100.0)),
                 Arguments.of(new StringElement("Hey"), Booleans.TRUE),
                 Arguments.of(new StringElement("Hey"), Booleans.FALSE),
                 Arguments.of(new StringElement("Hey"), new StringElement("100.0")),
                 Arguments.of(new StringElement("Hey"), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray()),
 
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new NumberElement(100.0)),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new DoubleElement(100.0)),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.TRUE),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.FALSE),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new StringElement("100.0")),
@@ -397,17 +397,17 @@ public class VirtualMachineTest {
         return Stream.of(
                 Arguments.of(new StringElement("AAAAH"), false),
                 Arguments.of(new IntegerElement(1), true),
-                Arguments.of(new NumberElement(1.0), true),
+                Arguments.of(new DoubleElement(1.0), true),
                 Arguments.of(Booleans.FALSE, true),
                 Arguments.of(Booleans.TRUE, true),
-                Arguments.of(new ArrayElement(Collections.singletonList(new NumberElement(1.0))), false)
+                Arguments.of(new ArrayElement(Collections.singletonList(new DoubleElement(1.0))), false)
         );
     }
 
     public static Stream<Arguments> accessVariableSource() {
         return Stream.of(
                 Arguments.of(new IntegerElement(199999)),
-                Arguments.of(new NumberElement(199.999)),
+                Arguments.of(new DoubleElement(199.999)),
                 Arguments.of(new StringElement("Hey Hey")),
                 Arguments.of(com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray()),
                 Arguments.of(Booleans.TRUE),
@@ -443,12 +443,12 @@ public class VirtualMachineTest {
 
                 // invalid ones
                 Arguments.of("&&", new IntegerElement(1), Booleans.TRUE, true),
-                Arguments.of("&&", new NumberElement(1.0), Booleans.TRUE, true),
+                Arguments.of("&&", new DoubleElement(1.0), Booleans.TRUE, true),
                 Arguments.of("&&", new StringElement("1"), Booleans.TRUE, true),
                 Arguments.of("&&", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), Booleans.TRUE, true),
 
                 Arguments.of("&&", new IntegerElement(1), Booleans.FALSE, true),
-                Arguments.of("&&", new NumberElement(1.0), Booleans.FALSE, true),
+                Arguments.of("&&", new DoubleElement(1.0), Booleans.FALSE, true),
                 Arguments.of("&&", new StringElement("1"), Booleans.FALSE, true),
                 Arguments.of("&&", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), Booleans.FALSE, true),
 
@@ -462,12 +462,12 @@ public class VirtualMachineTest {
 
                 // invalid ones
                 Arguments.of("||", new IntegerElement(1), Booleans.TRUE, true),
-                Arguments.of("||", new NumberElement(1.0), Booleans.TRUE, true),
+                Arguments.of("||", new DoubleElement(1.0), Booleans.TRUE, true),
                 Arguments.of("||", new StringElement("1"), Booleans.TRUE, true),
                 Arguments.of("||", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), Booleans.TRUE, true),
 
                 Arguments.of("||", new IntegerElement(1), Booleans.FALSE, true),
-                Arguments.of("||", new NumberElement(1.0), Booleans.FALSE, true),
+                Arguments.of("||", new DoubleElement(1.0), Booleans.FALSE, true),
                 Arguments.of("||", new StringElement("1"), Booleans.FALSE, true),
                 Arguments.of("||", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), Booleans.FALSE, true)
 
@@ -478,36 +478,36 @@ public class VirtualMachineTest {
         return Stream.of(
                 Arguments.of(new IntegerElement(10), new IntegerElement(10), true),
                 Arguments.of(new IntegerElement(10), new IntegerElement(111), false),
-                Arguments.of(new IntegerElement(10), new NumberElement(10.0), true),
+                Arguments.of(new IntegerElement(10), new DoubleElement(10.0), true),
                 Arguments.of(new IntegerElement(10), Booleans.TRUE, false),
                 Arguments.of(new IntegerElement(10), Booleans.FALSE, false),
                 Arguments.of(new IntegerElement(10), new StringElement("Hello Wolrd"), false),
                 Arguments.of(new IntegerElement(10), new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
 
-                Arguments.of(new NumberElement(10.0), new IntegerElement(10), true),
-                Arguments.of(new NumberElement(10.0), new NumberElement(10.0), true),
-                Arguments.of(new NumberElement(10.0), new NumberElement(10.1), false),
-                Arguments.of(new NumberElement(10.0), Booleans.TRUE, false),
-                Arguments.of(new NumberElement(10.0), Booleans.FALSE, false),
-                Arguments.of(new NumberElement(10.0), new StringElement("Hello Wolrd"), false),
-                Arguments.of(new NumberElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
+                Arguments.of(new DoubleElement(10.0), new IntegerElement(10), true),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.0), true),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.1), false),
+                Arguments.of(new DoubleElement(10.0), Booleans.TRUE, false),
+                Arguments.of(new DoubleElement(10.0), Booleans.FALSE, false),
+                Arguments.of(new DoubleElement(10.0), new StringElement("Hello Wolrd"), false),
+                Arguments.of(new DoubleElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
 
                 Arguments.of(Booleans.FALSE, new IntegerElement(20), false),
-                Arguments.of(Booleans.FALSE, new NumberElement(2.2), false),
+                Arguments.of(Booleans.FALSE, new DoubleElement(2.2), false),
                 Arguments.of(Booleans.FALSE, Booleans.TRUE, false),
                 Arguments.of(Booleans.FALSE, Booleans.FALSE, true),
                 Arguments.of(Booleans.FALSE, new StringElement("Hello Wolrd"), false),
                 Arguments.of(Booleans.FALSE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
 
                 Arguments.of(Booleans.TRUE, new IntegerElement(20), false),
-                Arguments.of(Booleans.TRUE, new NumberElement(2.2), false),
+                Arguments.of(Booleans.TRUE, new DoubleElement(2.2), false),
                 Arguments.of(Booleans.TRUE, Booleans.TRUE, true),
                 Arguments.of(Booleans.TRUE, Booleans.FALSE, false),
                 Arguments.of(Booleans.TRUE, new StringElement("Hello Wolrd"), false),
                 Arguments.of(Booleans.TRUE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
 
                 Arguments.of(new StringElement("Hey"), new IntegerElement(20), false),
-                Arguments.of(new StringElement("Hey"), new NumberElement(2.2), false),
+                Arguments.of(new StringElement("Hey"), new DoubleElement(2.2), false),
                 Arguments.of(new StringElement("Hey"), Booleans.TRUE, false),
                 Arguments.of(new StringElement("Hey"), Booleans.FALSE, false),
                 Arguments.of(new StringElement("Hey"), new StringElement("Hey"), true),
@@ -515,7 +515,7 @@ public class VirtualMachineTest {
                 Arguments.of(new StringElement("Hey"), new ArrayElement(Collections.singletonList(new IntegerElement(1))), false),
 
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new IntegerElement(20), false),
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new NumberElement(2.2), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new DoubleElement(2.2), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.TRUE, false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.FALSE, false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new StringElement("Hello Wolrd"), false),
@@ -527,36 +527,36 @@ public class VirtualMachineTest {
         return Stream.of(
                 Arguments.of(new IntegerElement(10), new IntegerElement(10), false),
                 Arguments.of(new IntegerElement(10), new IntegerElement(111), true),
-                Arguments.of(new IntegerElement(10), new NumberElement(10.0), false),
+                Arguments.of(new IntegerElement(10), new DoubleElement(10.0), false),
                 Arguments.of(new IntegerElement(10), Booleans.TRUE, true),
                 Arguments.of(new IntegerElement(10), Booleans.FALSE, true),
                 Arguments.of(new IntegerElement(10), new StringElement("Hello Wolrd"), true),
                 Arguments.of(new IntegerElement(10), new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
 
-                Arguments.of(new NumberElement(10.0), new IntegerElement(10), false),
-                Arguments.of(new NumberElement(10.0), new NumberElement(10.0), false),
-                Arguments.of(new NumberElement(10.0), new NumberElement(10.1), true),
-                Arguments.of(new NumberElement(10.0), Booleans.TRUE, true),
-                Arguments.of(new NumberElement(10.0), Booleans.FALSE, true),
-                Arguments.of(new NumberElement(10.0), new StringElement("Hello Wolrd"), true),
-                Arguments.of(new NumberElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
+                Arguments.of(new DoubleElement(10.0), new IntegerElement(10), false),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.0), false),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.1), true),
+                Arguments.of(new DoubleElement(10.0), Booleans.TRUE, true),
+                Arguments.of(new DoubleElement(10.0), Booleans.FALSE, true),
+                Arguments.of(new DoubleElement(10.0), new StringElement("Hello Wolrd"), true),
+                Arguments.of(new DoubleElement(10.0), new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
 
                 Arguments.of(Booleans.FALSE, new IntegerElement(20), true),
-                Arguments.of(Booleans.FALSE, new NumberElement(2.2), true),
+                Arguments.of(Booleans.FALSE, new DoubleElement(2.2), true),
                 Arguments.of(Booleans.FALSE, Booleans.TRUE, true),
                 Arguments.of(Booleans.FALSE, Booleans.FALSE, false),
                 Arguments.of(Booleans.FALSE, new StringElement("Hello Wolrd"), true),
                 Arguments.of(Booleans.FALSE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
 
                 Arguments.of(Booleans.TRUE, new IntegerElement(20), true),
-                Arguments.of(Booleans.TRUE, new NumberElement(2.2), true),
+                Arguments.of(Booleans.TRUE, new DoubleElement(2.2), true),
                 Arguments.of(Booleans.TRUE, Booleans.TRUE, false),
                 Arguments.of(Booleans.TRUE, Booleans.FALSE, true),
                 Arguments.of(Booleans.TRUE, new StringElement("Hello Wolrd"), true),
                 Arguments.of(Booleans.TRUE, new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
 
                 Arguments.of(new StringElement("Hey"), new IntegerElement(20), true),
-                Arguments.of(new StringElement("Hey"), new NumberElement(2.2), true),
+                Arguments.of(new StringElement("Hey"), new DoubleElement(2.2), true),
                 Arguments.of(new StringElement("Hey"), Booleans.TRUE, true),
                 Arguments.of(new StringElement("Hey"), Booleans.FALSE, true),
                 Arguments.of(new StringElement("Hey"), new StringElement("Hey"), false),
@@ -564,7 +564,7 @@ public class VirtualMachineTest {
                 Arguments.of(new StringElement("Hey"), new ArrayElement(Collections.singletonList(new IntegerElement(1))), true),
 
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new IntegerElement(20), true),
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new NumberElement(2.2), true),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new DoubleElement(2.2), true),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.TRUE, true),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), Booleans.FALSE, true),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("Hey"))), new StringElement("Hello Wolrd"), true),
@@ -576,61 +576,61 @@ public class VirtualMachineTest {
         return Stream.of(
 
                 // >=
-                Arguments.of(">=", new NumberElement(10.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">=", new NumberElement(11.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">=", new NumberElement(9.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of(">=", new NumberElement(10.0), new IntegerElement(10), Booleans.TRUE),
-                Arguments.of(">=", new NumberElement(10.0), new IntegerElement(9), Booleans.TRUE),
-                Arguments.of(">=", new NumberElement(10.0), new IntegerElement(1000), Booleans.FALSE),
+                Arguments.of(">=", new DoubleElement(10.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">=", new DoubleElement(11.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">=", new DoubleElement(9.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of(">=", new DoubleElement(10.0), new IntegerElement(10), Booleans.TRUE),
+                Arguments.of(">=", new DoubleElement(10.0), new IntegerElement(9), Booleans.TRUE),
+                Arguments.of(">=", new DoubleElement(10.0), new IntegerElement(1000), Booleans.FALSE),
 
-                Arguments.of(">=", new IntegerElement(10), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">=", new IntegerElement(11), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">=", new IntegerElement(0), new NumberElement(10.0), Booleans.FALSE),
+                Arguments.of(">=", new IntegerElement(10), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">=", new IntegerElement(11), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">=", new IntegerElement(0), new DoubleElement(10.0), Booleans.FALSE),
                 Arguments.of(">=", new IntegerElement(10), new IntegerElement(10), Booleans.TRUE),
                 Arguments.of(">=", new IntegerElement(10), new IntegerElement(9), Booleans.TRUE),
                 Arguments.of(">=", new IntegerElement(10), new IntegerElement(1000), Booleans.FALSE),
 
                 // >
-                Arguments.of(">", new NumberElement(10.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of(">", new NumberElement(11.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">", new NumberElement(9.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of(">", new NumberElement(10.0), new IntegerElement(10), Booleans.FALSE),
-                Arguments.of(">", new NumberElement(10.0), new IntegerElement(9), Booleans.TRUE),
-                Arguments.of(">", new NumberElement(10.0), new IntegerElement(1000), Booleans.FALSE),
+                Arguments.of(">", new DoubleElement(10.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of(">", new DoubleElement(11.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">", new DoubleElement(9.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of(">", new DoubleElement(10.0), new IntegerElement(10), Booleans.FALSE),
+                Arguments.of(">", new DoubleElement(10.0), new IntegerElement(9), Booleans.TRUE),
+                Arguments.of(">", new DoubleElement(10.0), new IntegerElement(1000), Booleans.FALSE),
 
-                Arguments.of(">", new IntegerElement(10), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of(">", new IntegerElement(11), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of(">", new IntegerElement(0), new NumberElement(10.0), Booleans.FALSE),
+                Arguments.of(">", new IntegerElement(10), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of(">", new IntegerElement(11), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of(">", new IntegerElement(0), new DoubleElement(10.0), Booleans.FALSE),
                 Arguments.of(">", new IntegerElement(10), new IntegerElement(10), Booleans.FALSE),
                 Arguments.of(">", new IntegerElement(10), new IntegerElement(9), Booleans.TRUE),
                 Arguments.of(">", new IntegerElement(10), new IntegerElement(1000), Booleans.FALSE),
 
                 // <
-                Arguments.of("<", new NumberElement(10.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<", new NumberElement(11.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<", new NumberElement(9.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of("<", new NumberElement(10.0), new IntegerElement(10), Booleans.FALSE),
-                Arguments.of("<", new NumberElement(10.0), new IntegerElement(9), Booleans.FALSE),
-                Arguments.of("<", new NumberElement(10.0), new IntegerElement(1000), Booleans.TRUE),
+                Arguments.of("<", new DoubleElement(10.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<", new DoubleElement(11.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<", new DoubleElement(9.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of("<", new DoubleElement(10.0), new IntegerElement(10), Booleans.FALSE),
+                Arguments.of("<", new DoubleElement(10.0), new IntegerElement(9), Booleans.FALSE),
+                Arguments.of("<", new DoubleElement(10.0), new IntegerElement(1000), Booleans.TRUE),
 
-                Arguments.of("<", new IntegerElement(10), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<", new IntegerElement(11), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<", new IntegerElement(0), new NumberElement(10.0), Booleans.TRUE),
+                Arguments.of("<", new IntegerElement(10), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<", new IntegerElement(11), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<", new IntegerElement(0), new DoubleElement(10.0), Booleans.TRUE),
                 Arguments.of("<", new IntegerElement(10), new IntegerElement(10), Booleans.FALSE),
                 Arguments.of("<", new IntegerElement(10), new IntegerElement(9), Booleans.FALSE),
                 Arguments.of("<", new IntegerElement(10), new IntegerElement(1000), Booleans.TRUE),
 
                 // <=
-                Arguments.of("<=", new NumberElement(10.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of("<=", new NumberElement(11.0), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<=", new NumberElement(9.0), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of("<=", new NumberElement(10.0), new IntegerElement(10), Booleans.TRUE),
-                Arguments.of("<=", new NumberElement(10.0), new IntegerElement(9), Booleans.FALSE),
-                Arguments.of("<=", new NumberElement(10.0), new IntegerElement(1000), Booleans.TRUE),
+                Arguments.of("<=", new DoubleElement(10.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of("<=", new DoubleElement(11.0), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<=", new DoubleElement(9.0), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of("<=", new DoubleElement(10.0), new IntegerElement(10), Booleans.TRUE),
+                Arguments.of("<=", new DoubleElement(10.0), new IntegerElement(9), Booleans.FALSE),
+                Arguments.of("<=", new DoubleElement(10.0), new IntegerElement(1000), Booleans.TRUE),
 
-                Arguments.of("<=", new IntegerElement(10), new NumberElement(10.0), Booleans.TRUE),
-                Arguments.of("<=", new IntegerElement(11), new NumberElement(10.0), Booleans.FALSE),
-                Arguments.of("<=", new IntegerElement(0), new NumberElement(10.0), Booleans.TRUE),
+                Arguments.of("<=", new IntegerElement(10), new DoubleElement(10.0), Booleans.TRUE),
+                Arguments.of("<=", new IntegerElement(11), new DoubleElement(10.0), Booleans.FALSE),
+                Arguments.of("<=", new IntegerElement(0), new DoubleElement(10.0), Booleans.TRUE),
                 Arguments.of("<=", new IntegerElement(10), new IntegerElement(10), Booleans.TRUE),
                 Arguments.of("<=", new IntegerElement(10), new IntegerElement(9), Booleans.FALSE),
                 Arguments.of("<=", new IntegerElement(10), new IntegerElement(1000), Booleans.TRUE)
@@ -645,116 +645,116 @@ public class VirtualMachineTest {
                 Arguments.of(">=", new IntegerElement(10), Booleans.TRUE, true),
                 Arguments.of(">=", new IntegerElement(10), Booleans.FALSE, true),
                 Arguments.of(">=", new IntegerElement(10), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of(">=", new IntegerElement(10), new NumberElement(11.0), false),
+                Arguments.of(">=", new IntegerElement(10), new DoubleElement(11.0), false),
                 Arguments.of(">=", new IntegerElement(10), new IntegerElement(11), false),
 
                 Arguments.of(">=", new StringElement(""), new IntegerElement(10), true),
                 Arguments.of(">=", Booleans.TRUE, new IntegerElement(10), true),
                 Arguments.of(">=", Booleans.FALSE, new IntegerElement(10), true),
                 Arguments.of(">=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new IntegerElement(10), true),
-                Arguments.of(">=", new NumberElement(11.0), new IntegerElement(10), false),
+                Arguments.of(">=", new DoubleElement(11.0), new IntegerElement(10), false),
                 Arguments.of(">=", new IntegerElement(11), new IntegerElement(10), false),
 
-                Arguments.of(">=", new NumberElement(10.0), new StringElement(""), true),
-                Arguments.of(">=", new NumberElement(10.0), Booleans.TRUE, true),
-                Arguments.of(">=", new NumberElement(10.0), Booleans.FALSE, true),
-                Arguments.of(">=", new NumberElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of(">=", new NumberElement(10.0), new NumberElement(11.0), false),
-                Arguments.of(">=", new NumberElement(10.0), new IntegerElement(11), false),
+                Arguments.of(">=", new DoubleElement(10.0), new StringElement(""), true),
+                Arguments.of(">=", new DoubleElement(10.0), Booleans.TRUE, true),
+                Arguments.of(">=", new DoubleElement(10.0), Booleans.FALSE, true),
+                Arguments.of(">=", new DoubleElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
+                Arguments.of(">=", new DoubleElement(10.0), new DoubleElement(11.0), false),
+                Arguments.of(">=", new DoubleElement(10.0), new IntegerElement(11), false),
 
-                Arguments.of(">=", new StringElement(""), new NumberElement(10.0), true),
-                Arguments.of(">=", Booleans.TRUE, new NumberElement(10.0), true),
-                Arguments.of(">=", Booleans.FALSE, new NumberElement(10.0), true),
-                Arguments.of(">=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new NumberElement(10.0), true),
-                Arguments.of(">=", new NumberElement(11.0), new NumberElement(10.0), false),
-                Arguments.of(">=", new IntegerElement(11), new NumberElement(10.0), false),
+                Arguments.of(">=", new StringElement(""), new DoubleElement(10.0), true),
+                Arguments.of(">=", Booleans.TRUE, new DoubleElement(10.0), true),
+                Arguments.of(">=", Booleans.FALSE, new DoubleElement(10.0), true),
+                Arguments.of(">=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new DoubleElement(10.0), true),
+                Arguments.of(">=", new DoubleElement(11.0), new DoubleElement(10.0), false),
+                Arguments.of(">=", new IntegerElement(11), new DoubleElement(10.0), false),
 
                 // >
                 Arguments.of(">", new IntegerElement(10), new StringElement(""), true),
                 Arguments.of(">", new IntegerElement(10), Booleans.TRUE, true),
                 Arguments.of(">", new IntegerElement(10), Booleans.FALSE, true),
                 Arguments.of(">", new IntegerElement(10), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of(">", new IntegerElement(10), new NumberElement(11.0), false),
+                Arguments.of(">", new IntegerElement(10), new DoubleElement(11.0), false),
                 Arguments.of(">", new IntegerElement(10), new IntegerElement(11), false),
 
                 Arguments.of(">", new StringElement(""), new IntegerElement(10), true),
                 Arguments.of(">", Booleans.TRUE, new IntegerElement(10), true),
                 Arguments.of(">", Booleans.FALSE, new IntegerElement(10), true),
                 Arguments.of(">", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new IntegerElement(10), true),
-                Arguments.of(">", new NumberElement(11.0), new IntegerElement(10), false),
+                Arguments.of(">", new DoubleElement(11.0), new IntegerElement(10), false),
                 Arguments.of(">", new IntegerElement(11), new IntegerElement(10), false),
 
-                Arguments.of(">", new NumberElement(10.0), new StringElement(""), true),
-                Arguments.of(">", new NumberElement(10.0), Booleans.TRUE, true),
-                Arguments.of(">", new NumberElement(10.0), Booleans.FALSE, true),
-                Arguments.of(">", new NumberElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of(">", new NumberElement(10.0), new NumberElement(11.0), false),
-                Arguments.of(">", new NumberElement(10.0), new IntegerElement(11), false),
+                Arguments.of(">", new DoubleElement(10.0), new StringElement(""), true),
+                Arguments.of(">", new DoubleElement(10.0), Booleans.TRUE, true),
+                Arguments.of(">", new DoubleElement(10.0), Booleans.FALSE, true),
+                Arguments.of(">", new DoubleElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
+                Arguments.of(">", new DoubleElement(10.0), new DoubleElement(11.0), false),
+                Arguments.of(">", new DoubleElement(10.0), new IntegerElement(11), false),
 
-                Arguments.of(">", new StringElement(""), new NumberElement(10.0), true),
-                Arguments.of(">", Booleans.TRUE, new NumberElement(10.0), true),
-                Arguments.of(">", Booleans.FALSE, new NumberElement(10.0), true),
-                Arguments.of(">", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new NumberElement(10.0), true),
-                Arguments.of(">", new NumberElement(11.0), new NumberElement(10.0), false),
-                Arguments.of(">", new IntegerElement(11), new NumberElement(10.0), false),
+                Arguments.of(">", new StringElement(""), new DoubleElement(10.0), true),
+                Arguments.of(">", Booleans.TRUE, new DoubleElement(10.0), true),
+                Arguments.of(">", Booleans.FALSE, new DoubleElement(10.0), true),
+                Arguments.of(">", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new DoubleElement(10.0), true),
+                Arguments.of(">", new DoubleElement(11.0), new DoubleElement(10.0), false),
+                Arguments.of(">", new IntegerElement(11), new DoubleElement(10.0), false),
 
                 // <=
                 Arguments.of("<=", new IntegerElement(10), new StringElement(""), true),
                 Arguments.of("<=", new IntegerElement(10), Booleans.TRUE, true),
                 Arguments.of("<=", new IntegerElement(10), Booleans.FALSE, true),
                 Arguments.of("<=", new IntegerElement(10), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of("<=", new IntegerElement(10), new NumberElement(11.0), false),
+                Arguments.of("<=", new IntegerElement(10), new DoubleElement(11.0), false),
                 Arguments.of("<=", new IntegerElement(10), new IntegerElement(11), false),
 
                 Arguments.of("<=", new StringElement(""), new IntegerElement(10), true),
                 Arguments.of("<=", Booleans.TRUE, new IntegerElement(10), true),
                 Arguments.of("<=", Booleans.FALSE, new IntegerElement(10), true),
                 Arguments.of("<=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new IntegerElement(10), true),
-                Arguments.of("<=", new NumberElement(11.0), new IntegerElement(10), false),
+                Arguments.of("<=", new DoubleElement(11.0), new IntegerElement(10), false),
                 Arguments.of("<=", new IntegerElement(11), new IntegerElement(10), false),
 
-                Arguments.of("<=", new NumberElement(10.0), new StringElement(""), true),
-                Arguments.of("<=", new NumberElement(10.0), Booleans.TRUE, true),
-                Arguments.of("<=", new NumberElement(10.0), Booleans.FALSE, true),
-                Arguments.of("<=", new NumberElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of("<=", new NumberElement(10.0), new NumberElement(11.0), false),
-                Arguments.of("<=", new NumberElement(10.0), new IntegerElement(11), false),
+                Arguments.of("<=", new DoubleElement(10.0), new StringElement(""), true),
+                Arguments.of("<=", new DoubleElement(10.0), Booleans.TRUE, true),
+                Arguments.of("<=", new DoubleElement(10.0), Booleans.FALSE, true),
+                Arguments.of("<=", new DoubleElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
+                Arguments.of("<=", new DoubleElement(10.0), new DoubleElement(11.0), false),
+                Arguments.of("<=", new DoubleElement(10.0), new IntegerElement(11), false),
 
-                Arguments.of("<=", new StringElement(""), new NumberElement(10.0), true),
-                Arguments.of("<=", Booleans.TRUE, new NumberElement(10.0), true),
-                Arguments.of("<=", Booleans.FALSE, new NumberElement(10.0), true),
-                Arguments.of("<=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new NumberElement(10.0), true),
-                Arguments.of("<=", new NumberElement(11.0), new NumberElement(10.0), false),
-                Arguments.of("<=", new IntegerElement(11), new NumberElement(10.0), false),
+                Arguments.of("<=", new StringElement(""), new DoubleElement(10.0), true),
+                Arguments.of("<=", Booleans.TRUE, new DoubleElement(10.0), true),
+                Arguments.of("<=", Booleans.FALSE, new DoubleElement(10.0), true),
+                Arguments.of("<=", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new DoubleElement(10.0), true),
+                Arguments.of("<=", new DoubleElement(11.0), new DoubleElement(10.0), false),
+                Arguments.of("<=", new IntegerElement(11), new DoubleElement(10.0), false),
 
                 // <
                 Arguments.of("<", new IntegerElement(10), new StringElement(""), true),
                 Arguments.of("<", new IntegerElement(10), Booleans.TRUE, true),
                 Arguments.of("<", new IntegerElement(10), Booleans.FALSE, true),
                 Arguments.of("<", new IntegerElement(10), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of("<", new IntegerElement(10), new NumberElement(11.0), false),
+                Arguments.of("<", new IntegerElement(10), new DoubleElement(11.0), false),
                 Arguments.of("<", new IntegerElement(10), new IntegerElement(11), false),
 
                 Arguments.of("<", new StringElement(""), new IntegerElement(10), true),
                 Arguments.of("<", Booleans.TRUE, new IntegerElement(10), true),
                 Arguments.of("<", Booleans.FALSE, new IntegerElement(10), true),
                 Arguments.of("<", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new IntegerElement(10), true),
-                Arguments.of("<", new NumberElement(11.0), new IntegerElement(10), false),
+                Arguments.of("<", new DoubleElement(11.0), new IntegerElement(10), false),
                 Arguments.of("<", new IntegerElement(11), new IntegerElement(10), false),
 
-                Arguments.of("<", new NumberElement(10.0), new StringElement(""), true),
-                Arguments.of("<", new NumberElement(10.0), Booleans.TRUE, true),
-                Arguments.of("<", new NumberElement(10.0), Booleans.FALSE, true),
-                Arguments.of("<", new NumberElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
-                Arguments.of("<", new NumberElement(10.0), new NumberElement(11.0), false),
-                Arguments.of("<", new NumberElement(10.0), new IntegerElement(11), false),
+                Arguments.of("<", new DoubleElement(10.0), new StringElement(""), true),
+                Arguments.of("<", new DoubleElement(10.0), Booleans.TRUE, true),
+                Arguments.of("<", new DoubleElement(10.0), Booleans.FALSE, true),
+                Arguments.of("<", new DoubleElement(10.0), com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
+                Arguments.of("<", new DoubleElement(10.0), new DoubleElement(11.0), false),
+                Arguments.of("<", new DoubleElement(10.0), new IntegerElement(11), false),
 
-                Arguments.of("<", new StringElement(""), new NumberElement(10.0), true),
-                Arguments.of("<", Booleans.TRUE, new NumberElement(10.0), true),
-                Arguments.of("<", Booleans.FALSE, new NumberElement(10.0), true),
-                Arguments.of("<", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new NumberElement(10.0), true),
-                Arguments.of("<", new NumberElement(11.0), new NumberElement(10.0), false),
-                Arguments.of("<", new IntegerElement(11), new NumberElement(10.0), false)
+                Arguments.of("<", new StringElement(""), new DoubleElement(10.0), true),
+                Arguments.of("<", Booleans.TRUE, new DoubleElement(10.0), true),
+                Arguments.of("<", Booleans.FALSE, new DoubleElement(10.0), true),
+                Arguments.of("<", com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), new DoubleElement(10.0), true),
+                Arguments.of("<", new DoubleElement(11.0), new DoubleElement(10.0), false),
+                Arguments.of("<", new IntegerElement(11), new DoubleElement(10.0), false)
         );
     }
 
@@ -829,7 +829,7 @@ public class VirtualMachineTest {
         return Stream.of(
                 Arguments.of(new StringElement("A"), true),
                 Arguments.of(new IntegerElement(10), true),
-                Arguments.of(new NumberElement(10.0), true),
+                Arguments.of(new DoubleElement(10.0), true),
                 Arguments.of(com.diegokrupitza.bolang.vm.utils.Arrays.emptyArray(), true),
                 Arguments.of(Booleans.FALSE, false),
                 Arguments.of(Booleans.TRUE, false)
@@ -881,9 +881,9 @@ public class VirtualMachineTest {
         VirtualMachine virtualMachine = getVirtualMachine(head);
         AbstractElementType<?> returnVal = virtualMachine.run(null);
 
-        assertThat(returnVal.getType()).isEqualTo(Type.NUMBER);
-        assertThat(returnVal).isInstanceOf(NumberElement.class);
-        assertThat(((NumberElement) returnVal).getValue()).isEqualTo(0.5);
+        assertThat(returnVal.getType()).isEqualTo(Type.DOUBLE);
+        assertThat(returnVal).isInstanceOf(DoubleElement.class);
+        assertThat(((DoubleElement) returnVal).getValue()).isEqualTo(0.5);
     }
 
     @SneakyThrows
@@ -1091,7 +1091,7 @@ public class VirtualMachineTest {
             int value = (Integer) returnVal.getValue();
             Integer expect = (Integer) (erg.getValue());
             assertThat(value).isCloseTo(expect, Percentage.withPercentage(0.1));
-        } else if (ergTyp == Type.NUMBER) {
+        } else if (ergTyp == Type.DOUBLE) {
             Double value = (Double) returnVal.getValue();
             Double expect = (Double) (erg.getValue());
             assertThat(value).isCloseTo(expect, Percentage.withPercentage(0.1));
@@ -1160,14 +1160,14 @@ public class VirtualMachineTest {
 
             if (erg.get(i).getType() == Type.INTEGER_NUMBER) {
                 expect = (Integer) (erg.get(i).getValue());
-            } else if (erg.get(i).getType() == Type.NUMBER) {
+            } else if (erg.get(i).getType() == Type.DOUBLE) {
                 expect = (Double) (erg.get(i).getValue());
             }
 
             if (returnedArray.get(i).getType() == Type.INTEGER_NUMBER) {
                 value = (Integer) returnedArray.get(i).getValue();
                 assertThat((Integer) value).isCloseTo(Objects.requireNonNull(expect).intValue(), Percentage.withPercentage(0.1));
-            } else if (returnedArray.get(i).getType() == Type.NUMBER) {
+            } else if (returnedArray.get(i).getType() == Type.DOUBLE) {
                 value = (Double) returnedArray.get(i).getValue();
                 assertThat((Double) value).isCloseTo(Objects.requireNonNull(expect).doubleValue(), Percentage.withPercentage(0.1));
             }
@@ -1676,9 +1676,9 @@ public class VirtualMachineTest {
         VirtualMachine virtualMachine = getVirtualMachine(head);
         AbstractElementType<?> returnVal = virtualMachine.run(null);
 
-        assertThat(returnVal).isInstanceOf(NumberElement.class);
+        assertThat(returnVal).isInstanceOf(DoubleElement.class);
 
-        NumberElement castedReturnVal = (NumberElement) returnVal;
+        DoubleElement castedReturnVal = (DoubleElement) returnVal;
         assertThat(castedReturnVal.getValue()).isEqualTo(10.0);
     }
 
@@ -1774,9 +1774,9 @@ public class VirtualMachineTest {
         VirtualMachine virtualMachine = getVirtualMachine(head);
         AbstractElementType<?> returnVal = virtualMachine.run(null);
 
-        assertThat(returnVal).isInstanceOf(NumberElement.class);
+        assertThat(returnVal).isInstanceOf(DoubleElement.class);
 
-        NumberElement castedReturnVal = (NumberElement) returnVal;
+        DoubleElement castedReturnVal = (DoubleElement) returnVal;
         assertThat(castedReturnVal.getValue()).isEqualTo(99.9);
     }
 

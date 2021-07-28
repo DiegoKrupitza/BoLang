@@ -20,7 +20,7 @@ public class Infixes {
         assert rightElemInfo != null;
 
         if (
-                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.NUMBER, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
+                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.DOUBLE, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
         ) {
             throw new VirtualMachineException(String.format("You cannot perform an addition on %s and %s!", leftElemInfo.getType(), rightElemInfo.getType()));
         } else if (Types.atLeastOneOfType(Collections.singletonList(Type.ARRAY), leftElemInfo, rightElemInfo)) {
@@ -89,13 +89,13 @@ public class Infixes {
             } else {
                 // result will be a number since the left part is a number
                 Double newValue = Double.parseDouble(leftElemInfo.toString()) + Double.parseDouble(rightElemInfo.toString());
-                return new NumberElement(newValue);
+                return new DoubleElement(newValue);
             }
-        } else if (rightElemInfo.getType() == Type.NUMBER) {
+        } else if (rightElemInfo.getType() == Type.DOUBLE) {
             // the final type depends only on the right part since the right part is a number
             // and Number dominates anything
             Double newValue = Double.parseDouble(leftElemInfo.toString()) + Double.parseDouble(rightElemInfo.toString());
-            return new NumberElement(newValue);
+            return new DoubleElement(newValue);
         }
         throw new VirtualMachineException("Should not happen!");
     }
@@ -106,7 +106,7 @@ public class Infixes {
         assert rightElemInfo != null;
 
         if (
-                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.NUMBER, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
+                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.DOUBLE, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
         ) {
             throw new VirtualMachineException(String.format("You cannot perform a division on %s and %s!", leftElemInfo.getType(), rightElemInfo.getType()));
         } else if (Types.atLeastOneOfType(Collections.singletonList(Type.ARRAY), leftElemInfo, rightElemInfo)) {
@@ -145,8 +145,8 @@ public class Infixes {
                         .stream()
                         .map(item -> {
                             try {
-                                if (item.getType() == Type.NUMBER || item.getType() == Type.INTEGER_NUMBER) {
-                                    return performDivision(new NumberElement(0.0), item);
+                                if (item.getType() == Type.DOUBLE || item.getType() == Type.INTEGER_NUMBER) {
+                                    return performDivision(new DoubleElement(0.0), item);
                                 } else if (item.getType() == Type.ARRAY) {
                                     return performDivision(Arrays.emptyArray(), item);
                                 } else {
@@ -196,18 +196,18 @@ public class Infixes {
 
                 // division will return into a floating point number
                 Double newValue = (Double.parseDouble(leftElemInfo.toString()) / Double.parseDouble(rightElemInfo.toString()));
-                return new NumberElement(newValue);
+                return new DoubleElement(newValue);
 
             } else {
                 // result will be a number since the left part is a number
                 Double newValue = Double.parseDouble(leftElemInfo.toString()) / Double.parseDouble(rightElemInfo.toString());
-                return new NumberElement(newValue);
+                return new DoubleElement(newValue);
             }
-        } else if (rightElemInfo.getType() == Type.NUMBER) {
+        } else if (rightElemInfo.getType() == Type.DOUBLE) {
             // the final type depends only on the right part since the right part is a number
             // and Number dominates anything
             Double newValue = Double.parseDouble(leftElemInfo.toString()) / Double.parseDouble(rightElemInfo.toString());
-            return new NumberElement(newValue);
+            return new DoubleElement(newValue);
         }
         throw new VirtualMachineException("Should not happen!");
     }
@@ -230,7 +230,7 @@ public class Infixes {
         assert rightElemInfo != null;
 
         if (
-                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.NUMBER, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
+                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.DOUBLE, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
         ) {
             throw new VirtualMachineException(String.format("You cannot perform a multiplication on %s and %s!", leftElemInfo.getType(), rightElemInfo.getType()));
         } else if (Types.atLeastOneOfType(Collections.singletonList(Type.ARRAY), leftElemInfo, rightElemInfo)) {
@@ -299,13 +299,13 @@ public class Infixes {
             } else {
                 // result will be a number since the left part is a number
                 Double newValue = Double.parseDouble(leftElemInfo.toString()) * Double.parseDouble(rightElemInfo.toString());
-                return new NumberElement(newValue);
+                return new DoubleElement(newValue);
             }
-        } else if (rightElemInfo.getType() == Type.NUMBER) {
+        } else if (rightElemInfo.getType() == Type.DOUBLE) {
             // the final type depends only on the right part since the right part is a number
             // and Number dominates anything
             Double newValue = Double.parseDouble(leftElemInfo.toString()) * Double.parseDouble(rightElemInfo.toString());
-            return new NumberElement(newValue);
+            return new DoubleElement(newValue);
         }
         throw new VirtualMachineException("Should not happen!");
     }
@@ -316,7 +316,7 @@ public class Infixes {
         assert rightElemInfo != null;
 
         if (
-                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.NUMBER, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
+                Types.atLeastOneNotOfTypes(java.util.Arrays.asList(Type.DOUBLE, Type.INTEGER_NUMBER, Type.ARRAY), leftElemInfo, rightElemInfo)
         ) {
             throw new VirtualMachineException(String.format("You cannot perform a substraction on %s and %s!", leftElemInfo.getType(), rightElemInfo.getType()));
         } else if (Types.atLeastOneOfType(Collections.singletonList(Type.ARRAY), leftElemInfo, rightElemInfo)) {
@@ -355,8 +355,8 @@ public class Infixes {
                         .stream()
                         .map(item -> {
                             try {
-                                if (item.getType() == Type.NUMBER) {
-                                    return performSubtraction(new NumberElement(0.0), item);
+                                if (item.getType() == Type.DOUBLE) {
+                                    return performSubtraction(new DoubleElement(0.0), item);
                                 } else if (item.getType() == Type.INTEGER_NUMBER) {
                                     return performSubtraction(new IntegerElement(0), item);
                                 } else if (item.getType() == Type.ARRAY) {
@@ -405,13 +405,13 @@ public class Infixes {
             } else {
                 // result will be a number since the left part is a number
                 Double newValue = Double.parseDouble(leftElemInfo.toString()) - Double.parseDouble(rightElemInfo.toString());
-                return new NumberElement(newValue);
+                return new DoubleElement(newValue);
             }
-        } else if (rightElemInfo.getType() == Type.NUMBER) {
+        } else if (rightElemInfo.getType() == Type.DOUBLE) {
             // the final type depends only on the right part since the right part is a number
             // and Number dominates anything
             Double newValue = Double.parseDouble(leftElemInfo.toString()) - Double.parseDouble(rightElemInfo.toString());
-            return new NumberElement(newValue);
+            return new DoubleElement(newValue);
         }
         throw new VirtualMachineException("Should not happen!");
     }

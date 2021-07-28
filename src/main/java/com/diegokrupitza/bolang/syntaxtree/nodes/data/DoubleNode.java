@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NumNode extends DataNode {
+public class DoubleNode extends DataNode {
 
     private Double value;
 

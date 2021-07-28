@@ -51,7 +51,7 @@ public class DateFunctionTest {
                 .hasMessage("The function `date` is only allowed to be called with a string parameter that describes the format or no parameter");
 
         // invalid type of param
-        assertThatThrownBy(() -> date.paramCheck(Collections.singletonList(new NumberElement(1.0))))
+        assertThatThrownBy(() -> date.paramCheck(Collections.singletonList(new DoubleElement(1.0))))
                 .isInstanceOf(BoFunctionParameterException.class)
                 .hasMessage("The function `date` is only allowed to be called with a string parameter that describes the format or no parameter");
 
@@ -73,10 +73,10 @@ public class DateFunctionTest {
 
     @Test
     public void checkParamsInvalidTooManyTest() {
-        NumberElement numberElement1 = new NumberElement(12.12);
-        NumberElement numberElement2 = new NumberElement(99.12);
+        DoubleElement doubleElement1 = new DoubleElement(12.12);
+        DoubleElement doubleElement2 = new DoubleElement(99.12);
 
-        assertThatThrownBy(() -> date.paramCheck(Arrays.asList(numberElement1, numberElement2)))
+        assertThatThrownBy(() -> date.paramCheck(Arrays.asList(doubleElement1, doubleElement2)))
                 .isInstanceOf(BoFunctionParameterException.class)
                 .hasMessage("The function `date` is only allowed to be called with a string parameter that describes the format or no parameter");
     }

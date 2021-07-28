@@ -11,7 +11,7 @@ package com.diegokrupitza.bolang.vm.types;
  * @date 08.07.21
  */
 public enum Type {
-    NUMBER("Number", Double.class),
+    DOUBLE("Double", Double.class),
     INTEGER_NUMBER("Integer", Integer.class),
     STRING("String", String.class),
     ARRAY("Array", ArrayElement.class),

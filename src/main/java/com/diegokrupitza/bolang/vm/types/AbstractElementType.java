@@ -25,7 +25,7 @@ public abstract class AbstractElementType<T> {
     @Override
     public String toString() {
         switch (type) {
-            case NUMBER:
+            case DOUBLE:
                 return ((Double) value) + "";
             case INTEGER_NUMBER:
                 return ((Integer) value) + "";
@@ -48,14 +48,14 @@ public abstract class AbstractElementType<T> {
 
         // check to make for example 10.0 equals to 10
         // this has to be done extra since one will be NumberType and the other will be Integertype
-        if ((that.getType() == Type.NUMBER && getType() == Type.INTEGER_NUMBER)) {
-            NumberElement thathCasted = (NumberElement) that;
+        if ((that.getType() == Type.DOUBLE && getType() == Type.INTEGER_NUMBER)) {
+            DoubleElement thathCasted = (DoubleElement) that;
             IntegerElement thisCasted = (IntegerElement) this;
 
             return thathCasted.getValue().doubleValue() == thisCasted.getValue().intValue();
-        } else if ((that.getType() == Type.INTEGER_NUMBER && getType() == Type.NUMBER)) {
+        } else if ((that.getType() == Type.INTEGER_NUMBER && getType() == Type.DOUBLE)) {
             IntegerElement thathCasted = (IntegerElement) that;
-            NumberElement thisCasted = (NumberElement) this;
+            DoubleElement thisCasted = (DoubleElement) this;
 
             return thathCasted.getValue().intValue() == thisCasted.getValue().doubleValue();
         }

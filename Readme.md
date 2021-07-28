@@ -6,7 +6,7 @@
 - [Introduction](#introduction)
 - [Documentation](#documentation)
   * [Datatype](#datatype)
-    + [Numbers](#numbers)
+    + [Doubles](#doubles)
     + [Integers](#integers)
     + [Booleans](#booleans)
     + [Strings](#strings)
@@ -15,7 +15,7 @@
   * [External Parameters](#external-parameters)
   * [Operators](#operators)
     + [Negation](#negation)
-      - [Integers, Numbers, Booleans](#integers--numbers--booleans)
+      - [Integers, Doubles, Booleans](#integers--doubles--booleans)
       - [Strings](#strings-1)
       - [Arrays](#arrays-1)
     + [Addition](#addition)
@@ -45,18 +45,18 @@ Each program is written in a producral way, that means the first line is interpr
 
 The programming language has 5 different datatypes:
 
-* Numbers
+* Doubles
 * Integers
 * Booleans
 * Strings
 * Arrays
 
-### Numbers
+### Doubles
 
-In BoLang a `number` represents a floating point number. Hardcoded digits that are a floating point will be automatically stored as a `number`.
+In BoLang a `double` represents a floating point number. Hardcoded digits that are a floating point will be automatically stored as a `double`.
 
 ```BoLang
-return 5.5; // this will be return a number with the value 5.5
+return 5.5; // this will be return a double with the value 5.5
 ```
 
 ### Integers
@@ -101,13 +101,13 @@ return x[0]; // returns the character `H`
 Bundling values can be done in BoLang with Arrays. Arrays can contain elements of any type.
 
 ```BoLang
-return [1,2,"three",4.4,false]; // returns an array with 5 values of type [Integer, Integer, String, Number, Boolean] 
+return [1,2,"three",4.4,false]; // returns an array with 5 values of type [Integer, Integer, String, Double, Boolean] 
 ```
 
 Its important that after initialization arrays can not be changed. You can only access the elements by their index (which starts at 0).
 
 ```BoLang
-var x := [1,2,"three",4.4,false]; // initialization of an array with 5 values of type [Integer, Integer, String, Number, Boolean] 
+var x := [1,2,"three",4.4,false]; // initialization of an array with 5 values of type [Integer, Integer, String, Double, Boolean] 
 return x[0] + x[1]; // access the values from array x at index 0 and 1 and performs an addition on both values
 ```
 
@@ -128,16 +128,16 @@ Each BoLang program can be interpreted with a list of parameters. Those paramete
 For example we call execute the program with a parameter called `number` that contains the value `"5"`.
 
 ```BoLang
-return #number; // returns the value of the parameter `number`
+return #number; // returns the value of the parameter `number` as a String
 ```
 
 ## Operators
 
 ### Negation
 
-#### Integers, Numbers, Booleans
+#### Integers, Doubles, Booleans
 
-The semantics of the negation operator depends on the type of element we perform the operation. On numbers and integers the result of a negation is simply the value mulitplied by `-1`. On booleans the value is flipped, meaning `true` becomes `false` and the otherway arround.
+The semantics of the negation operator depends on the type of element we perform the operation. On doubles and integers the result of a negation is simply the value mulitplied by `-1`. On booleans the value is flipped, meaning `true` becomes `false` and the otherway arround.
 
 ```BoLang
 return !1; // returns the Integer -1
@@ -166,12 +166,12 @@ return ![1,2,"B","Z",false]; // returns an array with the values [-1,-2,"=","%",
 
 ### Addition
 
-This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an addition. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+This operation only works on `doubles`, `integers` and `arrays`. On doubles and integers this operation performs as the name suggests an addition. The result type depends on the dominance of the inputs. If one of the operants is a `double` the result is a `double` again.
 
 ```BoLang
 return 1 + 1; // returns 2 type of Integer
-return 1.0 + 1; // returns 2.0 type of Number
-return 1.0 + 1.0; // returns 2.0 type of Number
+return 1.0 + 1; // returns 2.0 type of Double
+return 1.0 + 1.0; // returns 2.0 type of Double
 ```
 
 For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an addition on each element of the array with the other operant that is not an array.
@@ -189,12 +189,12 @@ return [1,2,3] + [1,2]; // return an array [2,4,3]
 
 ### Subtraction
 
-This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an subtraction. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+This operation only works on `doubles`, `integers` and `arrays`. On doubles and integers this operation performs as the name suggests an subtraction. The result type depends on the dominance of the inputs. If one of the operants is a `double` the result is a `double` again.
 
 ```BoLang
 return 3 - 1; // returns 2 type of Integer
-return 3.0 - 1; // returns 2.0 type of Number
-return 3.0 - 1.0; // returns 2.0 type of Number
+return 3.0 - 1; // returns 2.0 type of Double
+return 3.0 - 1.0; // returns 2.0 type of Double
 ```
 
 For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an subtraction on each element of the array with the other operant that is not an array.
@@ -212,13 +212,13 @@ return [1,2] + [1,2,3]; // return an array [0,0,-3]
 
 ### Division
 
-This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an division. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again. If both operants are of type `integer` and the division can be performed without a remaining the result is of type `integer` otherwise its `number`.
+This operation only works on `doubles`, `integers` and `arrays`. On doubles and integers this operation performs as the name suggests an division. The result type depends on the dominance of the inputs. If one of the operants is a `double` the result is a `double` again. If both operants are of type `integer` and the division can be performed without a remaining the result is of type `integer` otherwise it is of type `double`.
 
 ```BoLang
 return 3 / 1; // returns 3 type of Integer
-return 1 / 2; // returns 0.5 type of Number
-return 3.0 / 1; // returns 1.0 type of Number
-return 3.0 / 1.0; // returns 1.0 type of Number
+return 1 / 2; // returns 0.5 type of Double
+return 3.0 / 1; // returns 1.0 type of Double
+return 3.0 / 1.0; // returns 1.0 type of Double
 ```
 
 For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an division on each element of the array with the other operant that is not an array.
@@ -236,12 +236,12 @@ return [1,2] / [1,2,3]; // return an array [1,1,0]
 
 ### Multiplication 
 
-This operation only works on `numbers`, `integers` and `arrays`. On numbers and integers this operation performs as the name suggests an multiplication. The result type depends on the dominance of the inputs. If one of the operants is a `number` the result is a `number` again.
+This operation only works on `doubles`, `integers` and `arrays`. On doubles and integers this operation performs as the name suggests an multiplication. The result type depends on the dominance of the inputs. If one of the operants is a `double` the result is a `double` again.
 
 ```BoLang
 return 3 * 2; // returns 6 type of Integer
-return 3.0 * 2; // returns 6.0 type of Number
-return 3.0 * 2.0; // returns 6.0 type of Number
+return 3.0 * 2; // returns 6.0 type of Double
+return 3.0 * 2.0; // returns 6.0 type of Double
 ```
 
 For `arrays` its a bit more complicated. If *only* one operant is of type `array` the array recursivly performs an multiplication on each element of the array with the other operant that is not an array.
@@ -270,7 +270,7 @@ return true ++ 1; // returns the string "true1"
 
 ### Equals
 
-The equality operator works on the type and the value. For equality there is not difference between the type of `numbers` and `integers`. For all the other ones the types are important for the equality check.
+The equality operator works on the type and the value. For equality there is not difference between the type of `doubles` and `integers`. For all the other ones the types are important for the equality check.
 
 ```BoLang
 return 5.5 == 5; // not equals
@@ -298,7 +298,7 @@ The result type of this operator is always a `boolean`.
 
 ### Greater Equals
 
-The greater equals operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+The greater equals operation only works on `doubles` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
 
 ```BoLang
 return 6 >= 5; // true
@@ -311,7 +311,7 @@ The result type of this operator is always a `boolean`.
 
 ### Greater
 
-The greater operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+The greater operation only works on `doubles` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
 
 ```BoLang
 return 6 > 5; // true
@@ -324,7 +324,7 @@ The result type of this operator is always a `boolean`.
 
 ### Less Equal
 
-The less equal operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+The less equal operation only works on `doubles` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
 
 ```BoLang
 return 6 <= 5; // false
@@ -337,7 +337,7 @@ The result type of this operator is always a `boolean`.
 
 ### Less 
 
-The less operation only works on `numbers` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
+The less operation only works on `doubles` and `integers`. The semantics of this operation is equivalent to the mathematic one. 
 
 ```BoLang
 return 6 < 5; // true
@@ -378,10 +378,10 @@ The result type of this operator is always a `boolean`.
 
 | Name     | Parameters   | Description | Result type | Example |
 | -------- | ------------ | ----------- | ------- | -------- |
-| `rand()` | No parameter | Generates a random number between (inclusive) 0 and (exclusive) 1 | `number` | `rand()` |
-| `rand(upperBound)` | `upperBound` has to be a `number` or a `integer` | Generates a random number (inclusive) 0 and (exclusive) the provided `upperBound` | `number` | `rand(100)` |
-| `rand(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `number` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random number (inclusive) `lowerBound` and (exclusive) `upperBound` | `number` | `rand(5,10)` |
+| `rand()` | No parameter | Generates a random double between (inclusive) 0 and (exclusive) 1 | `double` | `rand()` |
+| `rand(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random double (inclusive) 0 and (exclusive) the provided `upperBound` | `double` | `rand(100)` |
+| `rand(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random double (inclusive) `lowerBound` and (exclusive) `upperBound` | `double` | `rand(5,10)` |
 | `randInt()` | No parameter | Generates a random integer between (inclusive) 0 and (exclusive) 1 | `integer` | `randInt()` |
-| `randInt(upperBound)` | `upperBound` has to be a `number` or a `integer` | Generates a random integer (inclusive) 0 and (exclusive) the provided `upperBound` | `integer` | `randInt(100)` |
-| `randInt(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `number` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random integer (inclusive) `lowerBound` and (exclusive) `upperBound` | `integer` | `randInt(5,10)` |
+| `randInt(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random integer (inclusive) 0 and (exclusive) the provided `upperBound` | `integer` | `randInt(100)` |
+| `randInt(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random integer (inclusive) `lowerBound` and (exclusive) `upperBound` | `integer` | `randInt(5,10)` |
 

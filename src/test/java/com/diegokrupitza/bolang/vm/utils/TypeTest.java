@@ -28,36 +28,36 @@ public class TypeTest {
         return Stream.of(
                 Arguments.of(new IntegerElement(10), new IntegerElement(10), true),
                 Arguments.of(new IntegerElement(11), new IntegerElement(10), false),
-                Arguments.of(new IntegerElement(10), new NumberElement(10.0), true),
+                Arguments.of(new IntegerElement(10), new DoubleElement(10.0), true),
                 Arguments.of(new IntegerElement(10), new StringElement("HelloWorld"), false),
                 Arguments.of(new IntegerElement(10), new BooleanElement(false), false),
                 Arguments.of(new IntegerElement(10), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
 
 
-                Arguments.of(new NumberElement(10.0), new IntegerElement(10), true),
-                Arguments.of(new NumberElement(11.0), new IntegerElement(10), false),
-                Arguments.of(new NumberElement(10.0), new NumberElement(10.0), true),
-                Arguments.of(new NumberElement(10.0), new StringElement("HelloWorld"), false),
-                Arguments.of(new NumberElement(10.0), new BooleanElement(false), false),
-                Arguments.of(new NumberElement(10.0), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
+                Arguments.of(new DoubleElement(10.0), new IntegerElement(10), true),
+                Arguments.of(new DoubleElement(11.0), new IntegerElement(10), false),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.0), true),
+                Arguments.of(new DoubleElement(10.0), new StringElement("HelloWorld"), false),
+                Arguments.of(new DoubleElement(10.0), new BooleanElement(false), false),
+                Arguments.of(new DoubleElement(10.0), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
 
                 Arguments.of(new StringElement("HelloWorld"), new IntegerElement(10), false),
                 Arguments.of(new StringElement("HelloWorld"), new IntegerElement(10), false),
-                Arguments.of(new StringElement("HelloWorld"), new NumberElement(10.0), false),
+                Arguments.of(new StringElement("HelloWorld"), new DoubleElement(10.0), false),
                 Arguments.of(new StringElement("HelloWorld"), new StringElement("HelloWorld"), true),
                 Arguments.of(new StringElement("HelloWorld"), new BooleanElement(false), false),
                 Arguments.of(new StringElement("HelloWorld"), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
 
                 Arguments.of(new BooleanElement(false), new IntegerElement(10), false),
                 Arguments.of(new BooleanElement(false), new IntegerElement(10), false),
-                Arguments.of(new BooleanElement(false), new NumberElement(10.0), false),
+                Arguments.of(new BooleanElement(false), new DoubleElement(10.0), false),
                 Arguments.of(new BooleanElement(false), new StringElement("HelloWorld"), false),
                 Arguments.of(new BooleanElement(false), new BooleanElement(false), true),
                 Arguments.of(new BooleanElement(false), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
 
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new IntegerElement(10), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new IntegerElement(10), false),
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new NumberElement(10.0), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new DoubleElement(10.0), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new StringElement("HelloWorld"), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new BooleanElement(false), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), true)
@@ -66,7 +66,7 @@ public class TypeTest {
 
     private static Stream<Arguments> checkTypeNamesSource() {
         return Stream.of(
-                Arguments.of(Type.NUMBER, "Number"),
+                Arguments.of(Type.DOUBLE, "Double"),
                 Arguments.of(Type.INTEGER_NUMBER, "Integer"),
                 Arguments.of(Type.STRING, "String"),
                 Arguments.of(Type.ARRAY, "Array"),
@@ -105,11 +105,11 @@ public class TypeTest {
     @Test
     public void initNumberTest() {
         double value = 17.1999;
-        NumberElement numberElement = new NumberElement(value);
+        DoubleElement doubleElement = new DoubleElement(value);
 
-        assertThat(numberElement.getType()).isEqualTo(Type.NUMBER);
-        assertThat(numberElement.getValue()).isInstanceOf(Type.NUMBER.getValueClass());
-        assertThat(numberElement.getValue()).isEqualTo(value);
+        assertThat(doubleElement.getType()).isEqualTo(Type.DOUBLE);
+        assertThat(doubleElement.getValue()).isInstanceOf(Type.DOUBLE.getValueClass());
+        assertThat(doubleElement.getValue()).isEqualTo(value);
     }
 
     @Test
@@ -126,9 +126,9 @@ public class TypeTest {
     public void initArrayTest() {
         StringElement stringElement = new StringElement("Hello");
         IntegerElement integerElement = new IntegerElement(12);
-        NumberElement numberElement = new NumberElement(12.12);
+        DoubleElement doubleElement = new DoubleElement(12.12);
 
-        ArrayElement arrayElement = new ArrayElement(Arrays.asList(stringElement, integerElement, numberElement));
+        ArrayElement arrayElement = new ArrayElement(Arrays.asList(stringElement, integerElement, doubleElement));
 
         assertThat(arrayElement.getType()).isEqualTo(Type.ARRAY);
 
@@ -149,8 +149,8 @@ public class TypeTest {
         assertThat(value.get(1).getValue()).isEqualTo(12);
 
         // third element check
-        assertThat(value.get(2)).isInstanceOf(NumberElement.class);
-        assertThat(value.get(2).getType()).isEqualTo(Type.NUMBER);
+        assertThat(value.get(2)).isInstanceOf(DoubleElement.class);
+        assertThat(value.get(2).getType()).isEqualTo(Type.DOUBLE);
         assertThat(value.get(2).getValue()).isEqualTo(12.12);
     }
 
@@ -159,9 +159,9 @@ public class TypeTest {
 
         StringElement stringElement = new StringElement("Hello");
         IntegerElement integerElement = new IntegerElement(12);
-        NumberElement numberElement = new NumberElement(12.12);
+        DoubleElement doubleElement = new DoubleElement(12.12);
 
-        ArrayElement nestedArray = new ArrayElement(Arrays.asList(integerElement, numberElement));
+        ArrayElement nestedArray = new ArrayElement(Arrays.asList(integerElement, doubleElement));
 
         ArrayElement arrayElement = new ArrayElement(Arrays.asList(stringElement, nestedArray));
 
@@ -184,8 +184,8 @@ public class TypeTest {
         assertThat(innerArray.getValue().get(0).getValue()).isEqualTo(12);
 
         // innerarray second element check
-        assertThat(innerArray.getValue().get(1)).isInstanceOf(NumberElement.class);
-        assertThat(innerArray.getValue().get(1).getType()).isEqualTo(Type.NUMBER);
+        assertThat(innerArray.getValue().get(1)).isInstanceOf(DoubleElement.class);
+        assertThat(innerArray.getValue().get(1).getType()).isEqualTo(Type.DOUBLE);
         assertThat(innerArray.getValue().get(1).getValue()).isEqualTo(12.12);
 
     }
@@ -202,9 +202,9 @@ public class TypeTest {
     public void toStringTest() {
         StringElement stringElement = new StringElement("Hello");
         IntegerElement integerElement = new IntegerElement(12);
-        NumberElement numberElement = new NumberElement(12.12);
+        DoubleElement doubleElement = new DoubleElement(12.12);
 
-        ArrayElement innerArray = new ArrayElement(Arrays.asList(stringElement, integerElement, numberElement));
+        ArrayElement innerArray = new ArrayElement(Arrays.asList(stringElement, integerElement, doubleElement));
 
         ArrayElement secondInnerArray = new ArrayElement(Arrays.asList(stringElement, innerArray));
 
@@ -212,7 +212,7 @@ public class TypeTest {
 
         assertThat(stringElement.toString()).isEqualTo("\"Hello\"");
         assertThat(integerElement.toString()).isEqualTo("12");
-        assertThat(numberElement.toString()).isEqualTo("12.12");
+        assertThat(doubleElement.toString()).isEqualTo("12.12");
         assertThat(innerArray.toString()).isEqualTo("[\"Hello\", 12, 12.12]");
         assertThat(secondInnerArray.toString()).isEqualTo("[\"Hello\", [\"Hello\", 12, 12.12]]");
         assertThat(bigArray.toString()).isEqualTo("[\"Hello\", [\"Hello\", [\"Hello\", 12, 12.12]], [\"Hello\", 12, 12.12]]");

@@ -51,7 +51,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     public ExpressionNode visitNumVal(BoParser.NumValContext ctx) {
         if (ctx.num.getText().contains(".")) {
             Double value = Double.valueOf(ctx.num.getText());
-            return new NumNode(value);
+            return new DoubleNode(value);
         }
         Integer value = Integer.valueOf(ctx.num.getText());
         return new IntegerNode(value);
