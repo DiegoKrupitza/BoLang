@@ -1815,5 +1815,73 @@ public class VirtualMachineTest {
         }
     }
 
+    @Test
+    void invalidDefAssignVoidToVarTest() {
+        var program = "var x := Sys.print();";
 
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        assertThatThrownBy(() -> virtualMachine.run(null))
+                .isInstanceOf(VirtualMachineException.class)
+                .hasMessageContaining("You cannot assign a void to the variable x");
+    }
+
+    @Test
+    void invalidAssignVoidToVarTest() {
+        var program = "var x := 5;" +
+                "x := Sys.print();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        assertThatThrownBy(() -> virtualMachine.run(null))
+                .isInstanceOf(VirtualMachineException.class)
+                .hasMessageContaining("You cannot assign a void to the variable x");
+    }
+
+    @Test
+    void invalidReturnVoidTest() {
+        var program = "return Sys.print();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        assertThatThrownBy(() -> virtualMachine.run(null))
+                .isInstanceOf(VirtualMachineException.class)
+                .hasMessageContaining("You cannot return a void");
+    }
 }

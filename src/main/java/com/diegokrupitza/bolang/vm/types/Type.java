@@ -15,7 +15,8 @@ public enum Type {
     INTEGER_NUMBER("Integer", Integer.class),
     STRING("String", String.class),
     ARRAY("Array", ArrayElement.class),
-    BOOLEAN("Boolean", BooleanElement.class);
+    BOOLEAN("Boolean", BooleanElement.class),
+    VOID("Void", VoidElement.class);
 
     private final String name;
     private final Class<?> valueClass;

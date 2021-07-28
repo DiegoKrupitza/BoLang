@@ -5,6 +5,7 @@ import com.diegokrupitza.bolang.vm.types.Type;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -74,6 +75,30 @@ public class Types {
      */
     public static boolean isBothOfType(Type type, AbstractElementType<?> e1, AbstractElementType<?> e2) {
         return e1.getType() == type && e2.getType() == type;
+    }
+
+    /**
+     * Checks if a given element is of a given type
+     *
+     * @param type    the type we want to check on
+     * @param element the element we want to check on
+     * @return <code>true</code> if <code>element</code> is of type <code>type</code> otherwise <code>false</code>
+     */
+    public static boolean isOfType(Type type, AbstractElementType<?> element) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(element);
+        return type.equals(element.getType());
+    }
+
+    /**
+     * Checks if a given element is not of a given type
+     *
+     * @param type    the type we want to check on
+     * @param element the element we want to check on
+     * @return <code>true</code> if <code>element</code> is not of type <code>type</code> otherwise <code>false</code>
+     */
+    public static boolean isNotOfType(Type type, AbstractElementType<?> element) {
+        return !isOfType(type, element);
     }
 
 }

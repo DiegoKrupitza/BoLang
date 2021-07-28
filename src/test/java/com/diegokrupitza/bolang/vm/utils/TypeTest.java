@@ -60,7 +60,15 @@ public class TypeTest {
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new DoubleElement(10.0), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new StringElement("HelloWorld"), false),
                 Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new BooleanElement(false), false),
-                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), true)
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), true),
+
+                Arguments.of(VoidElement.NO_VALUE, VoidElement.NO_VALUE, true),
+                Arguments.of(VoidElement.NO_VALUE, new IntegerElement(10), false),
+                Arguments.of(VoidElement.NO_VALUE, new DoubleElement(10.0), false),
+                Arguments.of(VoidElement.NO_VALUE, new StringElement("HelloWorld"), false),
+                Arguments.of(VoidElement.NO_VALUE, new BooleanElement(false), false),
+                Arguments.of(VoidElement.NO_VALUE, new BooleanElement(true), false),
+                Arguments.of(VoidElement.NO_VALUE, new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false)
         );
     }
 
@@ -70,7 +78,8 @@ public class TypeTest {
                 Arguments.of(Type.INTEGER_NUMBER, "Integer"),
                 Arguments.of(Type.STRING, "String"),
                 Arguments.of(Type.ARRAY, "Array"),
-                Arguments.of(Type.BOOLEAN, "Boolean")
+                Arguments.of(Type.BOOLEAN, "Boolean"),
+                Arguments.of(Type.VOID, "Void")
         );
     }
 
@@ -249,5 +258,4 @@ public class TypeTest {
         StringElement emptyString = new StringElement();
         assertThat(emptyString.getValue()).isEqualTo("");
     }
-
 }

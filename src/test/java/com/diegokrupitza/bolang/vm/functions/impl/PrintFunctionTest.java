@@ -5,6 +5,7 @@ import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
 import com.diegokrupitza.bolang.vm.types.IntegerElement;
 import com.diegokrupitza.bolang.vm.types.StringElement;
+import com.diegokrupitza.bolang.vm.types.VoidElement;
 import com.diegokrupitza.bolang.vm.utils.Arrays;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
@@ -57,7 +58,7 @@ public class PrintFunctionTest {
     public void singleParamOutStringTest() {
         AbstractElementType<?> call = print.call(List.of(new StringElement("Hey You!")));
 
-        assertThat(call).isNull();
+        assertThat(call).isEqualTo(VoidElement.NO_VALUE);
         assertThat(outContent.toString()).isEqualTo("Hey You!");
     }
 
@@ -65,7 +66,7 @@ public class PrintFunctionTest {
     public void multipleParamOutStringTest() {
         AbstractElementType<?> call = print.call(List.of(new StringElement("Hey You!"), new StringElement("Test2!")));
 
-        assertThat(call).isNull();
+        assertThat(call).isEqualTo(VoidElement.NO_VALUE);
         assertThat(outContent.toString()).isEqualTo("Hey You!Test2!");
     }
 
@@ -73,7 +74,7 @@ public class PrintFunctionTest {
     public void singleParamIntTest() {
         AbstractElementType<?> call = print.call(List.of(new IntegerElement(100)));
 
-        assertThat(call).isNull();
+        assertThat(call).isEqualTo(VoidElement.NO_VALUE);
         assertThat(outContent.toString()).isEqualTo("100");
     }
 
@@ -81,7 +82,7 @@ public class PrintFunctionTest {
     public void multipleParamTest() {
         AbstractElementType<?> call = print.call(List.of(new IntegerElement(100), new IntegerElement(101)));
 
-        assertThat(call).isNull();
+        assertThat(call).isEqualTo(VoidElement.NO_VALUE);
         assertThat(outContent.toString()).isEqualTo("100101");
     }
 
@@ -89,7 +90,7 @@ public class PrintFunctionTest {
     public void singleArrayTest() {
         AbstractElementType<?> call = print.call(List.of(Arrays.emptyArray()));
 
-        assertThat(call).isNull();
+        assertThat(call).isEqualTo(VoidElement.NO_VALUE);
         assertThat(outContent.toString()).isEqualTo("[]");
     }
 
