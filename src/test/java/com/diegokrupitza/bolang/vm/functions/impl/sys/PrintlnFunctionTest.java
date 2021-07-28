@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.sys;
 
 import com.diegokrupitza.bolang.vm.functions.Function;
 import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
@@ -21,14 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @version 1.0
  * @date 11.07.21
  */
-public class PrintFunctionTest {
+public class PrintlnFunctionTest {
 
     private final static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final static ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final static PrintStream originalOut = System.out;
     private final static PrintStream originalErr = System.err;
 
-    private Function print;
+    private Function println;
 
     @BeforeAll
     public static void setUpStreams() {
@@ -51,47 +51,47 @@ public class PrintFunctionTest {
 
     @BeforeEach
     public void init() {
-        print = FunctionFactory.getFunction("Sys", "print");
+        println = FunctionFactory.getFunction("Sys", "println");
     }
 
     @Test
     public void singleParamOutStringTest() {
-        AbstractElementType<?> call = print.call(List.of(new StringElement("Hey You!")));
+        AbstractElementType<?> call = println.call(List.of(new StringElement("Hey You!")));
 
         assertThat(call).isEqualTo(VoidElement.NO_VALUE);
-        assertThat(outContent.toString()).isEqualTo("Hey You!");
+        assertThat(outContent.toString()).isEqualTo("Hey You!\n");
     }
 
     @Test
     public void multipleParamOutStringTest() {
-        AbstractElementType<?> call = print.call(List.of(new StringElement("Hey You!"), new StringElement("Test2!")));
+        AbstractElementType<?> call = println.call(List.of(new StringElement("Hey You!"), new StringElement("Test2!")));
 
         assertThat(call).isEqualTo(VoidElement.NO_VALUE);
-        assertThat(outContent.toString()).isEqualTo("Hey You!Test2!");
+        assertThat(outContent.toString()).isEqualTo("Hey You!Test2!\n");
     }
 
     @Test
     public void singleParamIntTest() {
-        AbstractElementType<?> call = print.call(List.of(new IntegerElement(100)));
+        AbstractElementType<?> call = println.call(List.of(new IntegerElement(100)));
 
         assertThat(call).isEqualTo(VoidElement.NO_VALUE);
-        assertThat(outContent.toString()).isEqualTo("100");
+        assertThat(outContent.toString()).isEqualTo("100\n");
     }
 
     @Test
     public void multipleParamTest() {
-        AbstractElementType<?> call = print.call(List.of(new IntegerElement(100), new IntegerElement(101)));
+        AbstractElementType<?> call = println.call(List.of(new IntegerElement(100), new IntegerElement(101)));
 
         assertThat(call).isEqualTo(VoidElement.NO_VALUE);
-        assertThat(outContent.toString()).isEqualTo("100101");
+        assertThat(outContent.toString()).isEqualTo("100101\n");
     }
 
     @Test
     public void singleArrayTest() {
-        AbstractElementType<?> call = print.call(List.of(Arrays.emptyArray()));
+        AbstractElementType<?> call = println.call(List.of(Arrays.emptyArray()));
 
         assertThat(call).isEqualTo(VoidElement.NO_VALUE);
-        assertThat(outContent.toString()).isEqualTo("[]");
+        assertThat(outContent.toString()).isEqualTo("[]\n");
     }
 
 }

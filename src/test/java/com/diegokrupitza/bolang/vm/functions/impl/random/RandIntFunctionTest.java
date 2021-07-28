@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.random;
 
 import com.diegokrupitza.bolang.vm.functions.Function;
 import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
