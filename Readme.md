@@ -11,7 +11,8 @@
     + [Booleans](#booleans)
     + [Strings](#strings)
     + [Arrays](#arrays)
-    + [Identifier](#identifier)
+    + [Voids](#voids)
+  * [Identifier](#identifier)
   * [External Parameters](#external-parameters)
   * [Operators](#operators)
     + [Negation](#negation)
@@ -43,13 +44,14 @@ Each program is written in a producral way, that means the first line is interpr
 
 ## Datatype
 
-The programming language has 5 different datatypes:
+The programming language has 6 different datatypes:
 
 * Doubles
 * Integers
 * Booleans
 * Strings
 * Arrays
+* Voids
 
 ### Doubles
 
@@ -111,7 +113,11 @@ var x := [1,2,"three",4.4,false]; // initialization of an array with 5 values of
 return x[0] + x[1]; // access the values from array x at index 0 and 1 and performs an addition on both values
 ```
 
-### Identifier
+### Voids
+
+Voids are only present for functions that do not return any value. Voids cannot be returned or assigned to variables. 
+
+## Identifier
 
 In BoLang you can define your own variables and use them. To define a variable you only need to choose a name and a given default value. Its important to highlight that the name has to match the following regex pattern `[_A-Za-z] [_0-9A-Za-z]*`
 

@@ -1,7 +1,6 @@
 package com.diegokrupitza.bolang.vm.types;
 
 import com.diegokrupitza.bolang.vm.utils.Arrays;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -13,14 +12,17 @@ import java.util.Objects;
  * @date 09.07.21
  */
 @Data
-@AllArgsConstructor
 public abstract class AbstractElementType<T> {
 
-    @NonNull
     private T value;
 
     @NonNull
     private Type type;
+
+    protected AbstractElementType(T value, @NonNull Type type) {
+        this.value = value;
+        this.type = type;
+    }
 
     @Override
     public String toString() {
@@ -35,6 +37,8 @@ public abstract class AbstractElementType<T> {
                 return "\"" + ((String) value) + "\"";
             case BOOLEAN:
                 return ((Boolean) value).toString();
+            case VOID:
+                return "void";
         }
         return value + "";
     }

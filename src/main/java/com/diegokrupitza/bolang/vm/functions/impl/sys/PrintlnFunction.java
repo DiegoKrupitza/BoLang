@@ -14,9 +14,9 @@ import java.util.List;
  * @version 1.0
  * @date 28.07.21
  */
-@BoFunction(module = "Sys", name = "print")
+@BoFunction(module = "Sys", name = "println")
 @Getter
-public class PrintFunction implements Function {
+public class PrintlnFunction implements Function {
     @Override
     public void paramCheck(List<AbstractElementType<?>> params) throws BoFunctionException {
         //This is empty since we simply print out all the params
@@ -25,6 +25,7 @@ public class PrintFunction implements Function {
     @Override
     public AbstractElementType<?> execute(List<AbstractElementType<?>> params) throws BoFunctionException {
         params.forEach(obj -> System.out.print(obj.getValue()));
+        System.out.println();
         return VoidElement.NO_VALUE;
     }
 }

@@ -89,6 +89,11 @@ public class VirtualMachine {
             String varName = defineVariableNode.getIdentifierName();
             AbstractElementType<?> value = evalExpression(defineVariableNode.getExpr());
 
+            // voids cannot be assigned to variables
+            if (Types.isOfType(Type.VOID, value)) {
+                throw new VirtualMachineException(String.format("You cannot assign a void to the variable %s", varName));
+            }
+
             this.variables.put(varName, value);
 
         } else if (currentNode instanceof AssignVariableNode) {
@@ -100,6 +105,11 @@ public class VirtualMachine {
             }
 
             AbstractElementType<?> value = evalExpression(assignVariableNode.getExpr());
+
+            // voids cannot be assigned to variables
+            if (Types.isOfType(Type.VOID, value)) {
+                throw new VirtualMachineException(String.format("You cannot assign a void to the variable %s", varName));
+            }
 
             this.variables.put(varName, value);
 
@@ -148,7 +158,15 @@ public class VirtualMachine {
         } else if (currentNode instanceof ReturnNode) {
             ReturnNode returnNode = (ReturnNode) currentNode;
 
-            this.returnedVal = evalExpression(returnNode.getRet());
+            AbstractElementType<?> evaledExpr = evalExpression(returnNode.getRet());
+
+            // voids cannot be assigned to variables
+            if (Types.isOfType(Type.VOID, evaledExpr)) {
+                throw new VirtualMachineException("You cannot return a void");
+            }
+
+
+            this.returnedVal = evaledExpr;
         } else {
             evalExpression(currentNode);
         }
