@@ -1,1 +1,1 @@
-return "Today is the " ++ date("dd-MM-YYYY");
+return "Today is the " ++ Date.date("dd-MM-YYYY");

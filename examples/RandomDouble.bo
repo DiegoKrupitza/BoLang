@@ -1,0 +1,1 @@
+return Random.rand() + Random.rand(10,20) + Random.rand(1000);
