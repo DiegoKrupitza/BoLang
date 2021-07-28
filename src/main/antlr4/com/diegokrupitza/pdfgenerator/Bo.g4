@@ -9,6 +9,7 @@ stat        :   'return' expr ';'                                               
             |   'if' '(' cond=expr ')' '{'  ifStat=scopecont '}'                                                #ifStat
             |   'var' ID ':=' expr ';'                                                                          #varDefStat
             |   ID ':=' expr ';'                                                                                #varAssignStat
+            |   expr ';'                                                                                        #exprForward
             ;
 
 expr        :   '(' expr ')'                                                                                                       # parensExpr

@@ -300,4 +300,9 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     public ExpressionNode visitParensExpr(BoParser.ParensExprContext ctx) {
         return visit(ctx.expr());
     }
+
+    @Override
+    public ExpressionNode visitExprForward(BoParser.ExprForwardContext ctx) {
+        return visit(ctx.expr());
+    }
 }

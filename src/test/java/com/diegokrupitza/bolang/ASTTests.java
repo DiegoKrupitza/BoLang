@@ -50,6 +50,30 @@ public class ASTTests {
     }
 
     @Test
+    public void simpleExprForwardTest() {
+        var logLines = "Sys.print(\"Hey You!\");";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(logLines));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+
+        assertThat(head.getStats().size()).isEqualTo(1);
+        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
+        assertThat(((FunctionNode) head.getStats().get(0)).getModule()).isEqualTo("Sys");
+        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("print");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).hasSize(1).containsExactly(new StringNode("Hey You!"));
+    }
+
+    @Test
     public void simpleReturnStringVal() {
         var logLines = "return \"Hello World\";";
 

@@ -55,8 +55,7 @@ public class VirtualMachine {
         if (processStats(stats)) {
             return this.returnedVal;
         }
-
-        throw new VirtualMachineException("No return value produced during runtime! Please ensure that your Bo program has a return value after termination!");
+        return null;
     }
 
     /**
@@ -151,7 +150,7 @@ public class VirtualMachine {
 
             this.returnedVal = evalExpression(returnNode.getRet());
         } else {
-            throw new VirtualMachineException("Contact the Bo Language administrator. Please include the code you run to reach this error! Code: 1");
+            evalExpression(currentNode);
         }
     }
 
