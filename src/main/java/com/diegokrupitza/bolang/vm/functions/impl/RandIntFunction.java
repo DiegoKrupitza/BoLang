@@ -6,7 +6,6 @@ import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionParameterException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
 import com.diegokrupitza.bolang.vm.types.IntegerElement;
-import com.diegokrupitza.bolang.vm.types.DoubleElement;
 import com.diegokrupitza.bolang.vm.types.Type;
 import com.diegokrupitza.bolang.vm.utils.Types;
 import lombok.Getter;
@@ -25,8 +24,8 @@ import java.util.stream.Collectors;
 @Getter
 public class RandIntFunction implements Function {
 
-    private int upperBound = 1;
-    private int lowerBound = 0;
+    private Number upperBound = 1;
+    private Number lowerBound = 0;
     private boolean noParams = false;
 
     @Override
@@ -47,24 +46,17 @@ public class RandIntFunction implements Function {
 
         if (params.size() == 1) {
             // only upper bound
-            upperBound = (params.get(0).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(0)).getValue().intValue()) :
-                    (((IntegerElement) params.get(0)).getValue());
+            upperBound = (Number) params.get(0).getValue();
         } else if (params.size() == 2) {
             // lower and upper bound
-            lowerBound = (params.get(0).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(0)).getValue().intValue()) :
-                    (((IntegerElement) params.get(0)).getValue());
-
-            upperBound = (params.get(1).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(1)).getValue().intValue()) :
-                    (((IntegerElement) params.get(1)).getValue());
+            lowerBound = (Number) params.get(0).getValue();
+            upperBound = (Number) params.get(1).getValue();
         } else {
             // this should not happen...
             throw new BoFunctionParameterException(String.format("The `randInt` function only takes 0,1 or 2 parameters! You served %s", params.size()));
         }
 
-        if (lowerBound > upperBound) {
+        if (lowerBound.intValue() > upperBound.intValue()) {
             throw new BoFunctionParameterException("When calling the `randInt` function the upper bound has to be greater or equals to the lower bound!");
         }
     }
@@ -75,7 +67,7 @@ public class RandIntFunction implements Function {
         if (noParams) {
             randValue = ThreadLocalRandom.current().nextInt();
         } else {
-            randValue = ThreadLocalRandom.current().nextInt(lowerBound, upperBound);
+            randValue = ThreadLocalRandom.current().nextInt(lowerBound.intValue(), upperBound.intValue());
         }
         return new IntegerElement(randValue);
     }

@@ -5,8 +5,8 @@ import com.diegokrupitza.bolang.vm.functions.Function;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionParameterException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
-import com.diegokrupitza.bolang.vm.types.IntegerElement;
 import com.diegokrupitza.bolang.vm.types.DoubleElement;
+import com.diegokrupitza.bolang.vm.types.IntegerElement;
 import com.diegokrupitza.bolang.vm.types.Type;
 import com.diegokrupitza.bolang.vm.utils.Types;
 import lombok.Getter;
@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
 @Getter
 public class RandFunction implements Function {
 
-    private double upperBound = 1;
-    private double lowerBound = 0;
+    private Number upperBound = 1;
+    private Number lowerBound = 0;
 
     @Override
     public void paramCheck(List<AbstractElementType<?>> params) throws BoFunctionException {
@@ -45,31 +45,24 @@ public class RandFunction implements Function {
 
         if (params.size() == 1) {
             // only upper bound
-            upperBound = (params.get(0).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(0)).getValue()) :
-                    (((IntegerElement) params.get(0)).getValue().doubleValue());
+            upperBound = (Number) params.get(0).getValue();
         } else if (params.size() == 2) {
             // lower and upper bound
-            lowerBound = (params.get(0).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(0)).getValue()) :
-                    (((IntegerElement) params.get(0)).getValue().doubleValue());
-
-            upperBound = (params.get(1).getType() == Type.DOUBLE) ?
-                    (((DoubleElement) params.get(1)).getValue()) :
-                    (((IntegerElement) params.get(1)).getValue().doubleValue());
+            lowerBound = (Number) params.get(0).getValue();
+            upperBound = (Number) params.get(1).getValue();
         } else {
             // this should not happen...
             throw new BoFunctionParameterException(String.format("The `rand` function only takes 0,1 or 2 parameters! You served %s", params.size()));
         }
 
-        if (lowerBound > upperBound) {
+        if (lowerBound.doubleValue() > upperBound.doubleValue()) {
             throw new BoFunctionParameterException("When calling the `rand` function the upper bound has to be greater or equals to the lower bound!");
         }
     }
 
     @Override
     public AbstractElementType<?> execute(List<AbstractElementType<?>> params) throws BoFunctionException {
-        double randValue = ThreadLocalRandom.current().nextDouble(lowerBound, upperBound);
+        double randValue = ThreadLocalRandom.current().nextDouble(lowerBound.doubleValue(), upperBound.doubleValue());
         return new DoubleElement(randValue);
     }
 }
