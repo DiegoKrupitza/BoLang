@@ -1,0 +1,1 @@
+Sys.print("Hey You! What day is it? ", Date.date("dd"));
