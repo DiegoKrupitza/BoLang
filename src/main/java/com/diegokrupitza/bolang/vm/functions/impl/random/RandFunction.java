@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.random;
 
 import com.diegokrupitza.bolang.vm.functions.BoFunction;
 import com.diegokrupitza.bolang.vm.functions.Function;
@@ -6,7 +6,6 @@ import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionParameterException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
 import com.diegokrupitza.bolang.vm.types.DoubleElement;
-import com.diegokrupitza.bolang.vm.types.IntegerElement;
 import com.diegokrupitza.bolang.vm.types.Type;
 import com.diegokrupitza.bolang.vm.utils.Types;
 import lombok.Getter;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 10.07.21
  */
-@BoFunction(name = "rand", description = "Random number between the specified lower bound (inclusive) and upper bound (exclusive). By default lower bound is 0 and upper bound 1")
+@BoFunction(name = "rand", module = "Random", description = "Random number between the specified lower bound (inclusive) and upper bound (exclusive). By default lower bound is 0 and upper bound 1")
 @Getter
 public class RandFunction implements Function {
 

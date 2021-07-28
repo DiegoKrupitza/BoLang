@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.numbers;
 
 import com.diegokrupitza.bolang.vm.functions.BoFunction;
 import com.diegokrupitza.bolang.vm.functions.Function;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 11.07.21
  */
-@BoFunction(name = "toInt", description = "Converts the first argument from any format to an integer number")
+@BoFunction(name = "toInt", module = "Numbers", description = "Converts the first argument from any format to an integer number")
 public class ToIntFunction implements Function {
 
     @Override

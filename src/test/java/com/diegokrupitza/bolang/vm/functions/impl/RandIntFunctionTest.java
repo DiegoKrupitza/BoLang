@@ -108,7 +108,7 @@ public class RandIntFunctionTest {
 
     @BeforeEach
     public void init() {
-        randInt = FunctionFactory.getFunction("randInt");
+        randInt = FunctionFactory.getFunction("Random", "randInt");
     }
 
     @ParameterizedTest

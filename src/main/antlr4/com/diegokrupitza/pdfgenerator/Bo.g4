@@ -18,14 +18,14 @@ expr        :   '(' expr ')'                                                    
 
             ;
 
-term        :   num=NUM                                                 #numVal
-            |   string                                                  #stringVal
-            |   BOOLEAN                                                 #booleanEntry
-            |   id=ID                                                   #identifierVal
-            |   '#' id=ID                                               #externalParamVal
-            |   func=ID '(' (expr ( ',' expr )*)? ')'                   #funcVal
-            |   '[' (expr ( ',' expr )*)? ']'                           #createList
-            |   id=ID'[' index=expr ']'                                 #accessStringOrListItem
+term        :   num=NUM                                                     #numVal
+            |   string                                                      #stringVal
+            |   BOOLEAN                                                     #booleanEntry
+            |   id=ID                                                       #identifierVal
+            |   '#' id=ID                                                   #externalParamVal
+            |   module=ID '.' func=ID '(' (expr ( ',' expr )*)? ')'         #funcVal
+            |   '[' (expr ( ',' expr )*)? ']'                               #createList
+            |   id=ID'[' index=expr ']'                                     #accessStringOrListItem
             ;
 
 

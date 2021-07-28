@@ -28,7 +28,7 @@ public class ToIntFunctionTest {
 
     @BeforeEach
     public void init() {
-        toInt = FunctionFactory.getFunction("toInt");
+        toInt = FunctionFactory.getFunction("Numbers", "toInt");
     }
 
     @Test

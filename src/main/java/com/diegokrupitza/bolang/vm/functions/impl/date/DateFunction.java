@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.date;
 
 import com.diegokrupitza.bolang.vm.functions.BoFunction;
 import com.diegokrupitza.bolang.vm.functions.Function;
@@ -20,7 +20,7 @@ import java.util.List;
  * @version 1.0
  * @date 10.07.21
  */
-@BoFunction(name = "date")
+@BoFunction(name = "date", module = "Date")
 @Getter
 public class DateFunction implements Function {
 

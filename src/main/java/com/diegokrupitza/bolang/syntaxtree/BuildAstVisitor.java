@@ -1,8 +1,5 @@
 package com.diegokrupitza.bolang.syntaxtree;
 
-import com.diegokrupitza.pdfgenerator.BoBaseVisitor;
-import com.diegokrupitza.pdfgenerator.BoLexer;
-import com.diegokrupitza.pdfgenerator.BoParser;
 import com.diegokrupitza.bolang.symboltable.BoSymbolTable;
 import com.diegokrupitza.bolang.syntaxtree.nodes.AccessIndexNode;
 import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
@@ -12,6 +9,9 @@ import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.unary.NegateNode;
+import com.diegokrupitza.pdfgenerator.BoBaseVisitor;
+import com.diegokrupitza.pdfgenerator.BoLexer;
+import com.diegokrupitza.pdfgenerator.BoParser;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -80,6 +80,9 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     @Override
     public ExpressionNode visitFuncVal(BoParser.FuncValContext ctx) {
         String funcName = ctx.func.getText();
+
+        String moduleName = ctx.module.getText();
+
         List<ExpressionNode> params = new ArrayList<>();
 
         // process possible params
@@ -89,7 +92,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
                     .collect(Collectors.toList());
         }
 
-        return new FunctionNode(funcName, params);
+        return new FunctionNode(funcName, moduleName, params);
     }
 
     @Override

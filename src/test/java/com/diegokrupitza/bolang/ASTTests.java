@@ -97,7 +97,7 @@ public class ASTTests {
 
     @Test
     public void simpleReturnFunctionCall() {
-        var logLines = "return date();";
+        var logLines = "return Date.date();";
 
         // lexing
         BoLexer boLexer = new BoLexer(CharStreams.fromString(logLines));
@@ -116,11 +116,12 @@ public class ASTTests {
         assertThat(head.getStats().get(0)).isInstanceOf(ReturnNode.class);
         assertThat(((ReturnNode) head.getStats().get(0)).getRet()).isInstanceOf(FunctionNode.class);
         assertThat(((FunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getName()).isEqualTo("date");
+        assertThat(((FunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getModule()).isEqualTo("Date");
     }
 
     @Test
     public void simpleReturnFunctionCallWithParams() {
-        var logLines = "return date(1,2,3);";
+        var logLines = "return Date.date(1,2,3);";
 
         // lexing
         BoLexer boLexer = new BoLexer(CharStreams.fromString(logLines));
@@ -142,6 +143,7 @@ public class ASTTests {
         assertThat(head.getStats().get(0)).isInstanceOf(ReturnNode.class);
         assertThat(ret).isInstanceOf(FunctionNode.class);
         assertThat(functionNode.getName()).isEqualTo("date");
+        assertThat(functionNode.getModule()).isEqualTo("Date");
         assertThat(functionNode.getParams().size()).isEqualTo(3);
         assertThat(functionNode.getParams()).isEqualTo(Arrays.asList(new IntegerNode(1), new IntegerNode(2), new IntegerNode(3)));
     }

@@ -482,7 +482,7 @@ public class VirtualMachine {
             // function names will be unique
             Function function;
             try {
-                function = FunctionFactory.getFunction(functionNode.getName());
+                function = FunctionFactory.getFunction(functionNode.getModule(), functionNode.getName());
             } catch (BoFunctionException e) {
                 throw new VirtualMachineException(e.getMessage());
             }

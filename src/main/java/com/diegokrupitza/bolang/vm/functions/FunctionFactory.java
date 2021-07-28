@@ -22,11 +22,12 @@ public class FunctionFactory {
     /**
      * Gets the function that can be identified with the given function name
      *
+     * @param moduleName   the name of the module the function is located in
      * @param functionName the name of the function we want to receive
      * @return the function with the name we provided
      * @throws BoFunctionNotFoundException in case the function does not exist or there are multiple definitions
      */
-    public static Function getFunction(String functionName) throws BoFunctionException {
+    public static Function getFunction(String moduleName, String functionName) throws BoFunctionException {
 
         // all functions that implement the interface "Function"
         Set<Class<? extends Function>> allInterfaceFunctions = reflections.getSubTypesOf(Function.class);
@@ -43,17 +44,18 @@ public class FunctionFactory {
         // filter the function with matching name
         List<Class<? extends Function>> functionsWithThatName = allFunctions.stream()
                 .filter(item -> item.isAnnotationPresent(BoFunction.class))
+                .filter(item -> item.getAnnotation(BoFunction.class).module().equals(moduleName))
                 .filter(item -> item.getAnnotation(BoFunction.class).name().equals(functionName))
                 .collect(Collectors.toList());
 
         // too many function with the same name
         if (functionsWithThatName.size() > 1) {
-            throw new BoFunctionNotFoundException(String.format("The function with the name %s has multiple definitions", functionName));
+            throw new BoFunctionNotFoundException(String.format("The function with the name %s in module %s has multiple definitions", functionName, moduleName));
         }
 
         // no function with that name
         if (functionsWithThatName.size() == 0) {
-            throw new BoFunctionNotFoundException(String.format("The function with the name %s does not exist!", functionName));
+            throw new BoFunctionNotFoundException(String.format("The function with the name %s in module %s does not exist!", functionName, moduleName));
         }
 
         // exact one function with that name

@@ -15,5 +15,7 @@ import java.lang.annotation.Target;
 public @interface BoFunction {
     String name();
 
+    String module();
+
     String description() default "";
 }

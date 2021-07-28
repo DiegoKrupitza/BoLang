@@ -1,4 +1,4 @@
-package com.diegokrupitza.bolang.vm.functions.impl;
+package com.diegokrupitza.bolang.vm.functions.impl.random;
 
 import com.diegokrupitza.bolang.vm.functions.BoFunction;
 import com.diegokrupitza.bolang.vm.functions.Function;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @date 10.07.21
  */
-@BoFunction(name = "randInt", description = "Random integer between the specified lower bound (inclusive) and upper bound (exclusive). By default lower bound is 0 and upper bound 1")
+@BoFunction(name = "randInt", module = "Random", description = "Random integer between the specified lower bound (inclusive) and upper bound (exclusive). By default lower bound is 0 and upper bound 1")
 @Getter
 public class RandIntFunction implements Function {
 

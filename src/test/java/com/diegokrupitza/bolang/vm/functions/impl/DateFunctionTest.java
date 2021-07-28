@@ -27,7 +27,7 @@ public class DateFunctionTest {
 
     @BeforeEach
     public void init() {
-        date = FunctionFactory.getFunction("date");
+        date = FunctionFactory.getFunction("Date", "date");
     }
 
     @Test

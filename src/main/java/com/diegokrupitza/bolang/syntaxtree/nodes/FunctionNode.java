@@ -18,6 +18,8 @@ public class FunctionNode extends ExpressionNode {
 
     private String name;
 
+    private String module;
+
     private List<ExpressionNode> params;
 
 }
