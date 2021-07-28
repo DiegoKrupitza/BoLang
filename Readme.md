@@ -376,12 +376,12 @@ The result type of this operator is always a `boolean`.
 
 ## Functions
 
-| Name     | Parameters   | Description | Result type | Example |
-| -------- | ------------ | ----------- | ------- | -------- |
-| `rand()` | No parameter | Generates a random double between (inclusive) 0 and (exclusive) 1 | `double` | `rand()` |
-| `rand(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random double (inclusive) 0 and (exclusive) the provided `upperBound` | `double` | `rand(100)` |
-| `rand(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random double (inclusive) `lowerBound` and (exclusive) `upperBound` | `double` | `rand(5,10)` |
-| `randInt()` | No parameter | Generates a random integer between (inclusive) 0 and (exclusive) 1 | `integer` | `randInt()` |
-| `randInt(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random integer (inclusive) 0 and (exclusive) the provided `upperBound` | `integer` | `randInt(100)` |
-| `randInt(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random integer (inclusive) `lowerBound` and (exclusive) `upperBound` | `integer` | `randInt(5,10)` |
+| Module | Name     | Parameters   | Description | Result type | Example |
+| ------ | -------- | ------------ | ----------- | ------- | -------- |
+| Random | `rand()` | No parameter | Generates a random double between (inclusive) 0 and (exclusive) 1 | `double` | `Random.rand()` |
+| Random | `rand(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random double (inclusive) 0 and (exclusive) the provided `upperBound` | `double` | `Random.rand(100)` |
+| Random | `rand(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random double (inclusive) `lowerBound` and (exclusive) `upperBound` | `double` | `Random.rand(5,10)` |
+| Random | `randInt()` | No parameter | Generates a random integer between (inclusive) 0 and (exclusive) 1 | `integer` | `Random.randInt()` |
+| Random | `randInt(upperBound)` | `upperBound` has to be a `double` or a `integer` | Generates a random integer (inclusive) 0 and (exclusive) the provided `upperBound` | `integer` | `Random.randInt(100)` |
+| Random | `randInt(lowerBound, upperBound)` | `upperBound` and `lowerBound` has to be a `double` or a `integer`. The parameter `lowerBound` has to be smaller than `upperBound` | Generates a random integer (inclusive) `lowerBound` and (exclusive) `upperBound` | `integer` | `Random.randInt(5,10)` |
 
