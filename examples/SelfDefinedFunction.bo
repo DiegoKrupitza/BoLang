@@ -4,5 +4,4 @@ function foo(a,b) {
 }
 
 var a := 5;
-return a + foo(1,2);
-
+return a + this.foo(1,2);
