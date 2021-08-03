@@ -1,22 +1,22 @@
 package com.diegokrupitza.bolang.vm;
 
-import com.diegokrupitza.bolang.syntaxtree.nodes.AccessIndexNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.ExpressionNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.CallFunctionNode;
+import com.diegokrupitza.bolang.syntaxtree.nodes.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.unary.NegateNode;
 import com.diegokrupitza.bolang.vm.functions.Function;
 import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
+import com.diegokrupitza.bolang.vm.functions.FunctionTable;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
 import com.diegokrupitza.bolang.vm.types.*;
 import com.diegokrupitza.bolang.vm.utils.Arrays;
 import com.diegokrupitza.bolang.vm.utils.*;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Diego Krupitza
@@ -28,6 +28,7 @@ public class VirtualMachine {
 
     private BoNode programHead;
 
+    private FunctionTable functionTable;
     private Map<String, AbstractElementType<?>> variables = new HashMap<>();
     private Map<String, String> externalParams = new HashMap<>();
 
@@ -35,6 +36,23 @@ public class VirtualMachine {
 
     public VirtualMachine(BoNode programHead) {
         this.programHead = programHead;
+        buildFunctionTable();
+    }
+
+    private void buildFunctionTable() {
+        assert this.programHead != null : "Program head should never be null at this stage!";
+
+        List<ExpressionNode> selfDefinedFunctions = this.programHead.getStats().stream()
+                .filter(item -> item instanceof FunctionNode)
+                .collect(Collectors.toList());
+
+        if (CollectionUtils.isEmpty(selfDefinedFunctions)) {
+            // no functions defined means we do not have to build a custom function tabel
+            return;
+        }
+        // TODO: defined function table
+        // functionTable = new FunctionTable(selfDefinedFunctions);
+
     }
 
     /**

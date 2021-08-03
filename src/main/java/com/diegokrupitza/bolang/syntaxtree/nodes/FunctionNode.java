@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Diego Krupitza
@@ -22,4 +23,19 @@ public class FunctionNode extends ExpressionNode {
 
     private List<ExpressionNode> body;
 
+    @Override
+    public boolean equals(Object o) {
+        // functions are equals when they have the same name and params
+        if (this == o) return true;
+        if (!(o instanceof FunctionNode)) return false;
+        FunctionNode that = (FunctionNode) o;
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getParams(), that.getParams());
+    }
+
+    @Override
+    public int hashCode() {
+        // functions hash is only name and params
+        return Objects.hash(getName(), getParams());
+    }
 }

@@ -28,7 +28,7 @@ public class FunctionFactory {
      * @throws BoFunctionNotFoundException in case the function does not exist or there are multiple definitions
      */
     public static Function getFunction(String moduleName, String functionName) throws BoFunctionException {
-
+        
         // all functions that implement the interface "Function"
         Set<Class<? extends Function>> allInterfaceFunctions = reflections.getSubTypesOf(Function.class);
 
