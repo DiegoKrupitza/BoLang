@@ -19,7 +19,7 @@ public class FunctionNode extends ExpressionNode {
 
     private String name;
 
-    private List<String> params;
+    private List<String> paramNames;
 
     private List<ExpressionNode> body;
 
@@ -30,12 +30,12 @@ public class FunctionNode extends ExpressionNode {
         if (!(o instanceof FunctionNode)) return false;
         FunctionNode that = (FunctionNode) o;
         return Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getParams(), that.getParams());
+                Objects.equals(getParamNames(), that.getParamNames());
     }
 
     @Override
     public int hashCode() {
         // functions hash is only name and params
-        return Objects.hash(getName(), getParams());
+        return Objects.hash(getName(), getParamNames());
     }
 }

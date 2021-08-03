@@ -9,6 +9,7 @@ import com.diegokrupitza.bolang.vm.functions.Function;
 import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
 import com.diegokrupitza.bolang.vm.functions.FunctionTable;
 import com.diegokrupitza.bolang.vm.functions.exceptions.BoFunctionException;
+import com.diegokrupitza.bolang.vm.functions.exceptions.FunctionTableException;
 import com.diegokrupitza.bolang.vm.types.*;
 import com.diegokrupitza.bolang.vm.utils.Arrays;
 import com.diegokrupitza.bolang.vm.utils.*;
@@ -34,25 +35,25 @@ public class VirtualMachine {
 
     private AbstractElementType<?> returnedVal = null;
 
-    public VirtualMachine(BoNode programHead) {
+    public VirtualMachine(BoNode programHead) throws VirtualMachineException {
         this.programHead = programHead;
         buildFunctionTable();
     }
 
-    private void buildFunctionTable() {
+    private void buildFunctionTable() throws FunctionTableException {
         assert this.programHead != null : "Program head should never be null at this stage!";
 
-        List<ExpressionNode> selfDefinedFunctions = this.programHead.getStats().stream()
+        List<FunctionNode> selfDefinedFunctions = this.programHead.getStats().stream()
                 .filter(item -> item instanceof FunctionNode)
+                .map(item -> ((FunctionNode) item))
                 .collect(Collectors.toList());
 
         if (CollectionUtils.isEmpty(selfDefinedFunctions)) {
             // no functions defined means we do not have to build a custom function tabel
             return;
         }
-        // TODO: defined function table
-        // functionTable = new FunctionTable(selfDefinedFunctions);
 
+        functionTable = new FunctionTable(selfDefinedFunctions);
     }
 
     /**
@@ -185,6 +186,8 @@ public class VirtualMachine {
 
 
             this.returnedVal = evaledExpr;
+        } else if (currentNode instanceof FunctionNode) {
+            // we skip that since its a definition of a function
         } else {
             evalExpression(currentNode);
         }
@@ -513,6 +516,43 @@ public class VirtualMachine {
         } else if (expr instanceof CallFunctionNode) {
             CallFunctionNode callFunctionNode = (CallFunctionNode) expr;
 
+            // evaluating the values of the params so we get the correct values for the params
+            List<AbstractElementType<?>> evaledParams = new ArrayList<>();
+            for (ExpressionNode param : callFunctionNode.getParams()) {
+                evaledParams.add(evalExpression(param));
+            }
+
+            // check if it is not a predefined function by the BoLang
+            if (!FunctionFactory.getAllPredefinedModules()
+                    .contains(callFunctionNode.getModule())) {
+                // its not a predefined function aka we should have it in our functiontable
+                FunctionNode toCallFunctionNode = this.functionTable.get(callFunctionNode.getName(), evaledParams.size());
+
+                // function calls have their own variable scope means we have to move current variable state outside
+                Map<String, AbstractElementType<?>> oldVars = this.variables;
+                this.variables = new HashMap<>();
+
+                // set the values for the params
+                assert evaledParams.size() == toCallFunctionNode.getParamNames().size() : "Evaled params do not match the count of the params. Means we call the function with too little params";
+                for (int i = 0; i < toCallFunctionNode.getParamNames().size(); i++) {
+                    String paramName = toCallFunctionNode.getParamNames().get(i);
+                    AbstractElementType<?> paramValue = evaledParams.get(i);
+
+                    // setting the value for the param
+                    this.variables.put(paramName, paramValue);
+                }
+
+                // evaluating the function call
+                processStats(toCallFunctionNode.getBody());
+
+                // reseting the variables to before scope
+                this.variables = oldVars;
+
+                // check if the function call produced a return value
+                // if so hand it further otherwise its a void
+                return Objects.requireNonNullElse(this.returnedVal, VoidElement.NO_VALUE);
+            }
+
             // loading the function we want to use based on the function name
             // function names will be unique
             Function function;
@@ -522,11 +562,6 @@ public class VirtualMachine {
                 throw new VirtualMachineException(e.getMessage());
             }
 
-            // evaluating the values of the params so we get the correct values for the params
-            List<AbstractElementType<?>> evaledParams = new ArrayList<>();
-            for (ExpressionNode param : callFunctionNode.getParams()) {
-                evaledParams.add(evalExpression(param));
-            }
 
             // calling the function with the evaled params so we get the value and its return type
             AbstractElementType<?> functionVal = null;

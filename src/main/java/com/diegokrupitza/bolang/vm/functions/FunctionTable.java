@@ -35,7 +35,7 @@ public class FunctionTable {
         assert functions != null : "Functions list is should never be null!";
 
         String funcName = function.getName();
-        List<String> params = function.getParams();
+        List<String> params = function.getParamNames();
 
         if (CollectionUtils.isEmpty(functions)) {
             // just add we dont have to perform checks
@@ -63,7 +63,7 @@ public class FunctionTable {
         // stream since `add` check that before insertion
         Optional<FunctionNode> optionalFunction = this.functions.stream()
                 .filter(item -> functionName.equals(item.getName()))
-                .filter(item -> item.getParams().size() == numberOfParams)
+                .filter(item -> item.getParamNames().size() == numberOfParams)
                 .findFirst();
 
         return optionalFunction

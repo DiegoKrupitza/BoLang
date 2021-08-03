@@ -32,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 public class VirtualMachineTest {
 
+    @SneakyThrows
     private static VirtualMachine getVirtualMachine(BoNode head) {
         return new VirtualMachine(head);
     }
@@ -1883,5 +1884,210 @@ public class VirtualMachineTest {
         assertThatThrownBy(() -> virtualMachine.run(null))
                 .isInstanceOf(VirtualMachineException.class)
                 .hasMessageContaining("You cannot return a void");
+    }
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionCallTest() {
+        var program = " function foo(a,b) {" +
+                "           return a + b;" +
+                "       }" +
+                "       var a := 5;" +
+                "       return a + this.foo(1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(8);
+    }
+
+    @SneakyThrows
+    @Test
+    void doubleSelfDefinedFunctionCallTest() {
+        var program = "function foo(a,b) {\n" +
+                "        return a + b;\n" +
+                "    }\n" +
+                "\n" +
+                "    function foo(a) {\n" +
+                "        return a;\n" +
+                "    }\n" +
+                "\n" +
+                "    var a := 5;\n" +
+                "return a + this.foo(1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(8);
+    }
+
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionVoidCallTest() {
+        var program = " function foo(a,b) {" +
+                "           Sys.print(a+b);" +
+                "       }" +
+                "       var a := 5;" +
+                "       this.foo(1,2);" +
+                "       return a;";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(5);
+    }
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionScopeTest() {
+        var program = " var a := 5;" +
+                "       function foo(a,b) {" +
+                "           return a + b;" +
+                "       }" +
+                "       return a + this.foo(1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(8);
+    }
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionAsParamTest() {
+        var program = " var a := 5;" +
+                "       function foo(a,b) {" +
+                "           return a + b;" +
+                "       }" +
+                "       return a + this.foo(this.foo(1,1) + 1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(10);
+    }
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionNestedScopeTest() {
+        var program = " var a := 5;" +
+                "       function foo(a) {" +
+                "           return a + 1;" +
+                "       }" +
+                "       function foo(a,b) {" +
+                "           return this.foo(a) + this.foo(b);" +
+                "       }" +
+                "       return a + this.foo(1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        assertThat(returnVal).isInstanceOf(IntegerElement.class);
+        assertThat(((IntegerElement) returnVal).getValue()).isEqualTo(10);
+    }
+
+    @SneakyThrows
+    @Test
+    void selfDefinedFunctionVoidInvalidCallTest() {
+        var program = " function foo(a,b) {" +
+                "           Sys.print(a+b);" +
+                "       }" +
+                "       return 5 + this.foo(1,2);";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(program));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        VirtualMachine virtualMachine = getVirtualMachine(head);
+
+        assertThatThrownBy(() -> virtualMachine.run(null))
+                .isInstanceOf(VirtualMachineException.class)
+                .hasMessageContaining("You cannot perform an addition on Integer and Void!");
     }
 }

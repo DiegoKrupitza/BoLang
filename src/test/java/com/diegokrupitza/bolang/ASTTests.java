@@ -1215,7 +1215,7 @@ public class ASTTests {
 
         assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
         assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
-        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().isEmpty();
+        assertThat(((FunctionNode) head.getStats().get(0)).getParamNames()).isNotNull().isEmpty();
         assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
     }
 
@@ -1244,7 +1244,7 @@ public class ASTTests {
 
         assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
         assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
-        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParamNames()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
         assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
     }
 
@@ -1296,7 +1296,7 @@ public class ASTTests {
 
         assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
         assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
-        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParamNames()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
         assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
     }
 
@@ -1350,7 +1350,7 @@ public class ASTTests {
 
         assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
         assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
-        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().isEmpty();
+        assertThat(((FunctionNode) head.getStats().get(0)).getParamNames()).isNotNull().isEmpty();
         assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
 
         assertThat(head.getStats().get(1)).isInstanceOf(CallFunctionNode.class);

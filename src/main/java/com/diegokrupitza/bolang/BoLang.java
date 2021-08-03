@@ -3,6 +3,7 @@ package com.diegokrupitza.bolang;
 import com.diegokrupitza.bolang.syntaxtree.BuildAstVisitor;
 import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
 import com.diegokrupitza.bolang.vm.VirtualMachine;
+import com.diegokrupitza.bolang.vm.VirtualMachineException;
 import com.diegokrupitza.bolang.vm.types.AbstractElementType;
 import com.diegokrupitza.pdfgenerator.BoLexer;
 import com.diegokrupitza.pdfgenerator.BoParser;
@@ -78,7 +79,7 @@ public class BoLang {
 
     }
 
-    private static VirtualMachine getVirtualMachine(BoNode head) {
+    private static VirtualMachine getVirtualMachine(BoNode head) throws VirtualMachineException {
         return new VirtualMachine(head);
     }
 }
