@@ -1323,5 +1323,40 @@ public class ASTTests {
 
     }
 
+    @Test
+    void customFunctionWithCallTest() {
+        var line = "function newFunc() {" +
+                "   var x := 1;" +
+                "   return x;" +
+                "}" +
+                "" +
+                "this.newFunc();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats())
+                .isNotNull()
+                .hasSize(2);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
+        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().isEmpty();
+        assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
+
+        assertThat(head.getStats().get(1)).isInstanceOf(CallFunctionNode.class);
+        assertThat(((CallFunctionNode) head.getStats().get(1)).getModule()).isEqualTo("this");
+        assertThat(((CallFunctionNode) head.getStats().get(1)).getName()).isEqualTo("newFunc");
+    }
+
 
 }
