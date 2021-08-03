@@ -3,7 +3,7 @@ package com.diegokrupitza.bolang.vm;
 import com.diegokrupitza.bolang.syntaxtree.nodes.AccessIndexNode;
 import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
 import com.diegokrupitza.bolang.syntaxtree.nodes.ExpressionNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.FunctionNode;
+import com.diegokrupitza.bolang.syntaxtree.nodes.CallFunctionNode;
 import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
@@ -492,21 +492,21 @@ public class VirtualMachine {
             }
 
             throw new VirtualMachineException("This should never happen!");
-        } else if (expr instanceof FunctionNode) {
-            FunctionNode functionNode = (FunctionNode) expr;
+        } else if (expr instanceof CallFunctionNode) {
+            CallFunctionNode callFunctionNode = (CallFunctionNode) expr;
 
             // loading the function we want to use based on the function name
             // function names will be unique
             Function function;
             try {
-                function = FunctionFactory.getFunction(functionNode.getModule(), functionNode.getName());
+                function = FunctionFactory.getFunction(callFunctionNode.getModule(), callFunctionNode.getName());
             } catch (BoFunctionException e) {
                 throw new VirtualMachineException(e.getMessage());
             }
 
             // evaluating the values of the params so we get the correct values for the params
             List<AbstractElementType<?>> evaledParams = new ArrayList<>();
-            for (ExpressionNode param : functionNode.getParams()) {
+            for (ExpressionNode param : callFunctionNode.getParams()) {
                 evaledParams.add(evalExpression(param));
             }
 

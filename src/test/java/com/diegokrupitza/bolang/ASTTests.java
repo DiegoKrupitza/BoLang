@@ -1,10 +1,8 @@
 package com.diegokrupitza.bolang;
 
+import com.diegokrupitza.bolang.syntaxtree.BuildAstException;
 import com.diegokrupitza.bolang.syntaxtree.BuildAstVisitor;
-import com.diegokrupitza.bolang.syntaxtree.nodes.AccessIndexNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.ExpressionNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.FunctionNode;
+import com.diegokrupitza.bolang.syntaxtree.nodes.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
@@ -18,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @author Diego Krupitza
@@ -67,10 +66,10 @@ public class ASTTests {
 
 
         assertThat(head.getStats().size()).isEqualTo(1);
-        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
-        assertThat(((FunctionNode) head.getStats().get(0)).getModule()).isEqualTo("Sys");
-        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("print");
-        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).hasSize(1).containsExactly(new StringNode("Hey You!"));
+        assertThat(head.getStats().get(0)).isInstanceOf(CallFunctionNode.class);
+        assertThat(((CallFunctionNode) head.getStats().get(0)).getModule()).isEqualTo("Sys");
+        assertThat(((CallFunctionNode) head.getStats().get(0)).getName()).isEqualTo("print");
+        assertThat(((CallFunctionNode) head.getStats().get(0)).getParams()).hasSize(1).containsExactly(new StringNode("Hey You!"));
     }
 
     @Test
@@ -138,9 +137,9 @@ public class ASTTests {
 
         assertThat(head.getStats().size()).isEqualTo(1);
         assertThat(head.getStats().get(0)).isInstanceOf(ReturnNode.class);
-        assertThat(((ReturnNode) head.getStats().get(0)).getRet()).isInstanceOf(FunctionNode.class);
-        assertThat(((FunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getName()).isEqualTo("date");
-        assertThat(((FunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getModule()).isEqualTo("Date");
+        assertThat(((ReturnNode) head.getStats().get(0)).getRet()).isInstanceOf(CallFunctionNode.class);
+        assertThat(((CallFunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getName()).isEqualTo("date");
+        assertThat(((CallFunctionNode) ((ReturnNode) head.getStats().get(0)).getRet()).getModule()).isEqualTo("Date");
     }
 
     @Test
@@ -161,15 +160,15 @@ public class ASTTests {
 
 
         ExpressionNode ret = ((ReturnNode) head.getStats().get(0)).getRet();
-        FunctionNode functionNode = (FunctionNode) ret;
+        CallFunctionNode callFunctionNode = (CallFunctionNode) ret;
 
         assertThat(head.getStats().size()).isEqualTo(1);
         assertThat(head.getStats().get(0)).isInstanceOf(ReturnNode.class);
-        assertThat(ret).isInstanceOf(FunctionNode.class);
-        assertThat(functionNode.getName()).isEqualTo("date");
-        assertThat(functionNode.getModule()).isEqualTo("Date");
-        assertThat(functionNode.getParams().size()).isEqualTo(3);
-        assertThat(functionNode.getParams()).isEqualTo(Arrays.asList(new IntegerNode(1), new IntegerNode(2), new IntegerNode(3)));
+        assertThat(ret).isInstanceOf(CallFunctionNode.class);
+        assertThat(callFunctionNode.getName()).isEqualTo("date");
+        assertThat(callFunctionNode.getModule()).isEqualTo("Date");
+        assertThat(callFunctionNode.getParams().size()).isEqualTo(3);
+        assertThat(callFunctionNode.getParams()).isEqualTo(Arrays.asList(new IntegerNode(1), new IntegerNode(2), new IntegerNode(3)));
     }
 
     @Test
@@ -1190,4 +1189,139 @@ public class ASTTests {
         BooleanNode bool = (BooleanNode) returnNode.getRet();
         assertThat(bool.getValue()).isTrue();
     }
+
+    @Test
+    void customFunctionNoParamsTest() {
+        var line = "function newFunc() {" +
+                "   var x := 1;" +
+                "   return x;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats())
+                .isNotNull()
+                .hasSize(1);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
+        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().isEmpty();
+        assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
+    }
+
+    @Test
+    void customFunctionWithParamsTest() {
+        var line = "function newFunc(a,b,c,d,e,f) {" +
+                "   var x := 1;" +
+                "   return x;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats())
+                .isNotNull()
+                .hasSize(1);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
+        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
+        assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
+    }
+
+    @Test
+    void customFunctionWithWrongParamsTest() {
+        var line = "function newFunc(a,b,a) {" +
+                "   var x := 1;" +
+                "   return x;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("The name of the parameters in the function `newFunc` have to be unique!");
+    }
+
+    @Test
+    void customFunctionParamsScopeTest() {
+        var line = "function newFunc(a,b,c,d,e,f) {" +
+                "   var x := a + b + c;" +
+                "   return x;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats())
+                .isNotNull()
+                .hasSize(1);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(FunctionNode.class);
+        assertThat(((FunctionNode) head.getStats().get(0)).getName()).isEqualTo("newFunc");
+        assertThat(((FunctionNode) head.getStats().get(0)).getParams()).isNotNull().hasSize(6).containsExactly("a", "b", "c", "d", "e", "f");
+        assertThat(((FunctionNode) head.getStats().get(0)).getBody()).isNotNull().hasSize(2);
+    }
+
+    @Test
+    void customFunctionParamsInvalidScopeTest() {
+        var line = "function newFunc(a,b,c) {" +
+                "   var x := a + b + c + g;" +
+                "   return x;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("g not in scope");
+
+    }
+
+
 }

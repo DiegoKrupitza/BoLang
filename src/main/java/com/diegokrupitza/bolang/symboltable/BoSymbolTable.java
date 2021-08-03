@@ -45,4 +45,8 @@ public class BoSymbolTable {
 
         return false;
     }
+
+    public void add(List<String> idNames) {
+        this.sym.addAll(idNames);
+    }
 }

@@ -9,17 +9,17 @@ import java.util.List;
 /**
  * @author Diego Krupitza
  * @version 1.0
- * @date 28.07.21
+ * @date 08.07.21
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FunctionNode extends ExpressionNode {
+public class CallFunctionNode extends ExpressionNode {
 
     private String name;
 
-    private List<String> params;
+    private String module;
 
-    private List<ExpressionNode> body;
+    private List<ExpressionNode> params;
 
 }
