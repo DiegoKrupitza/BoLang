@@ -1,0 +1,5 @@
+module module2;
+
+function foo(a,b) {
+    return a - b;
+}

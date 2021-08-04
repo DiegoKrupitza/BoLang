@@ -1,5 +1,6 @@
 package com.diegokrupitza.bolang;
 
+import com.diegokrupitza.bolang.project.BoProject;
 import com.diegokrupitza.bolang.util.CmdUtilities;
 import org.apache.commons.cli.*;
 
@@ -65,15 +66,27 @@ public class BoLang {
             String fileName = boLangFiles.get(0);
             Path boLangCodeFile = Paths.get(fileName);
 
-            String boLangFileContent = Files.readString(boLangCodeFile);
-
             // generate new boService based on options etc
-            boService = BoService.builder()
-                    .functions(cmd.hasOption('f'))
-                    .build();
+            BoService.Builder boServiceBuilder = BoService.builder()
+                    .functions(cmd.hasOption('f'));
+
+            if (Files.isDirectory(boLangCodeFile)) {
+                // we are dealing with a BoLang project
+                BoProject boProject = new BoProject(boLangCodeFile);
+                boProject.checkProjectStructure();
+                boServiceBuilder = boServiceBuilder.project(boProject);
+
+                // setting the main as new `boLangCodeFile`
+                boLangCodeFile = boProject.getMain();
+            }
+
+            boService = boServiceBuilder.build();
+
+            String boLangFileContent = Files.readString(boLangCodeFile);
 
             // finaly run!
             boService.run(boLangFileContent);
+
         } catch (Exception e) {
             //TODO better exception handling in the future
             CmdUtilities.error(e.getMessage());

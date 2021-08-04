@@ -29,7 +29,7 @@ public class VirtualMachine {
 
     private BoNode programHead;
 
-    private FunctionTable functionTable;
+    private FunctionTable functionTable = new FunctionTable();
     private Map<String, AbstractElementType<?>> variables = new HashMap<>();
     private Map<String, String> externalParams = new HashMap<>();
 
@@ -40,9 +40,14 @@ public class VirtualMachine {
         buildFunctionTable();
     }
 
+    public void addExternalModules(Map<String, List<FunctionNode>> modules) {
+        functionTable.add(modules);
+    }
+
     private void buildFunctionTable() throws FunctionTableException {
         assert this.programHead != null : "Program head should never be null at this stage!";
 
+        // self defined functions
         List<FunctionNode> selfDefinedFunctions = this.programHead.getStats().stream()
                 .filter(item -> item instanceof FunctionNode)
                 .map(item -> ((FunctionNode) item))
@@ -53,7 +58,7 @@ public class VirtualMachine {
             return;
         }
 
-        functionTable = new FunctionTable(selfDefinedFunctions);
+        this.functionTable.add(Map.of("this", selfDefinedFunctions));
     }
 
     /**
@@ -188,6 +193,8 @@ public class VirtualMachine {
             this.returnedVal = evaledExpr;
         } else if (currentNode instanceof FunctionNode) {
             // we skip that since its a definition of a function
+        } else if (currentNode instanceof ImportNode) {
+            // we skip that since its a import
         } else {
             evalExpression(currentNode);
         }
@@ -526,7 +533,7 @@ public class VirtualMachine {
             if (!FunctionFactory.getAllPredefinedModules()
                     .contains(callFunctionNode.getModule())) {
                 // its not a predefined function aka we should have it in our functiontable
-                FunctionNode toCallFunctionNode = this.functionTable.get(callFunctionNode.getName(), evaledParams.size());
+                FunctionNode toCallFunctionNode = this.functionTable.get(callFunctionNode.getModule(), callFunctionNode.getName(), evaledParams.size());
 
                 // function calls have their own variable scope means we have to move current variable state outside
                 Map<String, AbstractElementType<?>> oldVars = this.variables;

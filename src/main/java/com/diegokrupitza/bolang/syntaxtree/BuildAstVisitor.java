@@ -28,8 +28,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     private BoSymbolTable symbolTable = null;
 
     @Override
-    public ExpressionNode visitBo(BoParser.BoContext ctx) {
-
+    public ExpressionNode visitNormalCode(BoParser.NormalCodeContext ctx) {
         // create a global symbol table context
         this.symbolTable = new BoSymbolTable();
 
@@ -39,6 +38,33 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
                 .collect(Collectors.toList());
 
         return new BoNode(processesStats);
+    }
+
+    @Override
+    public ExpressionNode visitModuleDef(BoParser.ModuleDefContext ctx) {
+        // create a global symbol table context
+        this.symbolTable = new BoSymbolTable();
+
+        String moduleName = ctx.moduleName.getText();
+        List<FunctionNode> functions = ctx.userFunc().stream()
+                .map(this::visit)
+                .map(item -> ((FunctionNode) item))
+                .collect(Collectors.toUnmodifiableList());
+
+        ModuleNode moduleNode = new ModuleNode(moduleName, functions);
+
+        return new BoNode(List.of(moduleNode));
+    }
+
+    @Override
+    public ExpressionNode visitImportDefinition(BoParser.ImportDefinitionContext ctx) {
+        String moduleName = ctx.moduleName.getText();
+        return new ImportNode(moduleName);
+    }
+
+    @Override
+    public ExpressionNode visitBo(BoParser.BoContext ctx) {
+        return visit(ctx.code());
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -1358,5 +1359,111 @@ public class ASTTests {
         assertThat(((CallFunctionNode) head.getStats().get(1)).getName()).isEqualTo("newFunc");
     }
 
+    @Test
+    void defineModuleValidTest() {
+        var line = "module testModule;" +
+                "" +
+                "function foo(a,b) {" +
+                "   return a + b;" +
+                "}";
 
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats()).isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(ModuleNode.class);
+
+        ModuleNode moduleNode = (ModuleNode) head.getStats().get(0);
+        assertThat(moduleNode.getName()).isEqualTo("testModule");
+        assertThat(moduleNode.getFunctions()).isNotNull()
+                .isNotEmpty()
+                .hasSize(1)
+                .containsExactly(
+                        new FunctionNode(
+                                "foo",
+                                List.of("a", "b"),
+                                List.of(new ReturnNode(new AdditionNode(new IdNode("a"), new IdNode("b"))))));
+    }
+
+    @Test
+    void defineEmptyModuleValidTest() {
+        var line = "module testModule;" +
+                "";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats()).isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
+
+        assertThat(head.getStats().get(0)).isInstanceOf(ModuleNode.class);
+
+        ModuleNode moduleNode = (ModuleNode) head.getStats().get(0);
+        assertThat(moduleNode.getName()).isEqualTo("testModule");
+        assertThat(moduleNode.getFunctions()).isNotNull()
+                .isEmpty();
+    }
+
+    @Test
+    void importModuleTest() {
+        var line = "import test;" +
+                "return test.foo();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        BoNode head = (BoNode) buildAstVisitor.visitBo(bo);
+
+        assertThat(head.getStats())
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(2);
+
+        assertThat(head.getStats().get(0))
+                .isInstanceOf(ImportNode.class);
+
+        ImportNode importNode = (ImportNode) head.getStats().get(0);
+
+        assertThat(importNode.getModuleName()).isEqualTo("test");
+
+        assertThat(head.getStats().get(1))
+                .isInstanceOf(ReturnNode.class);
+
+        ReturnNode returnNode = (ReturnNode) head.getStats().get(1);
+        assertThat(returnNode.getRet()).isInstanceOf(CallFunctionNode.class);
+
+        assertThat(((CallFunctionNode) returnNode.getRet()).getName()).isEqualTo("foo");
+        assertThat(((CallFunctionNode) returnNode.getRet()).getModule()).isEqualTo("test");
+        assertThat(((CallFunctionNode) returnNode.getRet()).getParams()).isNotNull().isEmpty();
+
+    }
 }

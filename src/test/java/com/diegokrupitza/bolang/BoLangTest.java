@@ -64,6 +64,13 @@ public class BoLangTest {
     }
 
     @Test
+    void runExampleProject() {
+        BoLang.main(new String[]{"examples/sampleProject", "-f"});
+
+        assertThat(outContent.toString().trim()).contains("3");
+    }
+
+    @Test
     void showHelpTest() {
         BoLang.main(new String[]{"-h"});
 

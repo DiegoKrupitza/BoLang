@@ -1,0 +1,9 @@
+module module1;
+
+function foo2(a) {
+    return a;
+}
+
+function foo(a,b) {
+    return this.foo2(a) + b;
+}
