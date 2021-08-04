@@ -6,7 +6,7 @@
 
     <groupId>com.diegokrupitza</groupId>
     <artifactId>BoLang</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <developers>
         <developer>
@@ -119,6 +119,15 @@
     </dependencies>
 
     <build>
+
+        <!-- setting the properties infos -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
 
             <!-- generating the antlr4 files -->

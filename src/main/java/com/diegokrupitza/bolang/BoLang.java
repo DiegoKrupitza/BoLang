@@ -3,10 +3,12 @@ package com.diegokrupitza.bolang;
 import com.diegokrupitza.bolang.util.CmdUtilities;
 import org.apache.commons.cli.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Diego Krupitza
@@ -17,9 +19,19 @@ public class BoLang {
 
     public static final String BO_LANG_NAME = "BoLang";
 
+    private static final Properties BoLangProperties = new Properties();
+    private static final String propertiesFileName = "BoLang.properties";
+
     private static BoService boService;
 
     public static void main(String[] args) {
+
+        // props
+        try {
+            BoLangProperties.load(BoLang.class.getClassLoader().getResourceAsStream(propertiesFileName));
+        } catch (IOException e) {
+            CmdUtilities.error("Could not load BoLang Properties");
+        }
 
         HelpFormatter hf = new HelpFormatter();
 
@@ -27,6 +39,7 @@ public class BoLang {
         Options options = new Options();
         options.addOption("f", false, "Enable function mode (allows self defined functions)");
         options.addOption("h", "help", false, "Prints this help information");
+        options.addOption("v", "version", false, "Display the current BoLang version");
 
         CommandLineParser parser = new DefaultParser();
 
@@ -35,6 +48,11 @@ public class BoLang {
 
             if (cmd.hasOption('h')) {
                 hf.printHelp(BO_LANG_NAME, options, true);
+                return;
+            }
+
+            if (cmd.hasOption('v')) {
+                System.out.println("Version: " + BoLangProperties.getProperty("version"));
                 return;
             }
 
