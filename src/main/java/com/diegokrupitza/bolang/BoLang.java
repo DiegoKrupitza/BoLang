@@ -76,7 +76,7 @@ public class BoLang {
                 boServiceBuilder = boServiceBuilder.project(boProject);
 
                 // setting the main as new `boLangCodeFile`
-                boLangCodeFile = boProject.getMain();
+                boLangCodeFile = boProject.getMainPath();
             }
 
             boService = boServiceBuilder.build();
@@ -93,6 +93,5 @@ public class BoLang {
                 hf.printHelp(BO_LANG_NAME, options, true);
             }
         }
-
     }
 }

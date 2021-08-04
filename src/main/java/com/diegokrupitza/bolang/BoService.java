@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -96,7 +95,7 @@ public class BoService {
         }
     }
 
-    private HashMap<String, List<FunctionNode>> extractImportedModules(BoNode head) {
+    private HashMap<String, List<FunctionNode>> extractImportedModules(BoNode head) throws VirtualMachineException {
         HashMap<String, List<FunctionNode>> moduleFunctionMap = new HashMap<>();
 
         try {
@@ -135,13 +134,10 @@ public class BoService {
                             .getFunctions();
 
                     moduleFunctionMap.put(nameOfModule, functionsOfModule);
-
-
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
+        } catch (Exception e) {
+            throw new VirtualMachineException(e.getMessage());
         }
         return moduleFunctionMap;
     }

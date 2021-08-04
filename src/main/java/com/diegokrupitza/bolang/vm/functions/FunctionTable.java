@@ -20,7 +20,7 @@ public class FunctionTable {
     public void add(Map<String, List<FunctionNode>> functionsMap) {
         functionsMap.keySet()
                 .forEach(item ->
-                        functions.put(item, functionsMap.get(item))
+                        this.functions.put(item, functionsMap.get(item))
                 );
     }
 
@@ -31,13 +31,13 @@ public class FunctionTable {
         String funcName = function.getName();
         List<String> params = function.getParamNames();
 
-        if (funcName.isEmpty()) {
+        if (this.functions.isEmpty()) {
             // just add we dont have to perform checks
-            this.functions.put(module, List.of(function));
+            this.functions.put(module, new ArrayList<>(List.of(function)));
             return;
         }
 
-        List<FunctionNode> functionsOfModule = functions.getOrDefault(module, new ArrayList<>());
+        List<FunctionNode> functionsOfModule = this.functions.getOrDefault(module, new ArrayList<>());
 
         // check if function with same signature is already defined
         List<FunctionNode> duplicatedFunctions = functionsOfModule.stream()
