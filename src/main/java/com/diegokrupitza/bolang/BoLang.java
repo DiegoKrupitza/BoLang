@@ -1,10 +1,7 @@
 package com.diegokrupitza.bolang;
 
 import com.diegokrupitza.bolang.util.CmdUtilities;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Options;
+import org.apache.commons.cli.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,14 +18,24 @@ public class BoLang {
     private static BoService boService;
 
     public static void main(String[] args) {
+
+        HelpFormatter hf = new HelpFormatter();
+
+        // defining the option for the args processing
+        Options options = new Options();
+        options.addOption("f", false, "Enable function mode (allows self defined functions)");
+        options.addOption("h", "help", false, "Prints this help information");
+
+        CommandLineParser parser = new DefaultParser();
+
         try {
-            // defining the option for the args processing
-            Options options = new Options();
-            options.addOption("f", false, "Enable function mode (allows self defined functions)");
-
-
-            CommandLineParser parser = new DefaultParser();
             CommandLine cmd = parser.parse(options, args);
+
+            if (cmd.hasOption('h')) {
+                hf.printHelp("BoLang", options, true);
+                return;
+            }
+
 
             List<String> boLangFiles = cmd.getArgList();
             if (boLangFiles.size() != 1) {
@@ -51,6 +58,9 @@ public class BoLang {
         } catch (Exception e) {
             //TODO better exception handling in the future
             CmdUtilities.error(e.getMessage());
+            if (e instanceof ParseException) {
+                hf.printHelp("BoLang", options, true);
+            }
         }
 
     }
