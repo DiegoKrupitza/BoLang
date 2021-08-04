@@ -69,4 +69,11 @@ public class BoLangTest {
 
         assertThat(outContent.toString().trim()).contains("usage: BoLang");
     }
+
+    @Test
+    void showVersionTest() {
+        BoLang.main(new String[]{"-v"});
+
+        assertThat(outContent.toString().trim()).contains("Version: ");
+    }
 }
