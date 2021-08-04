@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class BoLang {
 
+    public static final String BO_LANG_NAME = "BoLang";
+
     private static BoService boService;
 
     public static void main(String[] args) {
@@ -32,10 +34,9 @@ public class BoLang {
             CommandLine cmd = parser.parse(options, args);
 
             if (cmd.hasOption('h')) {
-                hf.printHelp("BoLang", options, true);
+                hf.printHelp(BO_LANG_NAME, options, true);
                 return;
             }
-
 
             List<String> boLangFiles = cmd.getArgList();
             if (boLangFiles.size() != 1) {
@@ -59,7 +60,7 @@ public class BoLang {
             //TODO better exception handling in the future
             CmdUtilities.error(e.getMessage());
             if (e instanceof ParseException) {
-                hf.printHelp("BoLang", options, true);
+                hf.printHelp(BO_LANG_NAME, options, true);
             }
         }
 
