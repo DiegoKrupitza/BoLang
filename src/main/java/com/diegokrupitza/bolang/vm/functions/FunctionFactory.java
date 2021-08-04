@@ -16,8 +16,14 @@ import java.util.stream.Collectors;
  */
 public class FunctionFactory {
 
-    // only scaning the bolang package
+    // only scanning the Bolang package
     private static final Reflections reflections = new Reflections("com.diegokrupitza.bolang");
+
+    // all functions that implement the interface "Function"
+    private static final Set<Class<? extends Function>> allInterfaceFunctions = reflections.getSubTypesOf(Function.class);
+
+    // all function that are annotated with the annotation "BoFunction"
+    private static final Set<Class<?>> allAnnotatedFunction = reflections.getTypesAnnotatedWith(BoFunction.class);
 
     /**
      * Gets the function that can be identified with the given function name
@@ -28,18 +34,8 @@ public class FunctionFactory {
      * @throws BoFunctionNotFoundException in case the function does not exist or there are multiple definitions
      */
     public static Function getFunction(String moduleName, String functionName) throws BoFunctionException {
+        List<Class<? extends Function>> allFunctions = getAllPredefinedFunctions();
 
-        // all functions that implement the interface "Function"
-        Set<Class<? extends Function>> allInterfaceFunctions = reflections.getSubTypesOf(Function.class);
-
-        // all function that are annotated with the annotation "BoFunction"
-        Set<Class<?>> allAnnotatedFunction = reflections.getTypesAnnotatedWith(BoFunction.class);
-
-
-        // all functions that implement the interface "Function" and the annotation "BoFunction"
-        List<Class<? extends Function>> allFunctions = allInterfaceFunctions.stream()
-                .filter(allAnnotatedFunction::contains)
-                .collect(Collectors.toList());
 
         // filter the function with matching name
         List<Class<? extends Function>> functionsWithThatName = allFunctions.stream()
@@ -69,6 +65,24 @@ public class FunctionFactory {
         } catch (Exception e) {
             throw new BoFunctionCreationException(e.getMessage());
         }
+    }
+
+    /**
+     * Provides a Set of all the Module names in the BoLang programming language
+     *
+     * @return a Set of Module names
+     */
+    public static Set<String> getAllPredefinedModules() {
+        return getAllPredefinedFunctions().stream()
+                .map(item -> item.getAnnotation(BoFunction.class).module())
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private static List<Class<? extends Function>> getAllPredefinedFunctions() {
+        // all functions that implement the interface "Function" and the annotation "BoFunction"
+        return allInterfaceFunctions.stream()
+                .filter(allAnnotatedFunction::contains)
+                .collect(Collectors.toList());
     }
 
 }

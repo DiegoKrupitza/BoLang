@@ -1,0 +1,11 @@
+
+function foo(a,b) {
+    return a + b;
+}
+
+function foo(a) {
+    return a;
+}
+
+var a := 5;
+return a + this.foo(1,2);

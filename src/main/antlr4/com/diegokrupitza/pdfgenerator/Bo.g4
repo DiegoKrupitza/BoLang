@@ -1,6 +1,6 @@
 grammar Bo;
 
-bo          :    stat+ ;
+bo          :    (stat | userFunc)+ ;
 
 scopecont   :   stat* ;
 
@@ -10,6 +10,9 @@ stat        :   'return' expr ';'                                               
             |   'var' ID ':=' expr ';'                                                                          #varDefStat
             |   ID ':=' expr ';'                                                                                #varAssignStat
             |   expr ';'                                                                                        #exprForward
+            ;
+
+userFunc    :   'function' funcName=ID '(' ((ID ( ',' ID )*)?) ')' '{' funcStats=scopecont '}'              #userFuncDef
             ;
 
 expr        :   '(' expr ')'                                                                                                       # parensExpr

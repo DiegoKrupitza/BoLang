@@ -32,11 +32,12 @@
     + [Less](#less)
     + [Logic And](#logic-and)
     + [Logic Or](#logic-or)
+  * [Self defined functions](#self-defined-functions)
   * [Functions](#functions)
 
 # Introduction
 
-BoLang is a currently non turing complete programming language that is written in Java. The goal of this language is to have predefined functions that can be called by the user and do further operation on results etc.
+BoLang is a non turing complete programming language that is written in Java. With the flag `-f` you can allow the usage of self defined functions and make BoLang turing complete. The goal of this language is to have predefined functions that can be called by the user and do further operation on results etc.
 
 # Documentation
 
@@ -379,6 +380,19 @@ return true || true; // true
 ```
 
 The result type of this operator is always a `boolean`.
+
+## Self defined functions
+
+By default BoLang does not support self defined functions but with the flag `-f` you can allow them. Self defined functions can be defined in any section of the program means you can defined it before or after usage. Self defined functions are in by default in the module `this`. So calling a self defined function will be in the form of `this.[functionName]`. 
+
+```BoLang
+function add(a,b) {
+	return a + b;
+}
+
+return 10 - this.add(2,3); // returns 5
+```
+
 
 ## Functions
 

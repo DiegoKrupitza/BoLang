@@ -1,10 +1,7 @@
 package com.diegokrupitza.bolang.syntaxtree;
 
 import com.diegokrupitza.bolang.symboltable.BoSymbolTable;
-import com.diegokrupitza.bolang.syntaxtree.nodes.AccessIndexNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.ExpressionNode;
-import com.diegokrupitza.bolang.syntaxtree.nodes.FunctionNode;
+import com.diegokrupitza.bolang.syntaxtree.nodes.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
@@ -13,10 +10,13 @@ import com.diegokrupitza.pdfgenerator.BoBaseVisitor;
 import com.diegokrupitza.pdfgenerator.BoLexer;
 import com.diegokrupitza.pdfgenerator.BoParser;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
 
 /**
  * @author Diego Krupitza
@@ -92,7 +92,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
                     .collect(Collectors.toList());
         }
 
-        return new FunctionNode(funcName, moduleName, params);
+        return new CallFunctionNode(funcName, moduleName, params);
     }
 
     @Override
@@ -284,6 +284,46 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
         throw new RuntimeException("Yeah this should never happen!");
 
     }
+
+    @Override
+    public ExpressionNode visitUserFuncDef(BoParser.UserFuncDefContext ctx) {
+        String funcName = ctx.funcName.getText();
+
+        if (StringUtils.isEmpty(funcName)) {
+            // Better exception
+            throw new BuildAstException("You tried to define a function without giving it a name");
+        }
+
+        // params
+        List<String> paramIdentifiers = ctx.ID().stream()
+                .map(item -> item.getSymbol().getText())
+                .filter(not(funcName::equals))
+                .collect(Collectors.toList());
+
+        // check if all params have a unique name
+        if (paramIdentifiers.stream()
+                .distinct()
+                .count() != paramIdentifiers.size()) {
+            // at least one param is not unique
+            throw new BuildAstException(String.format("The name of the parameters in the function `%s` have to be unique!", funcName));
+        }
+
+        // create new context for the if stat
+        BoSymbolTable oldSymbol = this.symbolTable;
+        this.symbolTable = this.symbolTable.createScope();
+
+        // adding the param to the function scope
+        this.symbolTable.add(paramIdentifiers);
+
+        BoParser.ScopecontContext functionBodyStat = ctx.funcStats;
+        List<ExpressionNode> functionBody = functionBodyStat.children.stream()
+                .map(this::visit)
+                .collect(Collectors.toList());
+
+        this.symbolTable = oldSymbol;
+        return new FunctionNode(funcName, paramIdentifiers, functionBody);
+    }
+
 
     @Override
     public ExpressionNode visitExternalParamVal(BoParser.ExternalParamValContext ctx) {
