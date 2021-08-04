@@ -59,7 +59,7 @@ public class FunctionTable {
         assert functionName != null : "Function name is not allowed to be empty";
 
         if (!this.functions.containsKey(module)) {
-            throw new FunctionTableException(String.format("The module `%s` does not exist!", module));
+            throw new FunctionTableException(String.format("The module `%s` does not exist! Or the import statement is missing!", module));
         }
 
         // we can assure that we only have one in this
