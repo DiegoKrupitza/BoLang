@@ -1,5 +1,8 @@
 ![compact BoLang logo](./resources/compactlogo.png)
 
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/diegokrupitza/BoLang?label=Version)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/diegokrupitza/BoLang/Java%20CI%20with%20Maven)
+
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
