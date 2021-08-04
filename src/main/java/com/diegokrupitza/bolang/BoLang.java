@@ -73,7 +73,6 @@ public class BoLang {
             if (Files.isDirectory(boLangCodeFile)) {
                 // we are dealing with a BoLang project
                 BoProject boProject = new BoProject(boLangCodeFile);
-                boProject.checkProjectStructure();
                 boServiceBuilder = boServiceBuilder.project(boProject);
 
                 // setting the main as new `boLangCodeFile`
