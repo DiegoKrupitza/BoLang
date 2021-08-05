@@ -2,7 +2,6 @@ package com.diegokrupitza.bolang.syntaxtree.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ public class ModuleNode extends ExpressionNode {
 
     private String name;
 
-    private List<FunctionNode> functions;
+    private List<ImportNode> imports;
 
+    private List<FunctionNode> functions;
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * @author Diego Krupitza
@@ -43,6 +44,10 @@ public class BoProject {
     public void checkProjectStructure() throws BoProjectException {
         //TODO check if the BoProject.json is in valid format
         // and all the files exists that a defined
+    }
+
+    public Map<String, String> getProjectParams() {
+        return this.projectPojo.getParams();
     }
 
     public Path getMainPath() {

@@ -1,5 +1,7 @@
 module module2;
 
+import module1;
+
 function foo(a,b) {
-    return a - b;
+    return module1.foo2(a) - b;
 }

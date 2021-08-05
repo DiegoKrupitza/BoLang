@@ -1,8 +1,6 @@
 import module1;
-
-return module1.foo(1,2) + module2.foo(5,5); // return 3
-
 import module2;
 
+var firstNumber := Numbers.toInt(#param1);
 
-
+return module1.foo(firstNumber,2) + module2.foo(5,5); // return 3

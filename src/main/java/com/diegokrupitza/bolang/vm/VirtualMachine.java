@@ -25,9 +25,9 @@ import java.util.stream.Collectors;
  */
 public class VirtualMachine {
 
-    private BoNode programHead;
+    private final BoNode programHead;
 
-    private FunctionTable functionTable = new FunctionTable();
+    private final FunctionTable functionTable = new FunctionTable();
     private Map<String, AbstractElementType<?>> variables = new HashMap<>();
     private Map<String, String> externalParams = new HashMap<>();
 

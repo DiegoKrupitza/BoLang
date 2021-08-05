@@ -1,6 +1,7 @@
 package com.diegokrupitza.bolang;
 
 import com.diegokrupitza.bolang.project.BoProject;
+import com.diegokrupitza.bolang.project.exceptions.BoProjectException;
 import com.diegokrupitza.bolang.syntaxtree.BuildAstVisitor;
 import com.diegokrupitza.bolang.syntaxtree.nodes.BoNode;
 import com.diegokrupitza.bolang.syntaxtree.nodes.FunctionNode;
@@ -15,10 +16,12 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,10 +34,12 @@ public class BoService {
 
     private final boolean functionsAllowed;
     private final BoProject boProject;
+    private final Map<String, String> externalParams;
 
     public BoService(Builder builder) {
         this.functionsAllowed = builder.functionsAllowed;
         this.boProject = builder.project;
+        this.externalParams = builder.params;
     }
 
     public static BoService.Builder builder() {
@@ -88,7 +93,7 @@ public class BoService {
         HashMap<String, List<FunctionNode>> moduleFunctionMap = extractImportedModules(head);
         virtualMachine.addExternalModules(moduleFunctionMap);
 
-        AbstractElementType<?> returnVal = virtualMachine.run(null);
+        AbstractElementType<?> returnVal = virtualMachine.run(this.externalParams);
 
         if (returnVal != null) {
             System.out.println(returnVal.toString());
@@ -118,27 +123,52 @@ public class BoService {
 
                 // populating the map with the list of all implemented functions in a module
                 for (String nameOfModule : namesOfModuleToImport) {
-                    Path modulePath = boProject.getModulePath(nameOfModule);
-
-                    String moduleContent = Files.readString(modulePath);
-
-                    // we need to adjust the "this" of the module.
-                    moduleContent = moduleContent.replaceAll("this\\.", nameOfModule + ".");
-
-                    BoNode moduleBoNode = parseContent(moduleContent);
-
-                    assert moduleBoNode.getStats().get(0) instanceof ModuleNode : "This should always be of type ModuleNode!";
-
-                    // functions in the given module
-                    List<FunctionNode> functionsOfModule = ((ModuleNode) moduleBoNode.getStats().get(0))
-                            .getFunctions();
-
-                    moduleFunctionMap.put(nameOfModule, functionsOfModule);
+                    moduleFunctionMap = performImportForModule(moduleFunctionMap, nameOfModule);
                 }
             }
         } catch (Exception e) {
             throw new VirtualMachineException(e.getMessage());
         }
+        return moduleFunctionMap;
+    }
+
+    private HashMap<String, List<FunctionNode>> performImportForModule(HashMap<String, List<FunctionNode>> moduleFunctionMap, String nameOfModule) throws BoProjectException, IOException {
+        if (moduleFunctionMap.containsKey(nameOfModule)) {
+            // we already imported that certain module
+            return moduleFunctionMap;
+        }
+
+        Path modulePath = boProject.getModulePath(nameOfModule);
+
+        String moduleContent = Files.readString(modulePath);
+
+        // we need to adjust the "this" of the module.
+        moduleContent = moduleContent.replaceAll("this\\.", nameOfModule + ".");
+
+        BoNode moduleBoNode = parseContent(moduleContent);
+
+        assert moduleBoNode.getStats().get(0) instanceof ModuleNode : "This should always be of type ModuleNode!";
+
+        // functions in the given module
+        List<FunctionNode> functionsOfModule = ((ModuleNode) moduleBoNode.getStats().get(0))
+                .getFunctions();
+
+        // adding the current imported module to the map
+        moduleFunctionMap.put(nameOfModule, functionsOfModule);
+        
+        // import module that the module imported
+        List<ImportNode> importsOfModule = ((ModuleNode) moduleBoNode.getStats().get(0)).getImports();
+
+        if (CollectionUtils.isNotEmpty(importsOfModule)) {
+            // we have imports to do!
+            // circular dependencies are not a problem since as soon as its once seen its get added before
+            // see few lines above
+
+            for (ImportNode importNodeOfModule : importsOfModule) {
+                moduleFunctionMap = performImportForModule(moduleFunctionMap, importNodeOfModule.getModuleName());
+            }
+        }
+
         return moduleFunctionMap;
     }
 
@@ -156,6 +186,7 @@ public class BoService {
 
     static class Builder {
 
+        private final Map<String, String> params = new HashMap<>();
         private boolean functionsAllowed = false;
         private BoProject project;
 
@@ -176,6 +207,11 @@ public class BoService {
 
         public Builder project(BoProject boProject) {
             this.project = boProject;
+            return this;
+        }
+
+        public Builder addParams(Map<String, String> params) {
+            this.params.putAll(params);
             return this;
         }
     }

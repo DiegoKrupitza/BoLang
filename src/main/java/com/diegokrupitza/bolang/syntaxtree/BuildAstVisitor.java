@@ -6,6 +6,7 @@ import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.unary.NegateNode;
+import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
 import com.diegokrupitza.pdfgenerator.BoBaseVisitor;
 import com.diegokrupitza.pdfgenerator.BoLexer;
 import com.diegokrupitza.pdfgenerator.BoParser;
@@ -26,6 +27,8 @@ import static java.util.function.Predicate.not;
 public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
 
     private BoSymbolTable symbolTable = null;
+    private List<String> importedModules = new ArrayList<>();
+    private String currentModuleName = "this";
 
     @Override
     public ExpressionNode visitNormalCode(BoParser.NormalCodeContext ctx) {
@@ -46,12 +49,23 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
         this.symbolTable = new BoSymbolTable();
 
         String moduleName = ctx.moduleName.getText();
+
+        // adding the own module to the scope of imported modules
+        importedModules.add(moduleName);
+        currentModuleName = moduleName;
+
+        List<ImportNode> importsInModule = ctx.importDef()
+                .stream()
+                .map(this::visit)
+                .map(item -> ((ImportNode) item))
+                .collect(Collectors.toUnmodifiableList());
+
         List<FunctionNode> functions = ctx.userFunc().stream()
                 .map(this::visit)
                 .map(item -> ((FunctionNode) item))
                 .collect(Collectors.toUnmodifiableList());
 
-        ModuleNode moduleNode = new ModuleNode(moduleName, functions);
+        ModuleNode moduleNode = new ModuleNode(moduleName, importsInModule, functions);
 
         return new BoNode(List.of(moduleNode));
     }
@@ -59,6 +73,17 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     @Override
     public ExpressionNode visitImportDefinition(BoParser.ImportDefinitionContext ctx) {
         String moduleName = ctx.moduleName.getText();
+
+        if (currentModuleName.equals(moduleName)) {
+            throw new BuildAstException(String.format("You cannot import yourself! Please remove the line `import %s;`", moduleName));
+        }
+
+        if (importedModules.contains(moduleName)) {
+            throw new BuildAstException(String.format("You cannot import the module `%s` multiple times!", moduleName));
+        }
+
+        importedModules.add(moduleName);
+
         return new ImportNode(moduleName);
     }
 
@@ -108,6 +133,13 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
         String funcName = ctx.func.getText();
 
         String moduleName = ctx.module.getText();
+
+        if (!moduleName.equals("this") && // not this
+                !FunctionFactory.getAllPredefinedModules().contains(moduleName) && // not a predefined
+                !importedModules.contains(moduleName) // not already imported
+        ) {
+            throw new BuildAstException(String.format("You have to import the module `%s` before using it!", moduleName));
+        }
 
         List<ExpressionNode> params = new ArrayList<>();
 

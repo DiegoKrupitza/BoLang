@@ -3,8 +3,8 @@ grammar Bo;
 bo          : code
             ;
 
-code        :   (stat | userFunc | importDef)+                      #normalCode
-            |   'module' moduleName=ID ';' userFunc*                #moduleDef
+code        :   (stat | userFunc | importDef)+                              #normalCode
+            |   'module' moduleName=ID ';' (userFunc | importDef)*          #moduleDef
             ;
 
 scopecont   :   stat* ;

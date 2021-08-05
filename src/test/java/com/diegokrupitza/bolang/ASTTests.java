@@ -1466,4 +1466,90 @@ public class ASTTests {
         assertThat(((CallFunctionNode) returnNode.getRet()).getParams()).isNotNull().isEmpty();
 
     }
+
+    @Test
+    void doubleImportModuleInvalidTest() {
+        var line = "import test;" +
+                "import test;" +
+                "return test.foo();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("You cannot import the module `test` multiple times!");
+
+    }
+
+    @Test
+    void missingImportModuleInvalidTest() {
+        var line = "return test.foo();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("You have to import the module `test` before using it!");
+
+    }
+
+    @Test
+    void selfImportThisInvalidTest() {
+        var line = "import this;" +
+                "return test.foo();";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("You cannot import yourself! Please remove the line `import this;`");
+    }
+
+    @Test
+    void selfImportModuleInvalidTest() {
+        var line = "module testModule;" +
+                "import testModule;" +
+                "" +
+                "function foo(a,b) {" +
+                "   return a + b;" +
+                "}";
+
+        // lexing
+        BoLexer boLexer = new BoLexer(CharStreams.fromString(line));
+        CommonTokenStream tokens = new CommonTokenStream(boLexer);
+
+        // parsing
+        BoParser boParser = new BoParser(tokens);
+        BoParser.BoContext bo = boParser.bo();
+
+        // AST generator
+        BuildAstVisitor buildAstVisitor = new BuildAstVisitor();
+        assertThatThrownBy(() -> buildAstVisitor.visitBo(bo))
+                .isInstanceOf(BuildAstException.class)
+                .hasMessageContaining("You cannot import yourself! Please remove the line `import testModule;`");
+    }
 }

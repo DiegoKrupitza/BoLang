@@ -8,6 +8,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * The function table contains all the self defined functions from the script and all the imports.
+ * <p>
+ * The internal structure of the function table is a Map that maps the module name to a list of implemented functions
+ * <p>
+ * The module name of non-module files is always `this`
+ * <p>
+ * ----------------------------------------------------------
+ * |    Module Name    |    FunctionsOfModule               |
+ * ----------------------------------------------------------
+ * |    this           |    [Function A,Function B,...]
+ * <p>
+ * |    moduleA        |    [Function A,Function D,...]
+ *
  * @author Diego Krupitza
  * @version 1.0
  * @date 03.08.21
@@ -17,6 +30,11 @@ public class FunctionTable {
     // module name, list of function
     private final Map<String, List<FunctionNode>> functions = new HashMap<>();
 
+    /**
+     * Adds the given Mappings of Module name and associated function to the function table
+     *
+     * @param functionsMap the mapping of module names and function to add
+     */
     public void add(Map<String, List<FunctionNode>> functionsMap) {
         functionsMap.keySet()
                 .forEach(item ->
@@ -24,6 +42,13 @@ public class FunctionTable {
                 );
     }
 
+    /**
+     * Adds a given function to the list of a module
+     *
+     * @param module   the name of the module we want to add the function to
+     * @param function the function we want to add
+     * @throws FunctionTableException in case a function with the same signature is already associated to this module (aka double definition)!
+     */
     public void add(String module, FunctionNode function) throws FunctionTableException {
         assert module != null : "Module name is should never be null!";
         assert function != null : "The function to add is not allowed to be null!";
@@ -54,6 +79,16 @@ public class FunctionTable {
         this.functions.put(module, functionsOfModule);
     }
 
+    /**
+     * Gets the Function that matches the provided
+     * signature(<code>functionName</code>, <code>numberOfParams</code>) of a module
+     *
+     * @param module         the name of the module
+     * @param functionName   the name of the function we want
+     * @param numberOfParams the number of params the function takes
+     * @return the requested function node containing the function body, params, etc
+     * @throws FunctionTableException in case the function or module does not exist!
+     */
     public FunctionNode get(String module, String functionName, int numberOfParams) throws FunctionTableException {
         assert module != null : "Module name is should never be null!";
         assert functionName != null : "Function name is not allowed to be empty";
