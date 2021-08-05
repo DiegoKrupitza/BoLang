@@ -1,0 +1,7 @@
+{
+  "name": "Train printer",
+  "description": "A module that allows you to print a train in the standard output",
+  "main": "Train.bo",
+  "modules": {},
+  "params": {}
+}

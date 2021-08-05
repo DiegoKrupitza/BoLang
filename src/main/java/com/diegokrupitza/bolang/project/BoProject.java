@@ -18,6 +18,9 @@ import java.util.Map;
  */
 public class BoProject {
 
+    private static final String BO_MODULES_DIR = "./bo_modules/";
+    public static final String BO_PROJECT_JSON = "./BoProject.json";
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Getter
@@ -34,7 +37,7 @@ public class BoProject {
 
     private void readBoProjectJson() throws BoProjectException {
         try {
-            Path jsonPath = projectBase.resolve(Path.of("./BoProject.json")).normalize();
+            Path jsonPath = projectBase.resolve(Path.of(BO_PROJECT_JSON)).normalize();
             this.projectPojo = objectMapper.readValue(Files.readString(jsonPath), BoProjectPojo.class);
         } catch (IOException e) {
             throw new BoProjectException(e.getMessage());
@@ -59,7 +62,22 @@ public class BoProject {
             throw new BoProjectException(String.format("Module with the name `%s` was not defined in the project modules section!", nameOfModule));
         }
 
+
         String moduleFileName = projectPojo.getModules().get(nameOfModule);
+
+        if (moduleFileName.startsWith("@")) {
+            // we are dealing with a bo_modules dependency
+            String moduleDirName = moduleFileName.substring(1);
+
+            Path moduleProjectBase = projectBase
+                    .resolve(BO_MODULES_DIR)
+                    .resolve(moduleDirName)
+                    .normalize();
+
+            BoProject moduleBoProject = new BoProject(moduleProjectBase);
+            return moduleBoProject.getMainPath();
+        }
+
         return projectBase.resolve(Path.of(moduleFileName)).normalize();
     }
 }

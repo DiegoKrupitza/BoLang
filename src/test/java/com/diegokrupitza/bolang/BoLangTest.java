@@ -71,6 +71,16 @@ public class BoLangTest {
     }
 
     @Test
+    void runExampleProjectToCallModule() {
+        BoLang.main(new String[]{"examples/sampleProject", "-f", "-p", "{\"p1\":\"1\",\"param2\":\"X\"}"});
+
+        assertThat(outContent.toString().trim()).contains("____\n" +
+                "|DD|____T_\n" +
+                "|_ |_____|<\n" +
+                "@-@-@-oo\\);".trim());
+    }
+
+    @Test
     void showHelpTest() {
         BoLang.main(new String[]{"-h"});
 

@@ -4,7 +4,8 @@
   "main": "Main.bo",
   "modules": {
     "module1": "Module1.bo",
-    "module2": "Module2.bo"
+    "module2": "Module2.bo",
+    "trainprinter": "@TrainPrinter"
   },
   "params": {
     "param1": "1",

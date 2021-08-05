@@ -1,6 +1,11 @@
 import module1;
 import module2;
 
-var firstNumber := Numbers.toInt(#param1);
+import trainprinter;
 
-return module1.foo(firstNumber,2) + module2.foo(5,5); // return 3
+if(#param2 == "X") {
+    trainprinter.print();
+}else {
+    var firstNumber := Numbers.toInt(#param1);
+    return module1.foo(firstNumber,2) + module2.foo(5,5); // return 3
+}
