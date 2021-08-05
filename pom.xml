@@ -71,6 +71,12 @@
             <version>${version.jackson}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.everit.json</groupId>
+            <artifactId>org.everit.json.schema</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
         <!-- apache commons -->
         <dependency>
             <groupId>org.apache.commons</groupId>
