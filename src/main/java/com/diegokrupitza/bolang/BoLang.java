@@ -1,12 +1,14 @@
 package com.diegokrupitza.bolang;
 
 import com.diegokrupitza.bolang.project.BoProject;
+import com.diegokrupitza.bolang.project.BoProjectValidator;
 import com.diegokrupitza.bolang.util.CmdUtilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -77,6 +79,8 @@ public class BoLang {
             if (Files.isDirectory(boLangCodeFile)) {
                 // we are dealing with a BoLang project
                 BoProject boProject = new BoProject(boLangCodeFile);
+                BoProjectValidator.validate(boProject);
+
                 boServiceBuilder = boServiceBuilder.project(boProject);
 
                 if (!boProject.getProjectParams().isEmpty()) {
@@ -110,6 +114,10 @@ public class BoLang {
             // finaly run!
             boService.run(boLangFileContent);
 
+        } catch (IOException e) {
+            if (e instanceof NoSuchFileException) {
+                CmdUtilities.error("Could not find the file: " + e.getMessage());
+            }
         } catch (Exception e) {
             //TODO better exception handling in the future
             CmdUtilities.error(e.getMessage());

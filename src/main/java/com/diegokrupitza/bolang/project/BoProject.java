@@ -18,9 +18,8 @@ import java.util.Map;
  */
 public class BoProject {
 
-    private static final String BO_MODULES_DIR = "./bo_modules/";
     public static final String BO_PROJECT_JSON = "./BoProject.json";
-
+    private static final String BO_MODULES_DIR = "./bo_modules/";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Getter
@@ -29,24 +28,23 @@ public class BoProject {
 
     private BoProjectPojo projectPojo;
 
+    @Getter
+    private String rawJsonContent;
+
     public BoProject(Path projectBase) throws BoProjectException {
         this.projectBase = projectBase;
-        checkProjectStructure();
         readBoProjectJson();
     }
 
     private void readBoProjectJson() throws BoProjectException {
         try {
             Path jsonPath = projectBase.resolve(Path.of(BO_PROJECT_JSON)).normalize();
-            this.projectPojo = objectMapper.readValue(Files.readString(jsonPath), BoProjectPojo.class);
+            rawJsonContent = Files.readString(jsonPath);
+
+            this.projectPojo = objectMapper.readValue(rawJsonContent, BoProjectPojo.class);
         } catch (IOException e) {
             throw new BoProjectException(e.getMessage());
         }
-    }
-
-    public void checkProjectStructure() throws BoProjectException {
-        //TODO check if the BoProject.json is in valid format
-        // and all the files exists that a defined
     }
 
     public Map<String, String> getProjectParams() {
@@ -61,7 +59,6 @@ public class BoProject {
         if (!projectPojo.getModules().containsKey(nameOfModule)) {
             throw new BoProjectException(String.format("Module with the name `%s` was not defined in the project modules section!", nameOfModule));
         }
-
 
         String moduleFileName = projectPojo.getModules().get(nameOfModule);
 
