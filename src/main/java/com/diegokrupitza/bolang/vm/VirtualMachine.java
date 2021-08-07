@@ -189,6 +189,28 @@ public class VirtualMachine {
 
 
             this.returnedVal = evaledExpr;
+        } else if (currentNode instanceof WhileNode) {
+            WhileNode whileNode = (WhileNode) currentNode;
+
+            ExpressionNode whileCondition = whileNode.getCondition();
+            List<ExpressionNode> whileBody = whileNode.getBody();
+
+            AbstractElementType<?> evaledCondition = evalExpression(whileCondition);
+            if (Types.isNotOfType(Type.BOOLEAN, evaledCondition)) {
+                throw new VirtualMachineException(String.format("Condition for a while loop has to be a boolean not a %s", evaledCondition.getType()));
+            }
+
+            while (Booleans.TRUE.equals(evaledCondition)) {
+
+                // repeating the loop since we hav still a true state
+                boolean hasReturnVal = processStats(whileBody);
+                if (hasReturnVal) {
+                    return;
+                }
+
+                evaledCondition = evalExpression(whileCondition);
+            }
+
         } else if (currentNode instanceof FunctionNode) {
             // we skip that since its a definition of a function
         } else if (currentNode instanceof ImportNode) {

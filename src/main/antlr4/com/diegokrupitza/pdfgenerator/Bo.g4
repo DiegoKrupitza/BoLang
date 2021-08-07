@@ -14,6 +14,7 @@ stat        :   'return' expr ';'                                               
             |   'if' '(' cond=expr ')' '{'  ifStat=scopecont '}'                                                #ifStat
             |   'var' ID ':=' expr ';'                                                                          #varDefStat
             |   ID ':=' expr ';'                                                                                #varAssignStat
+            |   'while' '(' cond=expr ')' '{' whileBody=scopecont '}'                                           #whileLoop
             |   expr ';'                                                                                        #exprForward
             ;
 

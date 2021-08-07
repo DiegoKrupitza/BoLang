@@ -161,6 +161,20 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
     }
 
     @Override
+    public ExpressionNode visitWhileLoop(BoParser.WhileLoopContext ctx) {
+
+        BoParser.ExprContext cond = ctx.cond;
+        ExpressionNode conditionVisit = visit(cond);
+
+        BoParser.ScopecontContext whileBody = ctx.whileBody;
+        List<ExpressionNode> visitedWhileBody = whileBody.children.stream()
+                .map(this::visit)
+                .collect(Collectors.toList());
+
+        return new WhileNode(conditionVisit, visitedWhileBody);
+    }
+
+    @Override
     public ExpressionNode visitInfixExpr(BoParser.InfixExprContext ctx) {
 
         InfixNode node;
