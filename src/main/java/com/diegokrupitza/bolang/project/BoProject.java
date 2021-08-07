@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,6 +43,8 @@ public class BoProject {
             rawJsonContent = Files.readString(jsonPath);
 
             this.projectPojo = objectMapper.readValue(rawJsonContent, BoProjectPojo.class);
+        } catch (FileNotFoundException e) {
+            throw new BoProjectException("File not found: " + e.getMessage());
         } catch (IOException e) {
             throw new BoProjectException(e.getMessage());
         }
@@ -53,6 +56,11 @@ public class BoProject {
 
     public Path getMainPath() {
         return projectBase.resolve(projectPojo.getMain()).normalize();
+    }
+
+    public boolean isExternalModule(String nameOfModule) {
+        String moduleFileName = projectPojo.getModules().getOrDefault(nameOfModule, "");
+        return moduleFileName.startsWith("@");
     }
 
     public Path getModulePath(String nameOfModule) throws BoProjectException {

@@ -1,7 +1,7 @@
 {
   "name": "Sample Project",
   "description": "A description you can choose",
-  "main": "Mainaa.bo",
+  "main": "Main.bo",
   "modules": {
     "module1": "Module1.bo",
     "module2": "Module2.bo",
