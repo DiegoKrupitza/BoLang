@@ -1,0 +1,11 @@
+module module1;
+
+import module2;
+
+function foo2(a) {
+    return a;
+}
+
+function foo(a,b) {
+    return this.foo2(a) + b + (module2.foo(0,0));
+}

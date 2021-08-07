@@ -1,0 +1,8 @@
+module trainprinter;
+
+function print() {
+    Sys.println("____");
+    Sys.println("|DD|____T_");
+    Sys.println("|_ |_____|<");
+    Sys.println("@-@-@-oo\);");
+}

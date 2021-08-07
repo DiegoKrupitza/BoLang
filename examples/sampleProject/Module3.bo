@@ -1,0 +1,7 @@
+module module3;
+
+// empty module never used!
+
+function shouldNotExist() {
+    return 1;
+}

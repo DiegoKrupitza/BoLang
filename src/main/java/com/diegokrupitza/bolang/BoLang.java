@@ -1,13 +1,18 @@
 package com.diegokrupitza.bolang;
 
+import com.diegokrupitza.bolang.project.BoProject;
+import com.diegokrupitza.bolang.project.BoProjectValidator;
 import com.diegokrupitza.bolang.util.CmdUtilities;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -40,11 +45,17 @@ public class BoLang {
         options.addOption("f", false, "Enable function mode (allows self defined functions)");
         options.addOption("h", "help", false, "Prints this help information");
         options.addOption("v", "version", false, "Display the current BoLang version");
+        options.addOption("p", "params", true, "Allows you to provide params in a JSON format to the program");
 
         CommandLineParser parser = new DefaultParser();
 
         try {
             CommandLine cmd = parser.parse(options, args);
+
+
+            // generate new boService based on options etc
+            BoService.Builder boServiceBuilder = BoService.builder()
+                    .functions(cmd.hasOption('f'));
 
             if (cmd.hasOption('h')) {
                 hf.printHelp(BO_LANG_NAME, options, true);
@@ -65,15 +76,48 @@ public class BoLang {
             String fileName = boLangFiles.get(0);
             Path boLangCodeFile = Paths.get(fileName);
 
-            String boLangFileContent = Files.readString(boLangCodeFile);
+            if (Files.isDirectory(boLangCodeFile)) {
+                // we are dealing with a BoLang project
+                BoProject boProject = new BoProject(boLangCodeFile);
+                BoProjectValidator.validate(boProject);
 
-            // generate new boService based on options etc
-            boService = BoService.builder()
-                    .functions(cmd.hasOption('f'))
-                    .build();
+                boServiceBuilder = boServiceBuilder.project(boProject);
+
+                if (!boProject.getProjectParams().isEmpty()) {
+                    // adding the project defined params
+                    boServiceBuilder.addParams(boProject.getProjectParams());
+                }
+
+                // setting the main as new `boLangCodeFile`
+                boLangCodeFile = boProject.getMainPath();
+            }
+
+
+            // params are the last thing we will do since last specified
+            // params in the command line will override any other previous present ones
+            if (cmd.hasOption('p')) {
+                String paramsAsString = cmd.getOptionValue('p');
+
+                // replace all single quotes with double quotes
+                // since single is not valid JSON
+                paramsAsString = paramsAsString.replaceAll("'", "\"");
+
+                Map<String, String> params = new ObjectMapper().readValue(paramsAsString, Map.class);
+
+                boServiceBuilder = boServiceBuilder.addParams(params);
+            }
+
+            boService = boServiceBuilder.build();
+
+            String boLangFileContent = Files.readString(boLangCodeFile);
 
             // finaly run!
             boService.run(boLangFileContent);
+
+        } catch (IOException e) {
+            if (e instanceof NoSuchFileException) {
+                CmdUtilities.error("Could not find the file: " + e.getMessage());
+            }
         } catch (Exception e) {
             //TODO better exception handling in the future
             CmdUtilities.error(e.getMessage());
@@ -81,6 +125,5 @@ public class BoLang {
                 hf.printHelp(BO_LANG_NAME, options, true);
             }
         }
-
     }
 }

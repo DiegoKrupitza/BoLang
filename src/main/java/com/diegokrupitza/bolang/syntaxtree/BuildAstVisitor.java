@@ -6,6 +6,7 @@ import com.diegokrupitza.bolang.syntaxtree.nodes.data.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.infix.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.stat.*;
 import com.diegokrupitza.bolang.syntaxtree.nodes.unary.NegateNode;
+import com.diegokrupitza.bolang.vm.functions.FunctionFactory;
 import com.diegokrupitza.pdfgenerator.BoBaseVisitor;
 import com.diegokrupitza.pdfgenerator.BoLexer;
 import com.diegokrupitza.pdfgenerator.BoParser;
@@ -13,7 +14,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.function.Predicate.not;
@@ -25,11 +28,13 @@ import static java.util.function.Predicate.not;
  */
 public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
 
+    private final Set<String> usedModules = new HashSet<>();
     private BoSymbolTable symbolTable = null;
+    private List<String> importedModules = new ArrayList<>();
+    private String currentModuleName = "this";
 
     @Override
-    public ExpressionNode visitBo(BoParser.BoContext ctx) {
-
+    public ExpressionNode visitNormalCode(BoParser.NormalCodeContext ctx) {
         // create a global symbol table context
         this.symbolTable = new BoSymbolTable();
 
@@ -38,7 +43,56 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
                 .map(this::visit)
                 .collect(Collectors.toList());
 
-        return new BoNode(processesStats);
+        return new BoNode(processesStats, usedModules);
+    }
+
+    @Override
+    public ExpressionNode visitModuleDef(BoParser.ModuleDefContext ctx) {
+        // create a global symbol table context
+        this.symbolTable = new BoSymbolTable();
+
+        String moduleName = ctx.moduleName.getText();
+
+        // adding the own module to the scope of imported modules
+        importedModules.add(moduleName);
+        currentModuleName = moduleName;
+
+        List<ImportNode> importsInModule = ctx.importDef()
+                .stream()
+                .map(this::visit)
+                .map(item -> ((ImportNode) item))
+                .collect(Collectors.toUnmodifiableList());
+
+        List<FunctionNode> functions = ctx.userFunc().stream()
+                .map(this::visit)
+                .map(item -> ((FunctionNode) item))
+                .collect(Collectors.toUnmodifiableList());
+
+        ModuleNode moduleNode = new ModuleNode(moduleName, importsInModule, functions);
+
+        return new BoNode(List.of(moduleNode), usedModules);
+    }
+
+    @Override
+    public ExpressionNode visitImportDefinition(BoParser.ImportDefinitionContext ctx) {
+        String moduleName = ctx.moduleName.getText();
+
+        if (currentModuleName.equals(moduleName)) {
+            throw new BuildAstException(String.format("You cannot import yourself! Please remove the line `import %s;`", moduleName));
+        }
+
+        if (importedModules.contains(moduleName)) {
+            throw new BuildAstException(String.format("You cannot import the module `%s` multiple times!", moduleName));
+        }
+
+        importedModules.add(moduleName);
+
+        return new ImportNode(moduleName);
+    }
+
+    @Override
+    public ExpressionNode visitBo(BoParser.BoContext ctx) {
+        return visit(ctx.code());
     }
 
     @Override
@@ -83,6 +137,13 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
 
         String moduleName = ctx.module.getText();
 
+        if (!moduleName.equals("this") && // not this
+                !FunctionFactory.getAllPredefinedModules().contains(moduleName) && // not a predefined
+                !importedModules.contains(moduleName) // not already imported
+        ) {
+            throw new BuildAstException(String.format("You have to import the module `%s` before using it!", moduleName));
+        }
+
         List<ExpressionNode> params = new ArrayList<>();
 
         // process possible params
@@ -90,6 +151,10 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
             params = ctx.expr().stream()
                     .map(this::visit)
                     .collect(Collectors.toList());
+        }
+
+        if (!FunctionFactory.getAllPredefinedModules().contains(moduleName)) {
+            usedModules.add(moduleName);
         }
 
         return new CallFunctionNode(funcName, moduleName, params);

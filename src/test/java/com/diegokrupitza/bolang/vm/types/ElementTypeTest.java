@@ -1,7 +1,6 @@
-package com.diegokrupitza.bolang.vm.utils;
+package com.diegokrupitza.bolang.vm.types;
 
 import com.diegokrupitza.bolang.vm.VirtualMachineException;
-import com.diegokrupitza.bolang.vm.types.*;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @version 1.0
  * @date 11.07.21
  */
-public class TypeTest {
+public class ElementTypeTest {
 
     private static Stream<Arguments> equalsTestSource() {
         return Stream.of(
@@ -35,6 +34,54 @@ public class TypeTest {
 
 
                 Arguments.of(new DoubleElement(10.0), new IntegerElement(10), true),
+                Arguments.of(new DoubleElement(11.0), new IntegerElement(10), false),
+                Arguments.of(new DoubleElement(10.0), new DoubleElement(10.0), true),
+                Arguments.of(new DoubleElement(10.0), new StringElement("HelloWorld"), false),
+                Arguments.of(new DoubleElement(10.0), new BooleanElement(false), false),
+                Arguments.of(new DoubleElement(10.0), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
+
+                Arguments.of(new StringElement("HelloWorld"), new IntegerElement(10), false),
+                Arguments.of(new StringElement("HelloWorld"), new IntegerElement(10), false),
+                Arguments.of(new StringElement("HelloWorld"), new DoubleElement(10.0), false),
+                Arguments.of(new StringElement("HelloWorld"), new StringElement("HelloWorld"), true),
+                Arguments.of(new StringElement("HelloWorld"), new BooleanElement(false), false),
+                Arguments.of(new StringElement("HelloWorld"), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
+
+                Arguments.of(new BooleanElement(false), new IntegerElement(10), false),
+                Arguments.of(new BooleanElement(false), new IntegerElement(10), false),
+                Arguments.of(new BooleanElement(false), new DoubleElement(10.0), false),
+                Arguments.of(new BooleanElement(false), new StringElement("HelloWorld"), false),
+                Arguments.of(new BooleanElement(false), new BooleanElement(false), true),
+                Arguments.of(new BooleanElement(false), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
+
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new IntegerElement(10), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new IntegerElement(10), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new DoubleElement(10.0), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new StringElement("HelloWorld"), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new BooleanElement(false), false),
+                Arguments.of(new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), true),
+
+                Arguments.of(VoidElement.NO_VALUE, VoidElement.NO_VALUE, true),
+                Arguments.of(VoidElement.NO_VALUE, new IntegerElement(10), false),
+                Arguments.of(VoidElement.NO_VALUE, new DoubleElement(10.0), false),
+                Arguments.of(VoidElement.NO_VALUE, new StringElement("HelloWorld"), false),
+                Arguments.of(VoidElement.NO_VALUE, new BooleanElement(false), false),
+                Arguments.of(VoidElement.NO_VALUE, new BooleanElement(true), false),
+                Arguments.of(VoidElement.NO_VALUE, new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false)
+        );
+    }
+
+    private static Stream<Arguments> hashCodeSource() {
+        return Stream.of(
+                Arguments.of(new IntegerElement(10), new IntegerElement(10), true),
+                Arguments.of(new IntegerElement(11), new IntegerElement(10), false),
+                Arguments.of(new IntegerElement(10), new DoubleElement(10.0), false),
+                Arguments.of(new IntegerElement(10), new StringElement("HelloWorld"), false),
+                Arguments.of(new IntegerElement(10), new BooleanElement(false), false),
+                Arguments.of(new IntegerElement(10), new ArrayElement(Collections.singletonList(new StringElement("HelloWorld"))), false),
+
+
+                Arguments.of(new DoubleElement(10.0), new IntegerElement(10), false),
                 Arguments.of(new DoubleElement(11.0), new IntegerElement(10), false),
                 Arguments.of(new DoubleElement(10.0), new DoubleElement(10.0), true),
                 Arguments.of(new DoubleElement(10.0), new StringElement("HelloWorld"), false),
@@ -257,5 +304,14 @@ public class TypeTest {
     public void checkEmptyStringInitTest() {
         StringElement emptyString = new StringElement();
         assertThat(emptyString.getValue()).isEqualTo("");
+    }
+
+    @ParameterizedTest
+    @MethodSource("hashCodeSource")
+    void hashCodeTest(AbstractElementType<?> e1, AbstractElementType<?> e2, Boolean valid) {
+        int val1 = e1.hashCode();
+        int val2 = e2.hashCode();
+
+        assertThat(val1 == val2).isEqualTo(valid);
     }
 }
