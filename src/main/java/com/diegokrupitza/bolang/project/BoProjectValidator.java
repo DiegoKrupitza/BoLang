@@ -7,6 +7,8 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.util.Objects;
+
 /**
  * @author Diego Krupitza
  * @version 1.0
@@ -29,7 +31,7 @@ public class BoProjectValidator {
     protected static void validateJson(String rawJson) throws BoProjectValidationException {
         try {
             JSONObject jsonSchema = new JSONObject(
-                    new JSONTokener(ClassLoader.getSystemResourceAsStream(BoProjectSchema)));
+                    new JSONTokener(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream(BoProjectSchema))));
 
             JSONObject jsonSubject = new JSONObject(new JSONTokener(rawJson));
 
