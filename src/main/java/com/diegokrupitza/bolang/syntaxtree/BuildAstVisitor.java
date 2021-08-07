@@ -14,7 +14,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.function.Predicate.not;
@@ -26,6 +28,7 @@ import static java.util.function.Predicate.not;
  */
 public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
 
+    private final Set<String> usedModules = new HashSet<>();
     private BoSymbolTable symbolTable = null;
     private List<String> importedModules = new ArrayList<>();
     private String currentModuleName = "this";
@@ -40,7 +43,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
                 .map(this::visit)
                 .collect(Collectors.toList());
 
-        return new BoNode(processesStats);
+        return new BoNode(processesStats, usedModules);
     }
 
     @Override
@@ -67,7 +70,7 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
 
         ModuleNode moduleNode = new ModuleNode(moduleName, importsInModule, functions);
 
-        return new BoNode(List.of(moduleNode));
+        return new BoNode(List.of(moduleNode), usedModules);
     }
 
     @Override
@@ -148,6 +151,10 @@ public class BuildAstVisitor extends BoBaseVisitor<ExpressionNode> {
             params = ctx.expr().stream()
                     .map(this::visit)
                     .collect(Collectors.toList());
+        }
+
+        if (!FunctionFactory.getAllPredefinedModules().contains(moduleName)) {
+            usedModules.add(moduleName);
         }
 
         return new CallFunctionNode(funcName, moduleName, params);

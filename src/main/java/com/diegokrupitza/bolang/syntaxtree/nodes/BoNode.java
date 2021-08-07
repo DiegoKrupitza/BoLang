@@ -1,10 +1,9 @@
 package com.diegokrupitza.bolang.syntaxtree.nodes;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Diego Krupitza
@@ -12,10 +11,20 @@ import java.util.List;
  * @date 08.07.21
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class BoNode extends ExpressionNode {
 
     private List<ExpressionNode> stats;
+    private Set<String> usedModules;
 
+    public BoNode() {
+    }
+
+    public BoNode(List<ExpressionNode> stats) {
+        this.stats = stats;
+    }
+
+    public BoNode(List<ExpressionNode> stats, Set<String> usedModules) {
+        this.stats = stats;
+        this.usedModules = usedModules;
+    }
 }

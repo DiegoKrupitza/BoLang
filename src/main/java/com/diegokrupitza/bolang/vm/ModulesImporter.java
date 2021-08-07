@@ -59,15 +59,11 @@ public class ModulesImporter {
             }
 
             // getting the names of the modules we want to import
-            Set<String> namesOfModuleToImport = importModules.stream()
-                    .map(ImportNode::getModuleName)
-                    .collect(Collectors.toUnmodifiableSet());
+            Set<String> namesOfModuleToImport = head.getUsedModules();
 
             // populating the map with the list of all implemented functions in a module
             for (String nameOfModule : namesOfModuleToImport) {
-
                 moduleFunctionMap = performImportForModule(boProject, moduleFunctionMap, nameOfModule);
-
             }
 
         } catch (FileNotFoundException e) {
@@ -104,22 +100,20 @@ public class ModulesImporter {
         // adding the current imported module to the map
         moduleFunctionMap.put(nameOfModule, functionsOfModule);
 
-        // import module that the module imported
-        List<ImportNode> importsOfModule = moduleHead.getImports();
+        // getting the names of the modules we want to import
+        Set<String> namesOfModuleToImport = moduleBoNode.getUsedModules();
 
-        if (boProject.isExternalModule(nameOfModule)) {
-            if (CollectionUtils.isNotEmpty(importsOfModule)) {
-                throw new BoProjectException("External dependencies are not allowed to have imports! Please properly export the module you want to use!");
-            }
+        if (boProject.isExternalModule(nameOfModule) && CollectionUtils.isNotEmpty(namesOfModuleToImport)) {
+            throw new BoProjectException("External dependencies are not allowed to have imports! Please properly export the module you want to use!");
         }
 
-        if (CollectionUtils.isNotEmpty(importsOfModule)) {
+        if (CollectionUtils.isNotEmpty(namesOfModuleToImport)) {
             // we have imports to do!
             // circular dependencies are not a problem since as soon as its once seen its get added before
             // see few lines above
 
-            for (ImportNode importNodeOfModule : importsOfModule) {
-                moduleFunctionMap = performImportForModule(boProject, moduleFunctionMap, importNodeOfModule.getModuleName());
+            for (String nameOfModuleIteration : namesOfModuleToImport) {
+                moduleFunctionMap = performImportForModule(boProject, moduleFunctionMap, nameOfModuleIteration);
             }
         }
 
