@@ -82,7 +82,7 @@ public class BoService {
 
         // import possible modules
         // extracting the modules and their functions
-        HashMap<String, List<FunctionNode>> moduleFunctionMap = ModulesImporter.importModules(this.boProject, head);
+        Map<String, List<FunctionNode>> moduleFunctionMap = ModulesImporter.importModules(this.boProject, head);
         virtualMachine.addExternalModules(moduleFunctionMap);
 
         AbstractElementType<?> returnVal = virtualMachine.run(this.externalParams);

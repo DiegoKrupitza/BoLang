@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,8 @@ public class ModulesImporter {
      * @return a hashmap including the name of the module with all the function in the module
      * @throws VirtualMachineException in case an error happens such as file not found etc
      */
-    public static HashMap<String, List<FunctionNode>> importModules(BoProject boProject, BoNode head) throws VirtualMachineException {
-        HashMap<String, List<FunctionNode>> moduleFunctionMap = new HashMap<>();
+    public static Map<String, List<FunctionNode>> importModules(BoProject boProject, BoNode head) throws VirtualMachineException {
+        Map<String, List<FunctionNode>> moduleFunctionMap = new HashMap<>();
 
         if (!containsModuleImport(head)) {
             return moduleFunctionMap;
@@ -49,8 +50,8 @@ public class ModulesImporter {
         try {
             // import functions from other modules
             Set<ImportNode> importModules = head.getStats().stream()
-                    .filter(item -> item instanceof ImportNode)
-                    .map(item -> ((ImportNode) item))
+                    .filter(ImportNode.class::isInstance)
+                    .map(ImportNode.class::cast)
                     .collect(Collectors.toUnmodifiableSet());
 
             if (CollectionUtils.isEmpty(importModules)) {
@@ -75,7 +76,7 @@ public class ModulesImporter {
         return moduleFunctionMap;
     }
 
-    private static HashMap<String, List<FunctionNode>> performImportForModule(BoProject boProject, HashMap<String, List<FunctionNode>> moduleFunctionMap, String nameOfModule) throws BoProjectException, IOException {
+    private static Map<String, List<FunctionNode>> performImportForModule(BoProject boProject, Map<String, List<FunctionNode>> moduleFunctionMap, String nameOfModule) throws BoProjectException, IOException {
         if (moduleFunctionMap.containsKey(nameOfModule)) {
             // we already imported that certain module
             return moduleFunctionMap;

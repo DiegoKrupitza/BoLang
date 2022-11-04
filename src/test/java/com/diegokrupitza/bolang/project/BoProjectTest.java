@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @version 1.0
  * @date 04.08.21
  */
-public class BoProjectTest {
+class BoProjectTest {
 
     @SneakyThrows
     @Test
